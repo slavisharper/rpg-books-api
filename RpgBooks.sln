@@ -1,0 +1,115 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33606.364
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{AF4A04B6-8FA1-48E7-A92F-CC7D5B00712C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{4FF9CC83-17BA-4A2C-AFA9-A61CE9913550}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgBooks.Api", "src\Api\RpgBooks.Api\RpgBooks.Api.csproj", "{E101FE5A-F55D-4C51-9472-E01862AD9834}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C6543216-AB22-4259-A07D-6ACEE50A7E08}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{88C6754A-6A6C-4742-A154-BD834905D8D7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgBooks.Modules.Identity", "src\Modules\RpgBooks.Modules.Identity\RpgBooks.Modules.Identity.csproj", "{C6BA01FE-4EFC-4D00-BE0E-7D2C4AA5EA0F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{E66457A9-7CF2-4041-8E6B-BB5570F033C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgBooks.Libraries.Module", "src\Libraries\RpgBooks.Libraries.Module\RpgBooks.Libraries.Module.csproj", "{5B0EAB9A-A85C-42B4-B1DA-5D722F72CA3A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgBooks.Libraries.System", "src\Libraries\RpgBooks.Libraries.System\RpgBooks.Libraries.System.csproj", "{F5B317D4-8E72-47E5-BA54-122F585ACCF5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgBooks.Libraries.Templates", "src\Libraries\RpgBooks.Libraries.Templates\RpgBooks.Libraries.Templates.csproj", "{042324B5-0007-4B2E-A23D-0A5C89641999}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgBooks.Libraries.Module.Extensions", "src\Libraries\RpgBooks.Libraries.Module.Extensions\RpgBooks.Libraries.Module.Extensions.csproj", "{9A49A540-2AA8-4DCB-81C9-2DA33FCC39DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgBooks.Modules.Catalog", "src\Modules\RpgBooks.Modules.Catalog\RpgBooks.Modules.Catalog.csproj", "{5D1DA371-AE1B-40DF-8DC4-57B29577DF5D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgBooks.Modules.Orders", "src\Modules\RpgBooks.Modules.Orders\RpgBooks.Modules.Orders.csproj", "{233CA786-CAC9-476D-9399-03081CEC3D5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgBooks.Modules.Statistics", "src\Modules\RpgBooks.Modules.Statistics\RpgBooks.Modules.Statistics.csproj", "{32AA147A-F4D4-44CC-8DDB-59268F7A5689}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgBooks.Modules.Reading", "src\Modules\RpgBooks.Modules.Reading\RpgBooks.Modules.Reading.csproj", "{1BA4344F-B6CC-44CC-A2CE-20134FCBCBD6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgBooks.Modules.Books", "src\Modules\RpgBooks.Modules.Books\RpgBooks.Modules.Books.csproj", "{014DD6AB-D019-41E8-ACF0-7B172AD3995E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E101FE5A-F55D-4C51-9472-E01862AD9834}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E101FE5A-F55D-4C51-9472-E01862AD9834}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E101FE5A-F55D-4C51-9472-E01862AD9834}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E101FE5A-F55D-4C51-9472-E01862AD9834}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6BA01FE-4EFC-4D00-BE0E-7D2C4AA5EA0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6BA01FE-4EFC-4D00-BE0E-7D2C4AA5EA0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6BA01FE-4EFC-4D00-BE0E-7D2C4AA5EA0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6BA01FE-4EFC-4D00-BE0E-7D2C4AA5EA0F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B0EAB9A-A85C-42B4-B1DA-5D722F72CA3A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B0EAB9A-A85C-42B4-B1DA-5D722F72CA3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B0EAB9A-A85C-42B4-B1DA-5D722F72CA3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B0EAB9A-A85C-42B4-B1DA-5D722F72CA3A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5B317D4-8E72-47E5-BA54-122F585ACCF5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5B317D4-8E72-47E5-BA54-122F585ACCF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5B317D4-8E72-47E5-BA54-122F585ACCF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5B317D4-8E72-47E5-BA54-122F585ACCF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{042324B5-0007-4B2E-A23D-0A5C89641999}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{042324B5-0007-4B2E-A23D-0A5C89641999}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{042324B5-0007-4B2E-A23D-0A5C89641999}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{042324B5-0007-4B2E-A23D-0A5C89641999}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A49A540-2AA8-4DCB-81C9-2DA33FCC39DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A49A540-2AA8-4DCB-81C9-2DA33FCC39DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A49A540-2AA8-4DCB-81C9-2DA33FCC39DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A49A540-2AA8-4DCB-81C9-2DA33FCC39DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D1DA371-AE1B-40DF-8DC4-57B29577DF5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D1DA371-AE1B-40DF-8DC4-57B29577DF5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D1DA371-AE1B-40DF-8DC4-57B29577DF5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D1DA371-AE1B-40DF-8DC4-57B29577DF5D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{233CA786-CAC9-476D-9399-03081CEC3D5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{233CA786-CAC9-476D-9399-03081CEC3D5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{233CA786-CAC9-476D-9399-03081CEC3D5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{233CA786-CAC9-476D-9399-03081CEC3D5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32AA147A-F4D4-44CC-8DDB-59268F7A5689}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32AA147A-F4D4-44CC-8DDB-59268F7A5689}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32AA147A-F4D4-44CC-8DDB-59268F7A5689}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32AA147A-F4D4-44CC-8DDB-59268F7A5689}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BA4344F-B6CC-44CC-A2CE-20134FCBCBD6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BA4344F-B6CC-44CC-A2CE-20134FCBCBD6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BA4344F-B6CC-44CC-A2CE-20134FCBCBD6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BA4344F-B6CC-44CC-A2CE-20134FCBCBD6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{014DD6AB-D019-41E8-ACF0-7B172AD3995E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{014DD6AB-D019-41E8-ACF0-7B172AD3995E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{014DD6AB-D019-41E8-ACF0-7B172AD3995E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{014DD6AB-D019-41E8-ACF0-7B172AD3995E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4FF9CC83-17BA-4A2C-AFA9-A61CE9913550} = {AF4A04B6-8FA1-48E7-A92F-CC7D5B00712C}
+		{E101FE5A-F55D-4C51-9472-E01862AD9834} = {4FF9CC83-17BA-4A2C-AFA9-A61CE9913550}
+		{88C6754A-6A6C-4742-A154-BD834905D8D7} = {AF4A04B6-8FA1-48E7-A92F-CC7D5B00712C}
+		{C6BA01FE-4EFC-4D00-BE0E-7D2C4AA5EA0F} = {88C6754A-6A6C-4742-A154-BD834905D8D7}
+		{E66457A9-7CF2-4041-8E6B-BB5570F033C9} = {AF4A04B6-8FA1-48E7-A92F-CC7D5B00712C}
+		{5B0EAB9A-A85C-42B4-B1DA-5D722F72CA3A} = {E66457A9-7CF2-4041-8E6B-BB5570F033C9}
+		{F5B317D4-8E72-47E5-BA54-122F585ACCF5} = {E66457A9-7CF2-4041-8E6B-BB5570F033C9}
+		{042324B5-0007-4B2E-A23D-0A5C89641999} = {E66457A9-7CF2-4041-8E6B-BB5570F033C9}
+		{9A49A540-2AA8-4DCB-81C9-2DA33FCC39DC} = {E66457A9-7CF2-4041-8E6B-BB5570F033C9}
+		{5D1DA371-AE1B-40DF-8DC4-57B29577DF5D} = {88C6754A-6A6C-4742-A154-BD834905D8D7}
+		{233CA786-CAC9-476D-9399-03081CEC3D5B} = {88C6754A-6A6C-4742-A154-BD834905D8D7}
+		{32AA147A-F4D4-44CC-8DDB-59268F7A5689} = {88C6754A-6A6C-4742-A154-BD834905D8D7}
+		{1BA4344F-B6CC-44CC-A2CE-20134FCBCBD6} = {88C6754A-6A6C-4742-A154-BD834905D8D7}
+		{014DD6AB-D019-41E8-ACF0-7B172AD3995E} = {88C6754A-6A6C-4742-A154-BD834905D8D7}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B2F15811-EC3B-400C-9FFD-E502A6901005}
+	EndGlobalSection
+EndGlobal
