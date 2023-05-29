@@ -38,7 +38,7 @@ public sealed record StoredFile : ValueObject<StoredFile>
     /// <summary>
     /// Gets file mime type.
     /// </summary>
-    public string MimeType => MimeTypeHelpers.GetMimeType(FileName);
+    public string ContentType => MimeTypeHelpers.GetMimeType(FileName);
 
     /// <inheritdoc />
     public override StoredFile Copy()

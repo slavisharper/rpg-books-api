@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 /// <summary>
 /// Files service responsible for storing and retrieving files from cloud storage.
 /// </summary>
-public interface ICloudFileService
+public interface IAzureBlobService
 {
     /// <summary>
     /// Uploads blob file to a cloud service.

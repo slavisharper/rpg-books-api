@@ -29,4 +29,23 @@
 	  <ProjectReference Include="..\RpgBooks.Libraries.Templates\RpgBooks.Libraries.Templates.csproj" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="Infrastructure\Services\Cloud\" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Infrastructure\Resources\Messages.Designer.cs">
+	    <DesignTime>True</DesignTime>
+	    <AutoGen>True</AutoGen>
+	    <DependentUpon>Messages.resx</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Update="Infrastructure\Resources\Messages.resx">
+	    <Generator>ResXFileCodeGenerator</Generator>
+	    <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+	  </EmbeddedResource>
+	</ItemGroup>
+
 </Project>
