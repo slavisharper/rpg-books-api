@@ -2,6 +2,9 @@
 
 using Cysharp.Text;
 
+/// <summary>
+/// Validation messages provider for <see cref="ValidationMessages"/>.
+/// </summary>
 public sealed class ValidationMessagesProvider
 {
     internal static string ForNullValue(string paramName)

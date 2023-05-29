@@ -1,5 +1,8 @@
 ﻿namespace System;
 
+/// <summary>
+/// Validation exception interface.
+/// </summary>
 public interface IValidationException
 {
     /// <summary>

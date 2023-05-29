@@ -14,6 +14,10 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
+/// <summary>
+/// Base fluid template renderer.
+/// <para>This renderer should be inherited and registered with <see cref="RpgBooks.Libraries.Templates.Configuration.RegisterRenderer{TInterface, TRenderer}(Microsoft.Extensions.DependencyInjection.IServiceCollection, Action{TemplateSettings}?)"/></para>
+/// </summary>
 public abstract class BaseFluidTemplateRenderer : ITemplateRenderer
 {
     private readonly HashSet<string> layouts = new();
@@ -23,6 +27,9 @@ public abstract class BaseFluidTemplateRenderer : ITemplateRenderer
     private readonly FluidParser parser;
     private readonly TemplateOptions templateOptions;
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="BaseFluidTemplateRenderer"/> class.
+    /// </summary>
     public BaseFluidTemplateRenderer()
     {
         this.parser = new FluidParser();
@@ -37,13 +44,17 @@ public abstract class BaseFluidTemplateRenderer : ITemplateRenderer
         this.SetSettings(new TemplateSettings());
     }
 
+    /// <inheritdoc/>
     public ILayoutModel DefaultLayout { get; private set; }
 
+    /// <inheritdoc/>
     public TemplateSettings TemplateSettings { get; private set; }
 
+    /// <inheritdoc/>
     public virtual Task<string> RenderAsync<T>(T model, CancellationToken cancellationToken)
         => RenderAsync(model, this.DefaultLayout, cancellationToken);
 
+    /// <inheritdoc/>
     public async Task<string> RenderAsync<T>(T model, ILayoutModel layoutModel, CancellationToken cancellationToken = default)
     {
         string modelName = typeof(T).FullName!;
@@ -55,11 +66,13 @@ public abstract class BaseFluidTemplateRenderer : ITemplateRenderer
         return await this.RenderTemplate(layoutTemplateName, layoutModel);
     }
 
+    /// <inheritdoc/>
     public void SetDefaultLayoutModel(ILayoutModel layoutModel)
     {
         this.DefaultLayout = layoutModel;
     }
 
+    /// <inheritdoc/>
     public void SetSettings(TemplateSettings settings)
     {
         this.TemplateSettings = settings;

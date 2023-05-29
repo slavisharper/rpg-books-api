@@ -4,6 +4,9 @@ using RpgBooks.Libraries.Templates.Abstractions;
 
 using System.Reflection;
 
+/// <summary>
+/// Template info for embedded file templates.
+/// </summary>
 public sealed class EmbeddedTemplateInfo : ITemplateInfo
 {
     private readonly string resourceName;
@@ -15,7 +18,6 @@ public sealed class EmbeddedTemplateInfo : ITemplateInfo
     /// <summary>
     /// Initializes a new instance of the <see cref="EmbeddedTemplateInfo"/> class.
     /// </summary>
-    /// <param name="name">Template name embedded.</param>
     /// <param name="resourceName">Manifest resource name.</param>
     /// <param name="resourceAssembly">Manifest resource assembly.</param>
     public EmbeddedTemplateInfo(string resourceName, Assembly resourceAssembly)

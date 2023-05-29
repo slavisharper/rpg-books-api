@@ -7,6 +7,9 @@ using RpgBooks.Libraries.Templates.Models;
 
 using System.Reflection;
 
+/// <summary>
+/// Template settings used by the template renderer.
+/// </summary>
 public sealed class TemplateSettings
 {
     /// <summary>
@@ -19,6 +22,9 @@ public sealed class TemplateSettings
     /// </summary>
     public string LayoutViewName { get; private set; } = "_Layout";
 
+    /// <summary>
+    /// Gets layout template name with the file extension.
+    /// </summary>
     public string LayoutViewNameWithExtension => ZString.Format("{0}.{1}", this.LayoutViewName, this.TemplateExtension);
 
     /// <summary>
@@ -60,6 +66,10 @@ public sealed class TemplateSettings
         this.DefaultLayoutModel = layoutModel;
     }
 
+    /// <summary>
+    /// Sets assemblies containing the templates.
+    /// </summary>
+    /// <param name="assemblies"></param>
     public void SetTemplateAssemblies(params Assembly[] assemblies)
     {
         this.TemplateAssemblyLocations = assemblies;
