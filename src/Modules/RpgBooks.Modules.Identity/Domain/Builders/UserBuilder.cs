@@ -20,18 +20,21 @@ internal sealed class UserBuilder : IUserBuilder
         this.securityTokensService = securityTokensService;
     }
 
+    /// <inheritdoc/>
     public IUserBuilder WithEmail(string email)
     {
         this.email = email;
         return this;
     }
 
+    /// <inheritdoc/>
     public IUserBuilder WithPassword(string password)
     {
         this.paswordHash = this.passwordHasher.HashPassword(password);
         return this;
     }
 
+    /// <inheritdoc/>
     public async Task<User> Build(CancellationToken cancellation = default)
     {
         if (email is null || paswordHash is null)

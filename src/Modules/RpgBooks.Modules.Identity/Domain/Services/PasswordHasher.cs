@@ -11,33 +11,37 @@ using System.Security;
 using System.Security.Cryptography;
 using System.Text;
 
+/// <summary>
+/// Password hasher service that uses <see cref="PasswordSecuritySettings"/> for configuration.
+/// </summary>
 internal sealed class PasswordHasher : IPasswordHasher
 {
-    private readonly IdentitySettings settings;
+    private readonly PasswordSecuritySettings settings;
     private readonly ApplicationSecrets appSecrets;
 
-    public PasswordHasher(IOptions<IdentitySettings> settingsOptions, IOptions<ApplicationSecrets> appSecrets)
+    public PasswordHasher(IOptions<PasswordSecuritySettings> settingsOptions, IOptions<ApplicationSecrets> appSecrets)
     {
         this.settings = settingsOptions.Value;
         this.appSecrets = appSecrets.Value;
     }
 
+    /// <inheritdoc/>
     public string HashPassword(string password)
     {
-        Span<byte> salt = stackalloc byte[this.settings.PasswordSecuritySettings.SaltSize];
-        Span<byte> hash = stackalloc byte[this.settings.PasswordSecuritySettings.SaltSize];
-        Span<byte> saltedHash = stackalloc byte[this.settings.PasswordSecuritySettings.SaltSize * 2];
+        Span<byte> salt = stackalloc byte[this.settings.SaltSize];
+        Span<byte> hash = stackalloc byte[this.settings.SaltSize];
+        Span<byte> saltedHash = stackalloc byte[this.settings.SaltSize * 2];
 
         // Generate random salt
-        salt = RandomNumberGenerator.GetBytes(this.settings.PasswordSecuritySettings.SaltSize);
+        salt = RandomNumberGenerator.GetBytes(this.settings.SaltSize);
 
         // Hash the password with the salt
         hash = Rfc2898DeriveBytes.Pbkdf2(
             Encoding.UTF8.GetBytes(password),
             salt,
-            this.settings.PasswordSecuritySettings.Iterations,
-            this.settings.PasswordSecuritySettings.HashAlgorithm,
-            this.settings.PasswordSecuritySettings.SaltSize);
+            this.settings.Iterations,
+            this.settings.HashAlgorithm,
+            this.settings.SaltSize);
 
         // Combine the salt and the hash
         for (int h = 0, i = 0; h < salt.Length; h++)
@@ -50,16 +54,17 @@ internal sealed class PasswordHasher : IPasswordHasher
         return Convert.ToBase64String(saltedHash.Encrypt(this.appSecrets.PasswordProtectionSecret));
     }
 
+    /// <inheritdoc/>
     public bool VerifyPassword(string password, string encryptedSaltedHash)
     {
         var saltedHashBytes = Convert.FromBase64String(encryptedSaltedHash);
 
-        Span<byte> saltedHash = stackalloc byte[this.settings.PasswordSecuritySettings.SaltSize * 2];
+        Span<byte> saltedHash = stackalloc byte[this.settings.SaltSize * 2];
         saltedHash = saltedHashBytes.Decrypt(this.appSecrets.PasswordProtectionSecret);
 
-        Span<byte> salt = stackalloc byte[this.settings.PasswordSecuritySettings.SaltSize];
-        Span<byte> hash = stackalloc byte[this.settings.PasswordSecuritySettings.SaltSize];
-        Span<byte> matchingHash = stackalloc byte[this.settings.PasswordSecuritySettings.SaltSize];
+        Span<byte> salt = stackalloc byte[this.settings.SaltSize];
+        Span<byte> hash = stackalloc byte[this.settings.SaltSize];
+        Span<byte> matchingHash = stackalloc byte[this.settings.SaltSize];
 
         for (int i = 0, h = 0; i < saltedHash.Length; i++)
         {
@@ -77,9 +82,9 @@ internal sealed class PasswordHasher : IPasswordHasher
         matchingHash = Rfc2898DeriveBytes.Pbkdf2(
             Encoding.UTF8.GetBytes(password),
             salt,
-            this.settings.PasswordSecuritySettings.Iterations,
-            this.settings.PasswordSecuritySettings.HashAlgorithm,
-            this.settings.PasswordSecuritySettings.SaltSize);
+            this.settings.Iterations,
+            this.settings.HashAlgorithm,
+            this.settings.SaltSize);
 
         return hash.SequenceEqual(matchingHash);
     }

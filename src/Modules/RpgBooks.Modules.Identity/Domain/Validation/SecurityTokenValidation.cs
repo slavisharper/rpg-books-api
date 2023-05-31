@@ -1,10 +1,14 @@
 ﻿namespace RpgBooks.Modules.Identity.Domain.Validation;
 
+using RpgBooks.Modules.Identity.Domain.Entities;
 using RpgBooks.Modules.Identity.Domain.Exceptions;
 
 using System;
 using System.Runtime.CompilerServices;
 
+/// <summary>
+/// Helper class to validate <see cref="SecurityToken"/> entities.
+/// </summary>
 internal static class SecurityTokenValidation
 {
     internal static class Values

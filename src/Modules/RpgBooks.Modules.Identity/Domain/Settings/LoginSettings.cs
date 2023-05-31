@@ -1,5 +1,9 @@
 ﻿namespace RpgBooks.Modules.Identity.Domain.Settings;
 
+/// <summary>
+/// Login settings.
+/// <para>This is used for configuring lockout settings, token lifespan, etc.</para>
+/// </summary>
 public sealed class LoginSettings
 {
     /// <summary>

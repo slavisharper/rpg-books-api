@@ -1,23 +1,24 @@
 ﻿namespace RpgBooks.Modules.Identity.Domain.Services;
 
+using Microsoft.Extensions.Options;
+
 using RpgBooks.Libraries.Module.Application.Settings;
 using RpgBooks.Modules.Identity.Domain.Entities;
 using RpgBooks.Modules.Identity.Domain.Exceptions;
 using RpgBooks.Modules.Identity.Domain.Repositories;
 using RpgBooks.Modules.Identity.Domain.Services.Abstractions;
-using RpgBooks.Modules.Identity.Domain.Settings;
 
-using Microsoft.Extensions.Options;
-
-using System.Security;
 using System.Threading.Tasks;
 
-internal sealed class UserManager : IUserManager
+/// <summary>
+/// User role manager.
+/// </summary>
+internal sealed class UserRoleManager : IUserRoleManager
 {
     private readonly IUserDomainRepository userRepository;
     private readonly ApplicationSettings appSettings;
 
-    public UserManager(
+    public UserRoleManager(
         IUserDomainRepository userDomainRepository,
         IOptions<ApplicationSettings> appSettings)
     {
@@ -25,12 +26,15 @@ internal sealed class UserManager : IUserManager
         this.appSettings = appSettings.Value;
     }
 
+    /// <inheritdoc/>
     public async Task AddToAdminRole(User user, CancellationToken cancellation = default)
         => await this.AddToRole(user, this.appSettings.AdminRoleName, cancellation);
 
+    /// <inheritdoc/>
     public async Task AddToDevRole(User user, CancellationToken cancellation = default)
         => await this.AddToRole(user, this.appSettings.AdminRoleName, cancellation);
 
+    /// <inheritdoc/>
     public async Task AddToRole(User user, string roleName, CancellationToken cancellation = default)
     {
         if (user.HasRole(roleName))

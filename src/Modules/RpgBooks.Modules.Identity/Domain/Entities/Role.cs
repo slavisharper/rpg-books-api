@@ -3,11 +3,14 @@
 using RpgBooks.Modules.Identity.Domain.Validation;
 using RpgBooks.Libraries.Module.Domain.Entities;
 
+/// <summary>
+/// User role entity.
+/// </summary>
 public sealed class Role : BaseEntity<int>
 {
     private readonly ICollection<Claim> claims;
 
-    public Role(string name)
+    internal Role(string name)
     {
         this.Name = name;
         this.claims = new HashSet<Claim>();
@@ -15,8 +18,14 @@ public sealed class Role : BaseEntity<int>
         this.Validate();
     }
 
+    /// <summary>
+    /// Gets the role name.
+    /// </summary>
     public string Name { get; private set; }
 
+    /// <summary>
+    /// Gets the claims associated with the role.
+    /// </summary>
     public IReadOnlyCollection<Claim> Claims => this.claims.ToArray();
 
     internal Role AddClaim(string type, string value, string valueType)

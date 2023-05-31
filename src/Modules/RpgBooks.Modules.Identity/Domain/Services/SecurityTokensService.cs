@@ -9,11 +9,19 @@ using Microsoft.Extensions.Options;
 
 using System.Security;
 
-public sealed class SecurityTokensService : ISecurityTokensService
+/// <summary>
+/// Service responsible for generating and managing user security tokens.
+/// </summary>
+internal sealed class SecurityTokensService : ISecurityTokensService
 {
     private readonly ApplicationSecrets appSecrets;
     private readonly IdentitySettings identitySettings;
 
+    /// <summary>
+    /// Creates a new instance of <see cref="SecurityTokensService"/>.
+    /// </summary>
+    /// <param name="appSecrets">Application secrets options.</param>
+    /// <param name="identitySettings">Identity module settings</param>
     public SecurityTokensService(
         IOptions<ApplicationSecrets> appSecrets,
         IOptions<IdentitySettings> identitySettings)
@@ -22,6 +30,7 @@ public sealed class SecurityTokensService : ISecurityTokensService
         this.identitySettings = identitySettings.Value;
     }
 
+    /// <inheritdoc/>
     public ValueTask<TokenModel> GenerateEmailConfirmationToken(User user, CancellationToken cancellation = default)
     {
         var type = SecurityTokenType.ConfirmEmail;
@@ -31,6 +40,7 @@ public sealed class SecurityTokensService : ISecurityTokensService
         return GenerateToken(user, type, validity, cancellation);
     }
 
+    /// <inheritdoc/>
     public ValueTask<TokenModel> GeneratePhoneConfirmationToken(User user, CancellationToken cancellation = default)
     {
         string phoneToken = RandomTokenProvider.GenerateRandomDigitsToken(
@@ -48,6 +58,7 @@ public sealed class SecurityTokensService : ISecurityTokensService
         return ValueTask.FromResult(new TokenModel(phoneToken, DateTimeOffset.UtcNow + validity));
     }
 
+    /// <inheritdoc/>
     public ValueTask<TokenModel> GenerateRefreshToken(User user, CancellationToken cancellation = default)
     {
         var type = SecurityTokenType.RefreshAuthentication;
@@ -57,6 +68,7 @@ public sealed class SecurityTokensService : ISecurityTokensService
         return GenerateToken(user, type, validity, cancellation);
     }
 
+    /// <inheritdoc/>
     public ValueTask<TokenModel> GenerateResetPasswordToken(User user, CancellationToken cancellation = default)
     {
         var type = SecurityTokenType.ResetPassword;

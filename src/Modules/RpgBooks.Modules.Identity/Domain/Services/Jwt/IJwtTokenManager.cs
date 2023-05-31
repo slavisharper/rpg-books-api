@@ -4,7 +4,7 @@ using RpgBooks.Modules.Identity.Domain.Entities;
 using System.Security.Claims;
 
 /// <summary>
-/// JWT token manager contract.
+/// JWT token manager service interface.
 /// </summary>
 public interface IJwtTokenManager
 {
@@ -12,8 +12,9 @@ public interface IJwtTokenManager
     /// Generate JWT token for the given user.
     /// </summary>
     /// <param name="user">User instance.</param>
+    /// <param name="sessionId">Persistent session id when refreshing t.</param>
     /// <returns>Generated JWT token value.</returns>
-    string GenerateToken(User user);
+    string GenerateToken(User user, string? sessionId = null);
 
     /// <summary>
     /// Reads and decodes JWT token.

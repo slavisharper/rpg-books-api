@@ -17,6 +17,9 @@ using System.Text;
 
 using SecurityClaim = System.Security.Claims.Claim;
 
+/// <summary>
+/// JWT token manager that uses LitJWT library.
+/// </summary>
 internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
 {
     private readonly JwtEncoder encoder;
@@ -46,6 +49,7 @@ internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
         this.issuer = issuer;
     }
 
+    /// <inheritdoc/>
     public string GenerateToken(User user)
     {
         var expirationTime = DateTimeOffset.UtcNow.AddMinutes(this.tokenTimeSpanInMinutes);
@@ -79,6 +83,7 @@ internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
         return this.encoder.Encode(payload, TimeSpan.FromMinutes(this.tokenTimeSpanInMinutes));
     }
 
+    /// <inheritdoc/>
     public JwtPayload? ReadToken(string token)
     {
         var result = this.decoder.TryDecode(token, out JwtPayload payload);
@@ -91,6 +96,11 @@ internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
         return null;
     }
 
+    /// <summary>
+    /// Reads the token and returns a <see cref="ClaimsPrincipal"/> with the claims.
+    /// </summary>
+    /// <param name="token">Token value.</param>
+    /// <returns><see cref="ClaimsPrincipal"/> containing the user claims.</returns>
     public ClaimsPrincipal? Decode(string token)
     {
         var payload = this.ReadToken(token);
@@ -103,6 +113,9 @@ internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
         {
             new SecurityClaim(UserClaimTypes.UId, payload.Uid),
             new SecurityClaim(UserClaimTypes.Email, payload.Email),
+            new SecurityClaim(UserClaimTypes.JwtId, payload.JwtId),
+            new SecurityClaim(UserClaimTypes.SessionId, payload.SessionId),
+            new SecurityClaim(UserClaimTypes.SecurityStamp, payload.SecurityStamp),
         };
 
         if (payload.FirstName is not null)

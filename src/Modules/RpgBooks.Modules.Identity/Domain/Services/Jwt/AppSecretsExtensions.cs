@@ -10,11 +10,10 @@ using System.Text;
 public static class AppSecretsExtensions
 {
     /// <summary>
-    /// Get the authentication symmetric security key.
+    /// Get the authentication symmetric security key as byte array.
     /// </summary>
     /// <param name="secrets">Application secrets.</param>
     /// <returns>Fetched symmetric security key.</returns>
     public static byte[] GetAuthenticationSecurityKey(this ApplicationSecrets secrets)
         => Encoding.ASCII.GetBytes(secrets.AuthenticationSecret);
-    
 }

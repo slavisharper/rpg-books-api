@@ -2,23 +2,28 @@
 
 using Cysharp.Text;
 
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+using RpgBooks.Libraries.Module.Domain;
 using RpgBooks.Modules.Identity.Domain.Builders;
 using RpgBooks.Modules.Identity.Domain.Builders.Abstractions;
 using RpgBooks.Modules.Identity.Domain.Services;
 using RpgBooks.Modules.Identity.Domain.Services.Abstractions;
 using RpgBooks.Modules.Identity.Domain.Settings;
-using RpgBooks.Libraries.Module.Domain;
 
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-
-internal static class AuthDomainConfiguration
+internal static class IdentityDomainConfiguration
 {
-    // Configure services for domain layer. 
-    public static IServiceCollection AddAuthDomain(this IServiceCollection services, IConfiguration configuration)
+    /// <summary>
+    /// Extension method for adding the Identity domain layer.
+    /// </summary>
+    /// <param name="services">Application services.</param>
+    /// <param name="configuration">Application configuration.</param>
+    /// <returns>Configured application services.</returns>
+    public static IServiceCollection AddIdentityDomainLayer(this IServiceCollection services, IConfiguration configuration)
     {
         services
-            .AddDomainEvents(typeof(AuthDomainConfiguration).Assembly)
+            .AddDomainEvents(typeof(IdentityDomainConfiguration).Assembly)
             .Configure<IdentitySettings>(configuration.GetSection(nameof(IdentitySettings)))
             .Configure<PasswordStrengthSettings>(
                 configuration.GetSection(
@@ -35,7 +40,7 @@ internal static class AuthDomainConfiguration
             .AddScoped<IPasswordHasher, PasswordHasher>()
             .AddScoped<IUserBuilder, UserBuilder>()
             .AddScoped<ISecurityTokensService, SecurityTokensService>()
-            .AddScoped<IUserManager, UserManager>();
+            .AddScoped<IUserRoleManager, UserRoleManager>();
 
         return services;
     }

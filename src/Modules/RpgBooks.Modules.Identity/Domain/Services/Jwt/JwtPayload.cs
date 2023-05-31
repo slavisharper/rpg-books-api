@@ -4,8 +4,17 @@ using RpgBooks.Libraries.Module.Infrastructure.Services.CurrentUser;
 
 using System.Text.Json.Serialization;
 
+/// <summary>
+/// Represents the payload of a JWT.
+/// </summary>
 public sealed record JwtPayload
 {
+    /// <summary>
+    /// Gets the JWT id.
+    /// </summary>
+    [JsonPropertyName(UserClaimTypes.JwtId)]
+    public string JwtId { get; init; } = default!;
+
     /// <summary>
     /// Gets the valid issuer.
     /// </summary>
@@ -35,6 +44,18 @@ public sealed record JwtPayload
     /// </summary>
     [JsonPropertyName(UserClaimTypes.NotBefore)]
     public long NotBefore { get; init; } = default!;
+
+    /// <summary>
+    /// Gets the user security stamp.
+    /// </summary>
+    [JsonPropertyName(UserClaimTypes.SecurityStamp)]
+    public string? SecurityStamp { get; init; } = default!;
+
+    /// <summary>
+    /// Gets the session id.
+    /// </summary>
+    [JsonPropertyName(UserClaimTypes.SessionId)]
+    public string? SessionId { get; init; } = default!;
 
     /// <summary>
     /// Gets the user id.

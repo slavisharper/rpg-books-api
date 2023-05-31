@@ -1,10 +1,14 @@
 ﻿namespace RpgBooks.Modules.Identity.Domain.Validation;
 
+using RpgBooks.Modules.Identity.Domain.Entities;
 using RpgBooks.Modules.Identity.Domain.Exceptions;
 
 using System;
 using System.Runtime.CompilerServices;
 
+/// <summary>
+/// Helper class to validate <see cref="User"/> entities.
+/// </summary>
 internal static class UserValidation
 {
     internal static class Values

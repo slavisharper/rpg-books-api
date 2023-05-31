@@ -2,15 +2,29 @@
 
 using RpgBooks.Libraries.Module.Domain.Events;
 
+/// <summary>
+/// Event raised when a user is registered.
+/// </summary>
 public sealed record UserRegisteredEvent : BaseDomainEvent
 {
-    public UserRegisteredEvent(string email, string confirmationToken)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="UserRegisteredEvent"/> class.
+    /// </summary>
+    /// <param name="email"></param>
+    /// <param name="emailConfirmationToken">The email confirmation token</param>
+    public UserRegisteredEvent(string email, string emailConfirmationToken)
     {
         Email = email;
-        ConfirmationToken = confirmationToken;
+        EmailConfirmationToken = emailConfirmationToken;
     }
 
+    /// <summary>
+    /// Gets the user email.
+    /// </summary>
     public string Email { get; init; } = default!;
 
-    public string ConfirmationToken { get; init; } = default!;
+    /// <summary>
+    /// Gets the email confirmation token.
+    /// </summary>
+    public string EmailConfirmationToken { get; init; } = default!;
 }
