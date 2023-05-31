@@ -50,11 +50,14 @@ internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
     }
 
     /// <inheritdoc/>
-    public string GenerateToken(User user)
+    public string GenerateToken(User user, string? sessionId = null)
     {
         var expirationTime = DateTimeOffset.UtcNow.AddMinutes(this.tokenTimeSpanInMinutes);
         var payload = new JwtPayload
         {
+            JwtId = Ulid.NewUlid().ToString(),
+            SessionId = sessionId ?? Ulid.NewUlid().ToString(),
+            SecurityStamp = user.SecurityStamp,
             Audience = this.audience,
             Issuer = this.issuer,
             Email = user.Email,
@@ -113,10 +116,19 @@ internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
         {
             new SecurityClaim(UserClaimTypes.UId, payload.Uid),
             new SecurityClaim(UserClaimTypes.Email, payload.Email),
-            new SecurityClaim(UserClaimTypes.JwtId, payload.JwtId),
-            new SecurityClaim(UserClaimTypes.SessionId, payload.SessionId),
-            new SecurityClaim(UserClaimTypes.SecurityStamp, payload.SecurityStamp),
+            new SecurityClaim(UserClaimTypes.JwtId, payload.JwtId)
+            ,
         };
+
+        if (payload.SessionId is not null)
+        {
+            claims.Add(new SecurityClaim(UserClaimTypes.SessionId, payload.SessionId));
+        }
+
+        if (payload.SecurityStamp is not null)
+        {
+            claims.Add(new SecurityClaim(UserClaimTypes.SecurityStamp, payload.SecurityStamp));
+        }
 
         if (payload.FirstName is not null)
         {
