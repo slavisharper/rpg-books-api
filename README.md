@@ -16,7 +16,7 @@ Goals to achieve in this project
 * Custom authentication and authortization implementation
 * Create modulated monolith application
 * Each module shoul be easily extracted to another API with few lines of  code for configuration
-* Separate each domain context to be separate module
+* Separate each domain context to be in a different standalone module
 * Do not depend on single DB techology. Presistence layer should be able to use any of MSSQL, MySQL, PostgreSQL, SQLite
 * Support multiple languages
 
@@ -26,35 +26,6 @@ Goals to achieve in this project
 
 The Identity module is a crucial component of the RPG Books application, responsible for managing user authentication, authorization, and user profile information.
 It provides a secure and seamless experience for users, ensuring their data is protected and accessible only to authorized individuals.
-
-### API Endpoints
-
-#### User registration
-- **Endpoint**: `/api/identity`
-- **Method**: POST
-- **Access**: Public
-- **Description**: Register a new user in the system.
-- **Request Body**:
-  ```json
-  {
-    "email": "example@example.com",
-    "password": "example123"
-  }
-- **Returns**:  Returns a success message or appropriate error messages if registration fails.
-
-#### User details
-- **Endpoint**: `/api/identity`
-- **Method**: GET
-- **Authorization**: Bearer token required in the request headers.
-- **Authorization type**: User
-- **Description**: Retrieve the user's profile information.
-- **Request Body**:
-  ```json
-  {
-    "email": "example@example.com",
-    "password": "example123"
-  }
-- **Returns**:  Returns the user's profile information if the token is valid or an appropriate error message if unauthorized or invalid token.
 
 
 ### Catalogue module
