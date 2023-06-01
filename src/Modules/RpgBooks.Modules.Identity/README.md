@@ -23,7 +23,7 @@ Add-Migration 'Identity{Name}' -OutputDir "Infrastructure/Persistence/Migrations
 - **Returns**:  Returns a success message or appropriate error messages if registration fails.
 
 ### User details
-- **Endpoint**: `/api/account/{id}`
+- **Endpoint**: `/api/account`
 - **Method**: GET
 - **Authorization**: Bearer token required in the request headers.
 - **Authorization type**: User

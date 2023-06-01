@@ -12,7 +12,7 @@ public sealed class RegisterEndpoint : ApiEndpoint<RegisterCommand, RegisterResp
     /// </summary>
     public RegisterEndpoint()
         : base(
-            "/account",
+            "/api/account",
             nameof(RegisterEndpoint),
             "account",
             EndpointTypes.Post,
