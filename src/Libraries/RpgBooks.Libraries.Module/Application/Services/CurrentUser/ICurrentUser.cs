@@ -11,7 +11,7 @@ public interface ICurrentUser
     /// <summary>
     /// Gets current user name.
     /// </summary>
-    string Id { get; }
+    int Id { get; }
 
     /// <summary>
     /// Gets current user name.

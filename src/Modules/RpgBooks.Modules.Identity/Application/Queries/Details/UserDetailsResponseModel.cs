@@ -1,4 +1,4 @@
-﻿namespace RpgBooks.Modules.Identity.Application.Queries.UserList;
+﻿namespace RpgBooks.Modules.Identity.Application.Queries.Details;
 
 using RpgBooks.Modules.Identity.Application.Repositories.User;
 

@@ -32,7 +32,7 @@ public sealed class CurrentUser : ICurrentUser
     }
 
     /// <inheritdoc />
-    public string Id => this.principal.FindFirstValue("uid")!;
+    public int Id => int.Parse(this.principal.FindFirstValue("uid")!);
 
     /// <inheritdoc />
     public string? FirstName => this.principal.FindFirstValue("given_name")!;
