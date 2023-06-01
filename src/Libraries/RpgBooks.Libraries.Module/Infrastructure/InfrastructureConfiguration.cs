@@ -2,12 +2,15 @@
 
 using Cysharp.Text;
 
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
 using RpgBooks.Libraries.Module.Application.Commands.Contracts;
+using RpgBooks.Libraries.Module.Application.Queries.Contracts;
 using RpgBooks.Libraries.Module.Application.Resources.Email;
 using RpgBooks.Libraries.Module.Application.Services;
 using RpgBooks.Libraries.Module.Application.Services.CurrentUser;
@@ -38,7 +41,7 @@ public static class InfrastructureConfiguration
     /// <typeparam name="TDbContext">Type of the main database context used in the module.</typeparam>
     /// <param name="services">Application services collection.</param>
     /// <param name="serviceProvider"></param>
-    /// <param name="assemblies"></param>
+    /// <param name="assemblies">Assemblies containing DB initializers.</param>
     /// <returns>Configured services collection.</returns>
     public static IServiceCollection AddInfrastructure<TDbContext>(
         this IServiceCollection services,
@@ -104,15 +107,27 @@ public static class InfrastructureConfiguration
     public static IServiceCollection AddDatabase<TDbContext>(this IServiceCollection services, string connectionString)
         where TDbContext : DbContext, IDbContext
     {
+        var dbAssembly = typeof(TDbContext).Assembly;
+
+        services
+            .AddScoped<SqlConnection>(provider => new SqlConnection(connectionString));
+
         services
             .AddDbContext<TDbContext>(options =>
             {
                 options
                     .UseSqlServer(connectionString, sqlOptions =>
                     {
-                        sqlOptions.MigrationsAssembly(typeof(TDbContext).Assembly.FullName);
+                        sqlOptions.MigrationsAssembly(dbAssembly.FullName);
                     });
             });
+
+        services
+            .Scan(scan => scan
+                .FromAssemblies(dbAssembly)
+                .AddClasses(c => c.AssignableTo(typeof(IReadOnlyRepository)))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime());
 
         return services;
     }

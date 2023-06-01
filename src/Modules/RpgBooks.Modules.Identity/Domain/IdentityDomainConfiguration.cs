@@ -12,6 +12,9 @@ using RpgBooks.Modules.Identity.Domain.Services;
 using RpgBooks.Modules.Identity.Domain.Services.Abstractions;
 using RpgBooks.Modules.Identity.Domain.Settings;
 
+/// <summary>
+/// Identity module's domain layer configuration.
+/// </summary>
 internal static class IdentityDomainConfiguration
 {
     /// <summary>
