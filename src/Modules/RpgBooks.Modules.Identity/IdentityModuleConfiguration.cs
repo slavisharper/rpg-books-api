@@ -27,7 +27,7 @@ public static class IdentityModuleConfiguration
     /// </summary>
     /// <param name="appBuilder">Web application builder.</param>
     /// <returns>Configured web application builder.</returns>
-    public static WebApplicationBuilder AddAuthFeature(this WebApplicationBuilder appBuilder)
+    public static WebApplicationBuilder AddIdentityModule(this WebApplicationBuilder appBuilder)
     {
         appBuilder.Services
             .AddIdentityDomainLayer(appBuilder.Configuration)

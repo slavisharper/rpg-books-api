@@ -3,13 +3,13 @@
 ## Database Migrations
 
 ```
-Add-Migration 'Auth{Name}' -OutputDir "Infrastructure/Persistence/Migrations" -context IdentityDbContext
+Add-Migration 'Identity{Name}' -OutputDir "Infrastructure/Persistence/Migrations" -context IdentityDbContext
 ```
 
 ## API Endpoints
 
 ### User registration
-- **Endpoint**: `/api/identity`
+- **Endpoint**: `/api/account`
 - **Method**: POST
 - **Access**: Public
 - **Description**: Register a new user in the system.
@@ -23,11 +23,18 @@ Add-Migration 'Auth{Name}' -OutputDir "Infrastructure/Persistence/Migrations" -c
 - **Returns**:  Returns a success message or appropriate error messages if registration fails.
 
 ### User details
-- **Endpoint**: `/api/identity`
+- **Endpoint**: `/api/account/{id}`
 - **Method**: GET
 - **Authorization**: Bearer token required in the request headers.
 - **Authorization type**: User
 - **Description**: Retrieve the user's profile information.
+- **Returns**:  Returns the user's profile information if the token is valid or an appropriate error message if unauthorized or invalid token.
+
+### User details
+- **Endpoint**: `/api/account/login`
+- **Method**: POST
+- **Access**: Public
+- **Description**: Logs in into the uses account.
 - **Request Body**:
   ```json
   {
@@ -35,4 +42,4 @@ Add-Migration 'Auth{Name}' -OutputDir "Infrastructure/Persistence/Migrations" -c
     "password": "example123"
   }
   ```
-- **Returns**:  Returns the user's profile information if the token is valid or an appropriate error message if unauthorized or invalid token.
+- **Returns**:  Returns the user's authentication and refresh tokens.

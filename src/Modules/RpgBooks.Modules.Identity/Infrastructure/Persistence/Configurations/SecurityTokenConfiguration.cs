@@ -16,8 +16,8 @@ internal sealed class SecurityTokenConfiguration : IEntityTypeConfiguration<Secu
         builder.Property(t => t.Value)
             .HasMaxLength(SecurityTokenValidation.Values.MaxTokenLenght);
 
-        builder.HasOne(t => t.User)
-            .WithMany();
+        builder.Property(t => t.SessionId)
+            .HasMaxLength(SecurityTokenValidation.Values.MaxSessionIdLenght);
 
         builder.OwnsOne(t => t.TokenType)
             .ConfigureAsEnum();
