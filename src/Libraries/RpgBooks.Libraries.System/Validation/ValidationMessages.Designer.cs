@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace System {
+namespace System
+{
     using System;
     
     
@@ -39,7 +40,7 @@ namespace System {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Libraries.System.Validation.ValidationMessages", typeof(ValidationMessages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RpgBooks.Libraries.System.Validation.ValidationMessages", typeof(ValidationMessages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

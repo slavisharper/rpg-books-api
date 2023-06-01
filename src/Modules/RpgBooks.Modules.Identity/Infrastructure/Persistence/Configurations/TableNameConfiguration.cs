@@ -12,4 +12,7 @@ internal static class TableNameConfiguration
     internal static void ConfigureTableName<T>(this EntityTypeBuilder<T> builder)
         where T : class
             => builder.ToTable(ZString.Format(TableNameFormat, typeof(T).Name));
+
+    internal static void ConfigureTableName(this EntityTypeBuilder builder, string name)
+        => builder.ToTable(ZString.Format(TableNameFormat, name));
 }

@@ -48,14 +48,53 @@ public static class ApplicationConfiguration
             config.SetMinimumLevel(LogLevel.Information);
 
             config.AddZLoggerRollingFile(
-                (dt, x) => ZString.Format("logs/{0:yyyy-MM-dd}_{1:000}.log", dt, x),
-                x => x.ToLocalTime().Date,
-                1024);
+                fileNameSelector: (dt, x) => ZString.Format("logs/{0:yyyy-MM-dd}_{1:000}.log", dt, x),
+                timestampPattern: x => x.ToLocalTime().Date,
+                rollSizeKB: 1024,
+                options => 
+                {
+                    options.EnableStructuredLogging = true;
+                });
 
             config.AddZLoggerConsole(options =>
             {
-                options.EnableStructuredLogging = true;
-            });
+#if DEBUG
+                // \u001b[31m => Red(ANSI Escape Code)
+                // \u001b[0m => Reset
+                // \u001b[38;5;***m => 256 Colors(08 is Gray)
+                options.PrefixFormatter = (writer, info) =>
+                {
+                    if (info.LogLevel == LogLevel.Error)
+                    {
+                        ZString.Utf8Format(writer, "\u001b[31m[{0}] [{1}] ", info.LogLevel, info.Timestamp);
+                    }
+                    else
+                    {
+                        if (!info.CategoryName.StartsWith("Rpg")) // your application namespace.
+                        {
+                            ZString.Utf8Format(writer, "\u001b[38;5;08m[{0}] [{1}] ", info.LogLevel, info.Timestamp);
+                        }
+                        else
+                        {
+                            ZString.Utf8Format(writer, "[{0}] [{1}] ", info.LogLevel, info.Timestamp);
+                        }
+                    }
+                };
+                options.SuffixFormatter = (writer, info) =>
+                {
+                    if (info.LogLevel == LogLevel.Error || !info.CategoryName.StartsWith("Rpg"))
+                    {
+                        ZString.Utf8Format(writer, "\u001b[0m", "");
+                    }
+                };
+#endif
+#if RELEASE
+                // Tips: use PrepareUtf8 to achieve better performance.
+                var prefixFormat = ZString.PrepareUtf8<LogLevel, DateTime>("[{0}] [{1}] ");
+                options.PrefixFormatter = (writer, info) =>
+                    prefixFormat.FormatTo(ref writer, info.LogLevel, info.Timestamp.DateTime.ToLocalTime());
+#endif
+            }, configureEnableAnsiEscapeCode: true);
         });
     
     /// <summary>

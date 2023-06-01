@@ -4,21 +4,33 @@
 		<TargetFramework>net8.0</TargetFramework>
 		<Nullable>enable</Nullable>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<InvariantGlobalization>true</InvariantGlobalization>
+		<InvariantGlobalization>false</InvariantGlobalization>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<UserSecretsId>227bf151-e93e-4b0c-b459-a93822557bb4</UserSecretsId>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0-preview.4.23260.4" />
 		<PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.0-preview.4.23259.3">
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.0-preview.4.23259.3">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
 		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\..\Modules\RpgBooks.Modules.Books\RpgBooks.Modules.Books.csproj" />
+	  <ProjectReference Include="..\..\Modules\RpgBooks.Modules.Catalog\RpgBooks.Modules.Catalog.csproj" />
+	  <ProjectReference Include="..\..\Modules\RpgBooks.Modules.Orders\RpgBooks.Modules.Orders.csproj" />
+	  <ProjectReference Include="..\..\Modules\RpgBooks.Modules.Reading\RpgBooks.Modules.Reading.csproj" />
+	  <ProjectReference Include="..\..\Modules\RpgBooks.Modules.Statistics\RpgBooks.Modules.Statistics.csproj" />
+	  <ProjectReference Include="..\RpgBooks.Api.Common\RpgBooks.Api.Common.csproj" />
 	</ItemGroup>
 
 </Project>

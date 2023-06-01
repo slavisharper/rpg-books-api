@@ -1,5 +1,7 @@
 ﻿namespace RpgBooks.Modules.Identity.Infrastructure.Persistence.Configurations;
 
+using Cysharp.Text;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -62,6 +64,11 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder
             .HasMany(u => u.Roles)
-            .WithMany();
+            .WithMany()
+            .UsingEntity(e => e.ConfigureTableName(ZString.Format("{0}s{1}", nameof(User), nameof(Role))));
+
+        builder
+            .HasMany(u => u.SecurityTokens)
+            .WithOne(t => t.User);
     }
 }
