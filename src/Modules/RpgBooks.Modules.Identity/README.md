@@ -1,5 +1,11 @@
 # Identity module
 
+## Database Migrations
+
+```
+Add-Migration 'Auth{Name}' -OutputDir "Infrastructure/Persistence/Migrations" -context IdentityDbContext
+```
+
 ## API Endpoints
 
 ### User registration
@@ -13,6 +19,7 @@
     "email": "example@example.com",
     "password": "example123"
   }
+  ```
 - **Returns**:  Returns a success message or appropriate error messages if registration fails.
 
 ### User details
@@ -27,4 +34,5 @@
     "email": "example@example.com",
     "password": "example123"
   }
+  ```
 - **Returns**:  Returns the user's profile information if the token is valid or an appropriate error message if unauthorized or invalid token.

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace RpgBooks.Libraries.Module.Application.Resources {
+namespace RpgBooks.Modules.Identity.Application.Resources {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace RpgBooks.Libraries.Module.Application.Resources {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RpgBooks.Libraries.Module.Application.Resources.Messages", typeof(Messages).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("RpgBooks.Modules.Identity.Application.Resources.Messages", typeof(Messages).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,20 +61,65 @@ namespace RpgBooks.Libraries.Module.Application.Resources {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Concurrency failure!.
+        ///   Looks up a localized string similar to Email address is already in use..
         /// </summary>
-        internal static string ConcurrencyFailure {
+        internal static string EmailTakenError {
             get {
-                return ResourceManager.GetString("ConcurrencyFailure", resourceCulture);
+                return ResourceManager.GetString("EmailTakenError", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Validation failed!.
+        ///   Looks up a localized string similar to Email or password are incorrect!.
         /// </summary>
-        internal static string ValidationFailure {
+        internal static string InvalidLogin {
             get {
-                return ResourceManager.GetString("ValidationFailure", resourceCulture);
+                return ResourceManager.GetString("InvalidLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your profile is locked for {0} minutes due to too many login attempts!.
+        /// </summary>
+        internal static string LockedOut {
+            get {
+                return ResourceManager.GetString("LockedOut", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Logged in successfully..
+        /// </summary>
+        internal static string LoggedIn {
+            get {
+                return ResourceManager.GetString("LoggedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User account is created..
+        /// </summary>
+        internal static string RegisterSuccess {
+            get {
+                return ResourceManager.GetString("RegisterSuccess", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User details fetched..
+        /// </summary>
+        internal static string UserDetailsFetched {
+            get {
+                return ResourceManager.GetString("UserDetailsFetched", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User not found!.
+        /// </summary>
+        internal static string UserNotFound {
+            get {
+                return ResourceManager.GetString("UserNotFound", resourceCulture);
             }
         }
     }

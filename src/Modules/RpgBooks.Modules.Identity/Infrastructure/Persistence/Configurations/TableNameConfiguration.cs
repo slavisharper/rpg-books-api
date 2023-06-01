@@ -1,0 +1,15 @@
+﻿namespace RpgBooks.Modules.Identity.Infrastructure.Persistence.Configurations;
+
+using Cysharp.Text;
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
+internal static class TableNameConfiguration
+{
+    private const string TableNameFormat = "IDT_{0}s";
+
+    internal static void ConfigureTableName<T>(this EntityTypeBuilder<T> builder)
+        where T : class
+            => builder.ToTable(ZString.Format(TableNameFormat, typeof(T).Name));
+}
