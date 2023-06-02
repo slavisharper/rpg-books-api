@@ -12,8 +12,7 @@ public interface ICommandHandler<in TCommand, TCommandResult>
     /// This method is responsible for executing the logic to handle the command and return the result.
     /// </summary>
     /// <param name="command">Input command request that will be handled.</param>
-    /// <param name="context">Command handler context.</param>
     /// <param name="cancellation">Cancellation token.</param>
     /// <returns>Task containing the handler response.</returns>
-    Task<TCommandResult> Handle(TCommand command, ICommandHandlerContext context, CancellationToken cancellation);
+    Task<TCommandResult> Handle(TCommand command, CancellationToken cancellation);
 }

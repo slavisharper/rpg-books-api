@@ -15,6 +15,6 @@ public interface ICommandHandlerDispatcher
     /// <param name="command">Command request model.</param>
     /// <param name="cancellation">Cancellation token.</param>
     /// <returns>Async task that has the handler response.</returns>
-    Task<TCommandResult> Dispatch<TCommand, TCommandResult>(TCommand command, CancellationToken cancellation)
+    Task<CommandHandlerResult<TCommandResult>> Dispatch<TCommand, TCommandResult>(TCommand command, CancellationToken cancellation)
         where TCommand : ICommand;
 }

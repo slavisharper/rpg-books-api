@@ -25,7 +25,7 @@ internal sealed class UserDetailsQueryHandler : IResultQueryHandler<UserDetailsQ
 
     public async Task<IAppResult<UserDetailsReadModel>> Handle(UserDetailsQuery query, CancellationToken cancellation)
     {
-        var user = await this.userReadOnlyRepository.GetDetails(this.currentUser.Id, cancellation);
+        var user = await this.userReadOnlyRepository.GetDetails(this.currentUser!.Id, cancellation);
         if (user is null)
         {
             return this.NotFound(Messages.UserNotFound);

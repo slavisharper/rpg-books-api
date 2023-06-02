@@ -72,10 +72,6 @@ internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
             ExpiprationTime = expirationTime.UtcTicks,
             NotBefore = DateTimeOffset.UtcNow.UtcTicks,
             IssuedAt = DateTimeOffset.UtcNow.UtcTicks,
-            CustomClaims = new Dictionary<string, string?>
-            {
-                { "sstmp", user.SecurityStamp },
-            }
         };
 
         foreach (var claim in user.Claims)

@@ -20,16 +20,8 @@ public abstract class BaseCommandHandler<TCommand, TCommandResponseData> :  ICom
     where TCommand : ICommand
 {
     /// <inheritdoc/>
-    public Task<IAppResult<TCommandResponseData>> Handle(TCommand command, ICommandHandlerContext context, CancellationToken cancellation)
+    public Task<IAppResult<TCommandResponseData>> Handle(TCommand command, CancellationToken cancellation)
     {
-        if (!context.IsValid)
-        {
-            IAppResult<TCommandResponseData> failedResult =
-                AppResult.ValidationFailed<TCommandResponseData>(Messages.ValidationFailure);
-            failedResult.AddErrors(context.Failures);
-            return Task.FromResult(failedResult);
-        }
-
         return Policy
             .Handle<ApplicationConcurrencyException>()
             .WaitAndRetryAsync(

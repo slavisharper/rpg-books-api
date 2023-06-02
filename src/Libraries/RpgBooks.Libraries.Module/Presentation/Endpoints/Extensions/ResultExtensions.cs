@@ -2,6 +2,7 @@
 
 using Microsoft.AspNetCore.Http;
 
+using RpgBooks.Libraries.Module.Application.Commands;
 using RpgBooks.Libraries.Module.Application.Results;
 using RpgBooks.Libraries.Module.Application.Results.Contracts;
 using RpgBooks.Libraries.Module.Application.Services.FileStorage;
@@ -12,6 +13,63 @@ using RpgBooks.Libraries.Module.Presentation.Endpoints.Models;
 /// </summary>
 public static class ResultExtensions
 {
+    /// <summary>
+    /// Converts application <see cref="IAppResult{TData}"/> to IResult API response.
+    /// </summary>
+    /// <typeparam name="TData">Type of response data.</typeparam>
+    /// <param name="resultTask">Task returned from the command handler.</param>
+    /// <returns>Task with Generated API response.</returns>
+    public static async Task<IResult> ToIResult<TData>(this Task<CommandHandlerResult<IAppResult<TData>>> resultTask)
+        => (await resultTask).ToIResult();
+
+    /// <summary>
+    /// Converts application <see cref="IAppResult{TResponseData}"/> to IResult API response.
+    /// </summary>
+    /// <param name="handlerResult">Task returned from the command handler.</param>
+    /// <returns>Task with Generated API response.</returns>
+    public static IResult ToIResult<TData>(this CommandHandlerResult<IAppResult<TData>> handlerResult)
+    {
+        if (handlerResult.HasValidationErrors)
+        {
+            return Results.BadRequest(new ErrorResultModel("Validation failed", handlerResult.ValidationErrors!));
+        }
+
+        if (handlerResult.Result is not null)
+        {
+            return handlerResult.Result.ToIResult();
+        }
+
+        return Results.Problem("Command handler returned bad result!");
+    }
+
+    /// <summary>
+    /// Converts application <see cref="IAppResult"/> to IResult API response.
+    /// </summary>
+    /// <param name="resultTask">Task returned from the command handler.</param>
+    /// <returns>Task with Generated API response.</returns>
+    public static async Task<IResult> ToIResult(this Task<CommandHandlerResult<IAppResult>> resultTask)
+        => (await resultTask).ToIResult();
+
+    /// <summary>
+    /// Converts application <see cref="IAppResult"/> to IResult API response.
+    /// </summary>
+    /// <param name="handlerResult">Task returned from the command handler.</param>
+    /// <returns>Task with Generated API response.</returns>
+    public static IResult ToIResult(this CommandHandlerResult<IAppResult> handlerResult)
+    {
+        if (handlerResult.HasValidationErrors)
+        {
+            return Results.BadRequest(new ErrorResultModel("Validation failed", handlerResult.ValidationErrors!));
+        }
+
+        if (handlerResult.Result is not null)
+        {
+            return handlerResult.Result.ToIResult();
+        }
+
+        return Results.Problem("Command handler returned bad result!");
+    }
+
     /// <summary>
     /// Converts application <see cref="IAppResult{TData}"/> to IResult API response.
     /// </summary>

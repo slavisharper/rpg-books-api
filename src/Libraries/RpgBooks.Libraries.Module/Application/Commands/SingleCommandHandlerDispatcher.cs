@@ -26,8 +26,23 @@ public sealed class SingleCommandHandlerDispatcher : ICommandHandlerDispatcher
         => this.serviceProvider = serviceProvider;
 
     /// <inheritdoc/>
-    public async Task<TCommandResult> Dispatch<TCommand, TCommandResult>(TCommand command, CancellationToken cancellation)
+    public async Task<CommandHandlerResult<TCommandResult>> Dispatch<TCommand, TCommandResult>(TCommand command, CancellationToken cancellation)
         where TCommand : ICommand
+    {
+        var failures = await ValidateRequest(command, cancellation);
+
+        if (failures.Any())
+        {
+            return new CommandHandlerResult<TCommandResult>(failures);
+        }
+
+        var handlerResult = await this.serviceProvider
+            .GetRequiredService<ICommandHandler<TCommand, TCommandResult>>()
+            .Handle(command, cancellation);
+        return new CommandHandlerResult<TCommandResult>(handlerResult);
+    }
+
+    private async Task<IEnumerable<AppResultError>> ValidateRequest<TCommand>(TCommand command, CancellationToken cancellation) where TCommand : ICommand
     {
         IEnumerable<IValidator<TCommand>> validators = this.serviceProvider.GetServices<IValidator<TCommand>>();
         var context = new ValidationContext<TCommand>(command);
@@ -45,14 +60,8 @@ public sealed class SingleCommandHandlerDispatcher : ICommandHandlerDispatcher
             }
         }
 
-        var failures = errors
+        return errors
             .GroupBy(f => f.PropertyName)
-            .Select(g => new AppResultError(g.Key, g.Select(f => f.ErrorMessage).ToArray()))
-            .ToArray();
-
-        // TODO return Error result when failures are not empty. And omit calling the handler
-        return await this.serviceProvider
-            .GetRequiredService<ICommandHandler<TCommand, TCommandResult>>()
-            .Handle(command, new CommandHandlerContext(failures), cancellation);
+            .Select(g => new AppResultError(g.Key, g.Select(f => f.ErrorMessage).ToArray()));
     }
 }
