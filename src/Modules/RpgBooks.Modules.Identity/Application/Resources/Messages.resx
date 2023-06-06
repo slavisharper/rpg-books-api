@@ -117,17 +117,35 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AccountBlocked" xml:space="preserve">
+    <value>User account is suspended!</value>
+  </data>
+  <data name="AuthorityModifiedFailure" xml:space="preserve">
+    <value>User authority is modified!</value>
+  </data>
+  <data name="AuthTokenRefreshed" xml:space="preserve">
+    <value>Authentication token is refreshed.</value>
+  </data>
   <data name="EmailTakenError" xml:space="preserve">
     <value>Email address is already in use.</value>
   </data>
   <data name="InvalidLogin" xml:space="preserve">
     <value>Email or password are incorrect!</value>
   </data>
+  <data name="InvalidRefreshToken" xml:space="preserve">
+    <value>Invalid refresh token value!</value>
+  </data>
+  <data name="JwtReadFailed" xml:space="preserve">
+    <value>JWT was not read properly! Maybe its value is no in a valid format.</value>
+  </data>
   <data name="LockedOut" xml:space="preserve">
     <value>Your profile is locked for {0} minutes due to too many login attempts!</value>
   </data>
   <data name="LoggedIn" xml:space="preserve">
     <value>Logged in successfully.</value>
+  </data>
+  <data name="NoAthorityFailure" xml:space="preserve">
+    <value>User does not have the required authority!</value>
   </data>
   <data name="RegisterSuccess" xml:space="preserve">
     <value>User account is created.</value>

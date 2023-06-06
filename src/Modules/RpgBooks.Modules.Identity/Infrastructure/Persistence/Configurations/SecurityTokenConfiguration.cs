@@ -14,10 +14,10 @@ internal sealed class SecurityTokenConfiguration : IEntityTypeConfiguration<Secu
         builder.ConfigureTableName();
 
         builder.Property(t => t.Value)
-            .HasMaxLength(SecurityTokenValidation.Values.MaxTokenLenght);
+            .HasMaxLength(SecurityTokenValidation.Values.MaxTokenLength);
 
         builder.Property(t => t.SessionId)
-            .HasMaxLength(SecurityTokenValidation.Values.MaxSessionIdLenght);
+            .HasMaxLength(SecurityTokenValidation.Values.MaxSessionIdLength);
 
         builder.OwnsOne(t => t.TokenType)
             .ConfigureAsEnum();

@@ -19,7 +19,7 @@ public sealed class SecurityToken : BaseEntity<int>
         this.Validate();
     }
 
-    internal SecurityToken(string value, SecurityTokenType tokenType, User user, TimeSpan validity)
+    internal SecurityToken(string value, SecurityTokenType tokenType, User user, TimeSpan validity, string? sessionId = null)
         : this(value, tokenType, user)
     {
         this.ExpirationTime = DateTimeOffset.UtcNow.Add(validity!);

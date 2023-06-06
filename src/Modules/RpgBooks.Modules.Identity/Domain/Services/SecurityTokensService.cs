@@ -37,7 +37,7 @@ internal sealed class SecurityTokensService : ISecurityTokensService
         TimeSpan validity = TimeSpan.FromHours(
             this.identitySettings.SecurityTokenSettings.EmailConfirmationTokenValidityInHours);
 
-        return GenerateToken(user, type, validity, cancellation);
+        return GenerateToken(user, type, validity, null, cancellation);
     }
 
     /// <inheritdoc/>
@@ -59,14 +59,16 @@ internal sealed class SecurityTokensService : ISecurityTokensService
     }
 
     /// <inheritdoc/>
-    public ValueTask<TokenModel> GenerateRefreshToken(User user, CancellationToken cancellation = default)
+    public ValueTask<TokenModel> GenerateRefreshToken(User user, string? sessionId = null, CancellationToken cancellation = default)
     {
         var type = SecurityTokenType.RefreshAuthentication;
         TimeSpan validity = TimeSpan.FromDays(
             this.identitySettings.LoginSettings.RefreshTokenTimeSpanInDays);
 
-        return GenerateToken(user, type, validity, cancellation);
+        return GenerateToken(user, type, validity, sessionId, cancellation);
     }
+
+    public ValueTask<TokenModel> GenerateRefreshToken(User user, CancellationToken cancellation = default) => throw new NotImplementedException();
 
     /// <inheritdoc/>
     public ValueTask<TokenModel> GenerateResetPasswordToken(User user, CancellationToken cancellation = default)
@@ -75,17 +77,24 @@ internal sealed class SecurityTokensService : ISecurityTokensService
         TimeSpan validity = TimeSpan.FromMinutes(
             this.identitySettings.LoginSettings.AuthTokenTimeSpanInMinutes);
 
-        return GenerateToken(user, type, validity, cancellation);
+        return GenerateToken(user, type, validity, null, cancellation);
     }
 
-    private ValueTask<TokenModel> GenerateToken(User user, SecurityTokenType tokenType, TimeSpan validity, CancellationToken cancellation)
+    /// <inheritdoc/>
+    public SecurityToken? GetLastRefreshToken(User user, string sessionId)
+        => user.SecurityTokens
+            .OrderByDescending(t => t.Created)
+            .FirstOrDefault(t => t.TokenType == SecurityTokenType.RefreshAuthentication && t.SessionId == sessionId);
+
+    private ValueTask<TokenModel> GenerateToken(User user, SecurityTokenType tokenType, TimeSpan validity, string? sessionId, CancellationToken cancellation)
     {
         string tokenValue = RandomTokenProvider.GenerateRandomToken();
         var token = new SecurityToken(
             tokenValue.Encrypt(this.appSecrets.TokenProtectionSecret),
             tokenType,
             user,
-            validity);
+            validity,
+            sessionId);
 
         user.AddToken(token);
         return ValueTask.FromResult(new TokenModel(tokenValue, DateTimeOffset.UtcNow + validity));

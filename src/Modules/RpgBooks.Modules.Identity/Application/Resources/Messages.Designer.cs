@@ -61,6 +61,33 @@ namespace RpgBooks.Modules.Identity.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User account is suspended!.
+        /// </summary>
+        internal static string AccountBlocked {
+            get {
+                return ResourceManager.GetString("AccountBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User authority is modified!.
+        /// </summary>
+        internal static string AuthorityModifiedFailure {
+            get {
+                return ResourceManager.GetString("AuthorityModifiedFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authentication token is refreshed..
+        /// </summary>
+        internal static string AuthTokenRefreshed {
+            get {
+                return ResourceManager.GetString("AuthTokenRefreshed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email address is already in use..
         /// </summary>
         internal static string EmailTakenError {
@@ -79,6 +106,24 @@ namespace RpgBooks.Modules.Identity.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid refresh token value!.
+        /// </summary>
+        internal static string InvalidRefreshToken {
+            get {
+                return ResourceManager.GetString("InvalidRefreshToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to JWT was not read properly! Maybe its value is no in a valid format..
+        /// </summary>
+        internal static string JwtReadFailed {
+            get {
+                return ResourceManager.GetString("JwtReadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your profile is locked for {0} minutes due to too many login attempts!.
         /// </summary>
         internal static string LockedOut {
@@ -93,6 +138,15 @@ namespace RpgBooks.Modules.Identity.Application.Resources {
         internal static string LoggedIn {
             get {
                 return ResourceManager.GetString("LoggedIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User does not have the required authority!.
+        /// </summary>
+        internal static string NoAthorityFailure {
+            get {
+                return ResourceManager.GetString("NoAthorityFailure", resourceCulture);
             }
         }
         
