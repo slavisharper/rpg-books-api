@@ -44,7 +44,7 @@ Add-Migration 'Identity{Name}' -OutputDir "Infrastructure/Persistence/Migrations
   ```
 - **Returns**:  Returns the user's authentication and refresh tokens.
 
-### Refresh users authentication token
+### Refresh user's authentication token
 - **Endpoint**: `/api/account/refresh-token`
 - **Method**: POST
 - **Access**: Public
@@ -52,8 +52,8 @@ Add-Migration 'Identity{Name}' -OutputDir "Infrastructure/Persistence/Migrations
 - **Request Body**:
   ```json
   {
-    "email": "example@example.com",
-    "password": "example123"
+    "authenticationToken": "string",
+    "refreshToken": "string"
   }
   ```
 - **Returns**:  Returns the user's authentication and refresh tokens.
