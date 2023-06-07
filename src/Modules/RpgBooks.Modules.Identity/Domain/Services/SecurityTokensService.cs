@@ -59,7 +59,7 @@ internal sealed class SecurityTokensService : ISecurityTokensService
     }
 
     /// <inheritdoc/>
-    public ValueTask<TokenModel> GenerateRefreshToken(User user, string? sessionId = null, CancellationToken cancellation = default)
+    public ValueTask<TokenModel> GenerateRefreshToken(User user, string? sessionId, CancellationToken cancellation = default)
     {
         var type = SecurityTokenType.RefreshAuthentication;
         TimeSpan validity = TimeSpan.FromDays(
@@ -68,7 +68,8 @@ internal sealed class SecurityTokensService : ISecurityTokensService
         return GenerateToken(user, type, validity, sessionId, cancellation);
     }
 
-    public ValueTask<TokenModel> GenerateRefreshToken(User user, CancellationToken cancellation = default) => throw new NotImplementedException();
+    public ValueTask<TokenModel> GenerateRefreshToken(User user, CancellationToken cancellation = default)
+        => GenerateRefreshToken(user, null, cancellation);
 
     /// <inheritdoc/>
     public ValueTask<TokenModel> GenerateResetPasswordToken(User user, CancellationToken cancellation = default)

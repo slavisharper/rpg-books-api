@@ -38,7 +38,16 @@ public interface ISecurityTokensService
     /// <param name="cancellation">Cancellation token.</param>
     /// <returns>Generated token data model.</returns>
     ValueTask<TokenModel> GenerateRefreshToken(User user, CancellationToken cancellation = default);
-    
+
+    /// <summary>
+    /// Generates and sets new authentication refresh token. This refresh token is bound to a session.
+    /// </summary>
+    /// <param name="user">User instance.</param>
+    /// <param name="sessionId">Session Id.</param>
+    /// <param name="cancellation">Cancellation token.</param>
+    /// <returns>Generated token data model.</returns>
+    ValueTask<TokenModel> GenerateRefreshToken(User user, string? sessionId, CancellationToken cancellation = default);
+
     /// <summary>
     /// Get the last refresh token for a user session.
     /// </summary>

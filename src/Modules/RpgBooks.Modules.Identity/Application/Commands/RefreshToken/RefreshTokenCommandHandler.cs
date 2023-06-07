@@ -8,7 +8,6 @@ using RpgBooks.Libraries.Module.Application.Results.Contracts;
 using RpgBooks.Libraries.Module.Application.Settings;
 using RpgBooks.Modules.Identity.Application.Commands.Login;
 using RpgBooks.Modules.Identity.Application.Resources;
-using RpgBooks.Modules.Identity.Domain.Entities;
 using RpgBooks.Modules.Identity.Domain.Repositories;
 using RpgBooks.Modules.Identity.Domain.Services.Abstractions;
 using RpgBooks.Modules.Identity.Domain.Services.Jwt;
@@ -76,8 +75,8 @@ internal sealed class RefreshTokenCommandHandler : BaseCommandHandler<RefreshTok
             return this.Unauthorized(Messages.InvalidRefreshToken);
         }
 
-        var token = this.jwtTokenManager.GenerateToken(user);
-        var refreshToken = await this.securityTokensService.GenerateRefreshToken(user, cancellation);
+        var token = this.jwtTokenManager.GenerateToken(user, jwtPayload.SessionId);
+        var refreshToken = await this.securityTokensService.GenerateRefreshToken(user, jwtPayload.SessionId, cancellation);
 
         return this.Success(Messages.AuthTokenRefreshed, new LoginResponseModel(token, refreshToken));
     }
