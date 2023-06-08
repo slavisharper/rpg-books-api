@@ -2,6 +2,7 @@
 
 using Cysharp.Text;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 using RpgBooks.Libraries.Module.Application.Commands;
@@ -40,7 +41,11 @@ internal class LoginCommandHandler : BaseCommandHandler<LoginCommand, LoginRespo
 
     public override async Task<IAppResult<LoginResponseModel>> HandleCommand(LoginCommand request, CancellationToken cancellation)
     {
-        var user = await this.userRepository.GetByEmailAsync(request.Email, cancellation);
+        var user = await this.userRepository.GetByEmailAsync(
+            request.Email,
+            query => query.Include(u => u.Claims).Include(u => u.Roles),
+            cancellation);
+
         if (user is null)
         {
             return this.ValidationFailed(Messages.InvalidLogin);
@@ -66,8 +71,11 @@ internal class LoginCommandHandler : BaseCommandHandler<LoginCommand, LoginRespo
             return this.ValidationFailed(Messages.InvalidLogin);
         }
 
-        var token = this.jwtTokenManager.GenerateToken(user);
-        var refreshToken = await this.securityTokensService.GenerateRefreshToken(user, cancellation);
+        string session = Ulid.NewUlid().ToString();
+        var token = this.jwtTokenManager.GenerateToken(user, session);
+        var refreshToken = await this.securityTokensService.GenerateRefreshToken(user, session, cancellation);
+
+        await this.userRepository.SaveAsync(cancellation);
 
         return this.Success(Messages.LoggedIn, new LoginResponseModel(token, refreshToken!));
     }

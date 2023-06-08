@@ -32,10 +32,10 @@ public sealed class SecurityTokenType : Enumeration
     /// <summary>
     /// Gets the token type responsible for refreshing an authentication.
     /// </summary>
-    public static readonly SecurityTokenType RefreshAuthentication = new(2, nameof(RefreshAuthentication));
+    public static readonly SecurityTokenType RefreshAuthentication = new(3, nameof(RefreshAuthentication));
 
     /// <summary>
     /// Gets the token type responsible for resetting a password.
     /// </summary>
-    public static readonly SecurityTokenType ResetPassword = new(2, nameof(ResetPassword));
+    public static readonly SecurityTokenType ResetPassword = new(4, nameof(ResetPassword));
 }

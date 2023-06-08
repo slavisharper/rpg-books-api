@@ -1,5 +1,7 @@
 ﻿namespace RpgBooks.Modules.Identity.Domain.Repositories;
 
+using Microsoft.EntityFrameworkCore;
+
 using RpgBooks.Libraries.Module.Domain.Repositories;
 using RpgBooks.Modules.Identity.Domain.Entities;
 
@@ -27,8 +29,24 @@ public interface IUserDomainRepository : IDomainRepository<User, int>
     /// <summary>
     /// Get user by email.
     /// </summary>
-    /// <param name="email">User email.</param>
-    /// <param name="cancellation">Cancellation token.</param>
+    /// <param name="id">User identifier.</param>
+    /// <param name="include">Function where any additional includes of navigation properties are added.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>User entity with the given email.</returns>
-    Task<User?> GetByEmailAsync(string email, CancellationToken cancellation = default);
+    Task<User?> GetByIdAsync(
+        int id,
+        Func<IQueryable<User>, IQueryable<User>>? include = null,
+        CancellationToken cancellationToken = default);
+
+    /// <summary>
+    /// Get user by email.
+    /// </summary>
+    /// <param name="email">User email.</param>
+    /// <param name="include">Function where any additional includes of navigation properties are added.</param>
+    /// <param name="cancellationToken">Cancellation token.</param>
+    /// <returns>User entity with the given email.</returns>
+    Task<User?> GetByEmailAsync(
+        string email,
+        Func<IQueryable<User>, IQueryable<User>>? include = null,
+        CancellationToken cancellationToken = default);
 }

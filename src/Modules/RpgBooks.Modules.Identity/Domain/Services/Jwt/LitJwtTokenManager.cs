@@ -16,6 +16,7 @@ using System.Security.Claims;
 using System.Text;
 
 using SecurityClaim = System.Security.Claims.Claim;
+using Microsoft.IdentityModel.Tokens;
 
 /// <summary>
 /// JWT token manager that uses LitJWT library.
@@ -69,9 +70,8 @@ internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
             Uid = user.Id.ToString(),
             PhoneNumberVerified = user.PhoneNumberConfirmed,
             Roles = user.Roles.Select(r => r.Name).ToArray(),
-            ExpiprationTime = expirationTime.UtcTicks,
-            NotBefore = DateTimeOffset.UtcNow.UtcTicks,
-            IssuedAt = DateTimeOffset.UtcNow.UtcTicks,
+            NotBefore = EpochTime.GetIntDate(DateTimeOffset.UtcNow.DateTime),
+            IssuedAt = EpochTime.GetIntDate(DateTimeOffset.UtcNow.DateTime),
         };
 
         foreach (var claim in user.Claims)
@@ -86,8 +86,7 @@ internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
     public JwtPayload? ReadToken(string token)
     {
         var result = this.decoder.TryDecode(token, out JwtPayload payload);
-        var claimsPrincipal = new ClaimsPrincipal();
-        if (result == DecodeResult.Success)
+        if (result == DecodeResult.Success || result == DecodeResult.FailedVerifyExpire)
         {
             return payload;
         }
@@ -113,7 +112,6 @@ internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
             new SecurityClaim(UserClaimTypes.UId, payload.Uid),
             new SecurityClaim(UserClaimTypes.Email, payload.Email),
             new SecurityClaim(UserClaimTypes.JwtId, payload.JwtId)
-            ,
         };
 
         if (payload.SessionId is not null)

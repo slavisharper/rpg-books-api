@@ -97,6 +97,15 @@ namespace RpgBooks.Modules.Identity.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh token is expired!.
+        /// </summary>
+        internal static string ExpiredRefreshToken {
+            get {
+                return ResourceManager.GetString("ExpiredRefreshToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email or password are incorrect!.
         /// </summary>
         internal static string InvalidLogin {

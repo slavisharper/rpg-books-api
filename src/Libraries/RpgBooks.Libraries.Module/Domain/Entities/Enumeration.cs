@@ -12,7 +12,7 @@ using global::System.Runtime.CompilerServices;
 /// </summary>
 public abstract class Enumeration : IComparable
 {
-    private static readonly ConcurrentDictionary<Type, IEnumerable<object>> EnumCache = new();
+    private static readonly ConcurrentDictionary<Type, object[]> EnumCache = new();
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Enumeration"/> class.
@@ -68,9 +68,9 @@ public abstract class Enumeration : IComparable
         var type = typeof(T);
 
         var values = EnumCache.GetOrAdd(type, _ => type
-            .GetProperties(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+            .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
             .Select(f => f.GetValue(null))
-            .Cast<T>());
+            .ToArray()!);
 
         return values.Cast<T>();
     }
@@ -83,8 +83,9 @@ public abstract class Enumeration : IComparable
     public static IEnumerable<Enumeration> GetAll(Type enumType)
     {
         var values = EnumCache.GetOrAdd(enumType, _ => enumType
-            .GetProperties(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
-            .Select(f => f.GetValue(null))!);
+            .GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.DeclaredOnly)
+            .Select(f => f.GetValue(null))
+            .ToArray()!);
 
         return values.Select(v => (Enumeration)v);
     }

@@ -15,7 +15,6 @@ public sealed class RefreshTokenCommandValidator : AbstractValidator<RefreshToke
     public RefreshTokenCommandValidator()
     {
         this.RuleFor(x => x.AuthenticationToken)
-            .MaximumLength(SecurityTokenValidation.Values.MaxTokenLength)
             .NotEmpty();
 
         this.RuleFor(x => x.RefreshToken)

@@ -1,5 +1,6 @@
 ﻿namespace RpgBooks.Modules.Identity.Application.Commands.RefreshToken;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
 using RpgBooks.Libraries.Module.Application.Commands;
@@ -19,18 +20,18 @@ using System.Threading.Tasks;
 internal sealed class RefreshTokenCommandHandler : BaseCommandHandler<RefreshTokenCommand, LoginResponseModel>
 {
     private readonly IJwtTokenManager jwtTokenManager;
-    private readonly IUserDomainRepository userDomainRepository;
+    private readonly IUserDomainRepository userRepository;
     private readonly ISecurityTokensService securityTokensService;
     private readonly ApplicationSecrets secrets;
 
     public RefreshTokenCommandHandler(
         IJwtTokenManager jwtTokenManager,
-        IUserDomainRepository userDomainRepository,
+        IUserDomainRepository userRepository,
         ISecurityTokensService securityTokensService,
         IOptions<ApplicationSecrets> secretsOptions)
     {
         this.jwtTokenManager = jwtTokenManager;
-        this.userDomainRepository = userDomainRepository;
+        this.userRepository = userRepository;
         this.securityTokensService = securityTokensService;
         this.secrets = secretsOptions.Value;
     }
@@ -51,7 +52,11 @@ internal sealed class RefreshTokenCommandHandler : BaseCommandHandler<RefreshTok
             return this.Unauthorized(Messages.NoAthorityFailure);
         }
 
-        var user = await this.userDomainRepository.GetAsync(int.Parse(jwtPayload.Uid), cancellation);
+        var user = await this.userRepository.GetByIdAsync(
+            int.Parse(jwtPayload.Uid),
+            query => query.Include(u => u.SecurityTokens),
+            cancellation);
+
         if (user is null)
         {
             return this.NotFound(Messages.UserNotFound);
@@ -70,13 +75,19 @@ internal sealed class RefreshTokenCommandHandler : BaseCommandHandler<RefreshTok
         var lastRefreshToken = this.securityTokensService.GetLastRefreshToken(user, jwtPayload.SessionId);
         if (lastRefreshToken is null
             || lastRefreshToken.SessionId != jwtPayload.SessionId
-            || lastRefreshToken.Value != request.RefreshToken.Encrypt(this.secrets.TokenProtectionSecret))
+            || request.RefreshToken != lastRefreshToken?.Value.Decrypt(this.secrets.TokenProtectionSecret))
         {
             return this.Unauthorized(Messages.InvalidRefreshToken);
         }
 
+        if (lastRefreshToken.ExpirationTime is not null && lastRefreshToken.ExpirationTime < DateTimeOffset.UtcNow)
+        {
+            return this.Unauthorized(Messages.ExpiredRefreshToken);
+        }
+
         var token = this.jwtTokenManager.GenerateToken(user, jwtPayload.SessionId);
         var refreshToken = await this.securityTokensService.GenerateRefreshToken(user, jwtPayload.SessionId, cancellation);
+        await this.userRepository.SaveAsync(cancellation);
 
         return this.Success(Messages.AuthTokenRefreshed, new LoginResponseModel(token, refreshToken));
     }
