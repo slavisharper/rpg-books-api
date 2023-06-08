@@ -54,7 +54,7 @@ internal sealed class RefreshTokenCommandHandler : BaseCommandHandler<RefreshTok
 
         var user = await this.userRepository.GetByIdAsync(
             int.Parse(jwtPayload.Uid),
-            query => query.Include(u => u.SecurityTokens),
+            q => q.Include(u => u.SecurityTokens),
             cancellation);
 
         if (user is null)

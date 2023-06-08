@@ -55,4 +55,11 @@ public interface ISecurityTokensService
     /// <param name="sessionId">Session Id.</param>
     /// <returns>The last created refresh token for the given session id.</returns>
     SecurityToken? GetLastRefreshToken(User user, string sessionId);
+
+    /// <summary>
+    /// Get the last email confirmation token that is valid and can be used for the given user.
+    /// </summary>
+    /// <param name="user">User instance.</param>
+    /// <returns>The last created email confirmation token for the given user.</returns>
+    SecurityToken? GetLastEmailConfirmationToken(User user);
 }

@@ -106,6 +106,15 @@ namespace RpgBooks.Modules.Identity.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid email confirmation token!.
+        /// </summary>
+        internal static string InvalidEmailConfirmationToken {
+            get {
+                return ResourceManager.GetString("InvalidEmailConfirmationToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email or password are incorrect!.
         /// </summary>
         internal static string InvalidLogin {
@@ -174,6 +183,15 @@ namespace RpgBooks.Modules.Identity.Application.Resources {
         internal static string UserDetailsFetched {
             get {
                 return ResourceManager.GetString("UserDetailsFetched", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your email is confirmed..
+        /// </summary>
+        internal static string UserEmailConfirmed {
+            get {
+                return ResourceManager.GetString("UserEmailConfirmed", resourceCulture);
             }
         }
         

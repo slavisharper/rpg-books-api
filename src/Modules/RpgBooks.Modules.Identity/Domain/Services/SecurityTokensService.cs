@@ -1,11 +1,11 @@
 ﻿namespace RpgBooks.Modules.Identity.Domain.Services;
 
+using Microsoft.Extensions.Options;
+
 using RpgBooks.Libraries.Module.Application.Settings;
 using RpgBooks.Modules.Identity.Domain.Entities;
 using RpgBooks.Modules.Identity.Domain.Services.Abstractions;
 using RpgBooks.Modules.Identity.Domain.Settings;
-
-using Microsoft.Extensions.Options;
 
 using System.Security;
 
@@ -68,6 +68,7 @@ internal sealed class SecurityTokensService : ISecurityTokensService
         return GenerateToken(user, type, validity, sessionId, cancellation);
     }
 
+    /// <inheritdoc/>
     public ValueTask<TokenModel> GenerateRefreshToken(User user, CancellationToken cancellation = default)
         => GenerateRefreshToken(user, null, cancellation);
 
@@ -80,6 +81,12 @@ internal sealed class SecurityTokensService : ISecurityTokensService
 
         return GenerateToken(user, type, validity, null, cancellation);
     }
+
+    /// <inheritdoc/>
+    public SecurityToken? GetLastEmailConfirmationToken(User user)
+        => user.SecurityTokens
+            .OrderByDescending(t => t.Created)
+            .FirstOrDefault(t => t.TokenType == SecurityTokenType.ConfirmEmail);
 
     /// <inheritdoc/>
     public SecurityToken? GetLastRefreshToken(User user, string sessionId)

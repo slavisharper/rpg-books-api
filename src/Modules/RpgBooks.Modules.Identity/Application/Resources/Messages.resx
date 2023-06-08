@@ -132,6 +132,9 @@
   <data name="ExpiredRefreshToken" xml:space="preserve">
     <value>Refresh token is expired!</value>
   </data>
+  <data name="InvalidEmailConfirmationToken" xml:space="preserve">
+    <value>Invalid email confirmation token!</value>
+  </data>
   <data name="InvalidLogin" xml:space="preserve">
     <value>Email or password are incorrect!</value>
   </data>
@@ -155,6 +158,9 @@
   </data>
   <data name="UserDetailsFetched" xml:space="preserve">
     <value>User details fetched.</value>
+  </data>
+  <data name="UserEmailConfirmed" xml:space="preserve">
+    <value>Your email is confirmed.</value>
   </data>
   <data name="UserNotFound" xml:space="preserve">
     <value>User not found!</value>
