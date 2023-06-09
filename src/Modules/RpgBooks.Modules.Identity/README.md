@@ -30,7 +30,7 @@ Add-Migration 'Identity{Name}' -OutputDir "Infrastructure/Persistence/Migrations
 - **Description**: Retrieve the user's profile information.
 - **Returns**:  Returns the user's profile information if the token is valid or an appropriate error message if unauthorized or invalid token.
 
-### User details
+### Login user
 - **Endpoint**: `/api/account/login`
 - **Method**: POST
 - **Access**: Public
@@ -40,6 +40,20 @@ Add-Migration 'Identity{Name}' -OutputDir "Infrastructure/Persistence/Migrations
   {
     "email": "example@example.com",
     "password": "example123"
+  }
+  ```
+- **Returns**:  Returns the user's authentication and refresh tokens.
+
+### Refresh user's authentication token
+- **Endpoint**: `/api/account/refresh-token`
+- **Method**: POST
+- **Access**: Public
+- **Description**: Logs in into the uses account.
+- **Request Body**:
+  ```json
+  {
+    "authenticationToken": "string",
+    "refreshToken": "string"
   }
   ```
 - **Returns**:  Returns the user's authentication and refresh tokens.

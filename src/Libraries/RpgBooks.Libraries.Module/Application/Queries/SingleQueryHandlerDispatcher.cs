@@ -1,9 +1,13 @@
 ﻿namespace RpgBooks.Libraries.Module.Application.Queries;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
+using RpgBooks.Libraries.Module.Application.Commands;
 using RpgBooks.Libraries.Module.Application.Queries.Contracts;
 
+using System.Data;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -22,9 +26,21 @@ public sealed class SingleQueryHandlerDispatcher : IQueryHandlerDispatcher
         => this.serviceProvider = serviceProvider;
 
     /// <inheritdoc/>
-    public Task<TQueryResult> Dispatch<TQuery, TQueryResult>(TQuery query, CancellationToken cancellation)
+    public async Task<TQueryResult> Dispatch<TQuery, TQueryResult>(TQuery query, CancellationToken cancellation)
         where TQuery : IQuery
-        => this.serviceProvider
+    {
+        var logger = this.serviceProvider.GetRequiredService<ILogger<SingleQueryHandlerDispatcher>>();
+
+        var timeStamp = Stopwatch.GetTimestamp();
+        var result = await this.serviceProvider
             .GetRequiredService<IQueryHandler<TQuery, TQueryResult>>()
             .Handle(query, cancellation);
+
+        logger.LogInformation(
+            "{QueryType} request handled in {ElapsedMilliseconds}ms",
+            typeof(TQuery).Name,
+            Stopwatch.GetElapsedTime(timeStamp).Milliseconds);
+
+        return result;
+    }
 }

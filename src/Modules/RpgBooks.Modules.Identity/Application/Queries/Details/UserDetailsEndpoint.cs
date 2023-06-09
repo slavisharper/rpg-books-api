@@ -2,12 +2,13 @@
 
 using RpgBooks.Libraries.Module.Presentation.Endpoints;
 using RpgBooks.Libraries.Module.Presentation.Endpoints.Attributes;
+using RpgBooks.Modules.Identity.Application.Repositories.User;
 
 /// <summary>
 /// User details endpoint.
 /// </summary>
 [AuthorizeEndpoint]
-public sealed class UserDetailsEndpoint : ApiEndpoint<UserDetailsQuery, UserDetailsResponseModel>
+public sealed class UserDetailsEndpoint : ApiEndpoint<UserDetailsQuery, UserDetailsReadModel>
 {
     /// <summary>
     /// Initializes a new instance of the <see cref="UserDetailsEndpoint"/> class.
@@ -18,7 +19,7 @@ public sealed class UserDetailsEndpoint : ApiEndpoint<UserDetailsQuery, UserDeta
             nameof(UserDetailsEndpoint),
             "account",
             EndpointTypes.Get,
-            EndpointDelegates.QueryHandlerDelegate<UserDetailsQuery, UserDetailsResponseModel>())
+            EndpointDelegates.QueryHandlerDelegate<UserDetailsQuery, UserDetailsReadModel>())
     {
     }
 }

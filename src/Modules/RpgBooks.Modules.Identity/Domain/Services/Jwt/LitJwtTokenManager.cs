@@ -16,6 +16,7 @@ using System.Security.Claims;
 using System.Text;
 
 using SecurityClaim = System.Security.Claims.Claim;
+using Microsoft.IdentityModel.Tokens;
 
 /// <summary>
 /// JWT token manager that uses LitJWT library.
@@ -69,13 +70,9 @@ internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
             Uid = user.Id.ToString(),
             PhoneNumberVerified = user.PhoneNumberConfirmed,
             Roles = user.Roles.Select(r => r.Name).ToArray(),
-            ExpiprationTime = expirationTime.UtcTicks,
-            NotBefore = DateTimeOffset.UtcNow.UtcTicks,
-            IssuedAt = DateTimeOffset.UtcNow.UtcTicks,
-            CustomClaims = new Dictionary<string, string?>
-            {
-                { "sstmp", user.SecurityStamp },
-            }
+            NotBefore = EpochTime.GetIntDate(DateTimeOffset.UtcNow.DateTime),
+            IssuedAt = EpochTime.GetIntDate(DateTimeOffset.UtcNow.DateTime),
+            CustomClaims = new Dictionary<string, string?>(),
         };
 
         foreach (var claim in user.Claims)
@@ -90,8 +87,7 @@ internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
     public JwtPayload? ReadToken(string token)
     {
         var result = this.decoder.TryDecode(token, out JwtPayload payload);
-        var claimsPrincipal = new ClaimsPrincipal();
-        if (result == DecodeResult.Success)
+        if (result == DecodeResult.Success || result == DecodeResult.FailedVerifyExpire)
         {
             return payload;
         }
@@ -117,7 +113,6 @@ internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
             new SecurityClaim(UserClaimTypes.UId, payload.Uid),
             new SecurityClaim(UserClaimTypes.Email, payload.Email),
             new SecurityClaim(UserClaimTypes.JwtId, payload.JwtId)
-            ,
         };
 
         if (payload.SessionId is not null)
@@ -145,14 +140,20 @@ internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
             claims.Add(new SecurityClaim(UserClaimTypes.FullName, ZString.Format("{0}{1}{2}", payload.FirstName, payload.MiddleName ?? " ", payload.LastName)));
         }
 
-        foreach (var role in payload.Roles)
+        if (payload.Roles is not null)
         {
-            claims.Add(new SecurityClaim(UserClaimTypes.Roles, role));
+            foreach (var role in payload.Roles)
+            {
+                claims.Add(new SecurityClaim(UserClaimTypes.Roles, role));
+            }
         }
 
-        foreach (var claim in payload.CustomClaims)
+        if (payload.CustomClaims is not null)
         {
-            claims.Add(new SecurityClaim(claim.Key, claim.Value ?? string.Empty));
+            foreach (var claim in payload.CustomClaims)
+            {
+                claims.Add(new SecurityClaim(claim.Key, claim.Value ?? string.Empty));
+            }
         }
 
         return new ClaimsPrincipal(new ClaimsIdentity(claims));

@@ -61,6 +61,42 @@ namespace RpgBooks.Modules.Identity.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User account is suspended!.
+        /// </summary>
+        internal static string AccountBlocked {
+            get {
+                return ResourceManager.GetString("AccountBlocked", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to User authority is modified!.
+        /// </summary>
+        internal static string AuthorityModifiedFailure {
+            get {
+                return ResourceManager.GetString("AuthorityModifiedFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authentication token is refreshed..
+        /// </summary>
+        internal static string AuthTokenRefreshed {
+            get {
+                return ResourceManager.GetString("AuthTokenRefreshed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your email is already confirmed..
+        /// </summary>
+        internal static string EmailAlreadyConfirmed {
+            get {
+                return ResourceManager.GetString("EmailAlreadyConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email address is already in use..
         /// </summary>
         internal static string EmailTakenError {
@@ -70,11 +106,56 @@ namespace RpgBooks.Modules.Identity.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Refresh token is expired!.
+        /// </summary>
+        internal static string ExpiredRefreshToken {
+            get {
+                return ResourceManager.GetString("ExpiredRefreshToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid email confirmation token!.
+        /// </summary>
+        internal static string InvalidEmailConfirmationToken {
+            get {
+                return ResourceManager.GetString("InvalidEmailConfirmationToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email or password are incorrect!.
         /// </summary>
         internal static string InvalidLogin {
             get {
                 return ResourceManager.GetString("InvalidLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid passowrd!.
+        /// </summary>
+        internal static string InvalidPassword {
+            get {
+                return ResourceManager.GetString("InvalidPassword", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid refresh token value!.
+        /// </summary>
+        internal static string InvalidRefreshToken {
+            get {
+                return ResourceManager.GetString("InvalidRefreshToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to JWT was not read properly! Maybe its value is no in a valid format..
+        /// </summary>
+        internal static string JwtReadFailed {
+            get {
+                return ResourceManager.GetString("JwtReadFailed", resourceCulture);
             }
         }
         
@@ -97,6 +178,24 @@ namespace RpgBooks.Modules.Identity.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to User does not have the required authority!.
+        /// </summary>
+        internal static string NoAthorityFailure {
+            get {
+                return ResourceManager.GetString("NoAthorityFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your password is changed..
+        /// </summary>
+        internal static string PasswordChanged {
+            get {
+                return ResourceManager.GetString("PasswordChanged", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to User account is created..
         /// </summary>
         internal static string RegisterSuccess {
@@ -111,6 +210,15 @@ namespace RpgBooks.Modules.Identity.Application.Resources {
         internal static string UserDetailsFetched {
             get {
                 return ResourceManager.GetString("UserDetailsFetched", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your email is confirmed..
+        /// </summary>
+        internal static string UserEmailConfirmed {
+            get {
+                return ResourceManager.GetString("UserEmailConfirmed", resourceCulture);
             }
         }
         

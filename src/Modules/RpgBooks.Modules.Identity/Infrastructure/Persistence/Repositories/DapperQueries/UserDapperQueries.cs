@@ -4,7 +4,7 @@ internal static class UserDapperQueries
     internal const string GetDetailsQuery = @"
         Select 
             Id,
-            Email,
+            Email_Value AS Email,
             EmailConfirmed,
             HonorificTitle,
             FirstName,

@@ -50,7 +50,7 @@ public static class UserClaimTypes
     public const string SecurityStamp = "sts";
 
     /// <summary>
-    /// Unique identifier claim type.
+    /// Unique user identifier claim type.
     /// </summary>
     public const string UId = "uid";
 

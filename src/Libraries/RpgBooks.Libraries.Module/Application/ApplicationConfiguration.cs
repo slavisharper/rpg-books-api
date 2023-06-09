@@ -64,19 +64,32 @@ public static class ApplicationConfiguration
                 // \u001b[38;5;***m => 256 Colors(08 is Gray)
                 options.PrefixFormatter = (writer, info) =>
                 {
+                    string logLebel = GetLogLevelForConsole(info.LogLevel);
+                    string logTime = info.Timestamp.ToString("dd/MM/yyyy HH:mm:ss.fff");
                     if (info.LogLevel == LogLevel.Error)
                     {
-                        ZString.Utf8Format(writer, "\u001b[31m[{0}] [{1}] ", info.LogLevel, info.Timestamp);
+                        ZString.Utf8Format(writer, "\u001b[31m[{0} {1}] ", logLebel, logTime);
+                    }
+                    else if (info.LogLevel == LogLevel.Critical)
+                    {
+                        ZString.Utf8Format(writer, "\u001b[38;5;200m[{0} {1}] ", logLebel, logTime);
                     }
                     else
                     {
                         if (!info.CategoryName.StartsWith("Rpg")) // your application namespace.
                         {
-                            ZString.Utf8Format(writer, "\u001b[38;5;08m[{0}] [{1}] ", info.LogLevel, info.Timestamp);
+                            if (info.LogLevel == LogLevel.Warning)
+                            {
+                                ZString.Utf8Format(writer, "\u001b[38;5;214m[{0} {1}] ", logLebel, logTime);
+                            }
+                            else
+                            {
+                                ZString.Utf8Format(writer, "\u001b[38;5;08m[{0} {1}] ", logLebel, logTime);
+                            }
                         }
                         else
                         {
-                            ZString.Utf8Format(writer, "[{0}] [{1}] ", info.LogLevel, info.Timestamp);
+                            ZString.Utf8Format(writer, "[{0} {1}] ", logLebel, logTime);
                         }
                     }
                 };
@@ -174,4 +187,16 @@ public static class ApplicationConfiguration
 
         return services;
     }
+
+    private static string GetLogLevelForConsole(LogLevel logLevel)
+        => logLevel switch
+        {
+            LogLevel.Trace => "TRCE",
+            LogLevel.Debug => "DEBG",
+            LogLevel.Information => "INFO",
+            LogLevel.Warning => "WARN",
+            LogLevel.Error => "EROR",
+            LogLevel.Critical => "FATL",
+            _ => "INFO"
+        };
 }

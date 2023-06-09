@@ -2,14 +2,11 @@
 
 using Cysharp.Text;
 
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Options;
 
-using RpgBooks.Libraries.Module.Application.Commands.Contracts;
 using RpgBooks.Libraries.Module.Application.Queries.Contracts;
 using RpgBooks.Libraries.Module.Application.Resources.Email;
 using RpgBooks.Libraries.Module.Application.Services;
@@ -18,6 +15,7 @@ using RpgBooks.Libraries.Module.Application.Services.Dev;
 using RpgBooks.Libraries.Module.Application.Services.Email;
 using RpgBooks.Libraries.Module.Application.Settings;
 using RpgBooks.Libraries.Module.Domain.Repositories;
+using RpgBooks.Libraries.Module.Infrastructure.Persistence;
 using RpgBooks.Libraries.Module.Infrastructure.Persistence.Abstractions;
 using RpgBooks.Libraries.Module.Infrastructure.Services;
 using RpgBooks.Libraries.Module.Infrastructure.Services.CurrentUser;
@@ -79,11 +77,16 @@ public static class InfrastructureConfiguration
         string sendGridApiKey = configuration
             .GetValue<string>(ZString.Format("{0}:{1}", nameof(ApplicationSecrets), nameof(ApplicationSecrets.SendGridSecretKey)))!;
 
+        string defailtConnectionString = configuration
+            .GetValue<string>(ZString.Format("{0}:{1}", nameof(ApplicationSecrets), nameof(ApplicationSecrets.DefaultConnectionString)))!;
+
         services
-            .AddScoped<ICurrentUserService, CurrentUserService>()
+            .AddSingleton<IHttpUtilities, HttpUtilities>()
             .AddSingleton<IEmailSender, SendGridEmailSender>()
             .AddSingleton<IDevTeamNotificationService, DevTeamEmailNotificationService>()
             .AddSingleton<IUrlProvider, UrlProvider>()
+            .AddScoped<DefaultDapperContext>(provider => new DefaultDapperContext(defailtConnectionString))
+            .AddScoped<ICurrentUserService, CurrentUserService>()
             .RegisterRenderer<IEmailTemplateRenderer, EmailFluidTemplateRenderer>(settings =>
             {
                 settings.SetDefaultLayoutModel(new LayoutModel());
@@ -110,7 +113,7 @@ public static class InfrastructureConfiguration
         var dbAssembly = typeof(TDbContext).Assembly;
 
         services
-            .AddScoped<SqlConnection>(provider => new SqlConnection(connectionString));
+            .AddScoped<DapperContext<TDbContext>>(provider => new DapperContext<TDbContext>(connectionString));
 
         services
             .AddDbContext<TDbContext>(options =>

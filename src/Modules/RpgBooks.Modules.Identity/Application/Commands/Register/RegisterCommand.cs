@@ -1,11 +1,12 @@
 ﻿namespace RpgBooks.Modules.Identity.Application.Commands.Register;
 
 using RpgBooks.Libraries.Module.Application.Commands.Contracts;
+using RpgBooks.Modules.Identity.Application.Commands.Common;
 
 /// <summary>
 /// Command request for registering a new user.
 /// </summary>
-public sealed record RegisterCommand : ICommand
+public sealed record RegisterCommand : ICommand, IPasswordCommand
 {
     /// <summary>
     /// Gets user email.

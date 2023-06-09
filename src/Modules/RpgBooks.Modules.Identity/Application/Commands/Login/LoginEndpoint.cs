@@ -12,7 +12,7 @@ public sealed class LoginEndpoint : ApiEndpoint<LoginCommand, LoginResponseModel
     /// </summary>
     public LoginEndpoint()
         : base(
-            "/account/login",
+            "/api/account/login",
             nameof(LoginEndpoint),
             "account",
             EndpointTypes.Post,

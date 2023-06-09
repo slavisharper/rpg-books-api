@@ -40,6 +40,7 @@ internal static class RouteHandlerBuilderExtensions
             builder.RequireAuthorization();
         }
 
+        builder.AddEndpointFilter<ValidateUserAccountFilter>();
         return builder.Produces(StatusCodes.Status401Unauthorized);
     }
 

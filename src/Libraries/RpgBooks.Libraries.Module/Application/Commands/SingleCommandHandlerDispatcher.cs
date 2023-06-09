@@ -4,10 +4,12 @@ using FluentValidation;
 using FluentValidation.Results;
 
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 using RpgBooks.Libraries.Module.Application.Commands.Contracts;
 using RpgBooks.Libraries.Module.Application.Results;
 
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -26,8 +28,33 @@ public sealed class SingleCommandHandlerDispatcher : ICommandHandlerDispatcher
         => this.serviceProvider = serviceProvider;
 
     /// <inheritdoc/>
-    public async Task<TCommandResult> Dispatch<TCommand, TCommandResult>(TCommand command, CancellationToken cancellation)
+    public async Task<CommandHandlerResult<TCommandResult>> Dispatch<TCommand, TCommandResult>(TCommand command, CancellationToken cancellation)
         where TCommand : ICommand
+    {
+        var logger = this.serviceProvider.GetRequiredService<ILogger<SingleCommandHandlerDispatcher>>();
+        var failures = await ValidateRequest(command, cancellation);
+        var commandType = typeof(TCommand);
+
+        if (failures.Any())
+        {
+            logger.LogWarning("{CommandType} request validation failed", commandType.Name);
+            return new CommandHandlerResult<TCommandResult>(failures);
+        }
+
+        var timeStamp = Stopwatch.GetTimestamp();
+        var handlerResult = await this.serviceProvider
+            .GetRequiredService<ICommandHandler<TCommand, TCommandResult>>()
+            .Handle(command, cancellation);
+
+        logger.LogInformation(
+            "{CommandType} request handled in {ElapsedMilliseconds}ms",
+            commandType.Name,
+            Stopwatch.GetElapsedTime(timeStamp).Milliseconds);
+
+        return new CommandHandlerResult<TCommandResult>(handlerResult);
+    }
+
+    private async Task<IEnumerable<AppResultError>> ValidateRequest<TCommand>(TCommand command, CancellationToken cancellation) where TCommand : ICommand
     {
         IEnumerable<IValidator<TCommand>> validators = this.serviceProvider.GetServices<IValidator<TCommand>>();
         var context = new ValidationContext<TCommand>(command);
@@ -45,14 +72,8 @@ public sealed class SingleCommandHandlerDispatcher : ICommandHandlerDispatcher
             }
         }
 
-        var failures = errors
+        return errors
             .GroupBy(f => f.PropertyName)
-            .Select(g => new AppResultError(g.Key, g.Select(f => f.ErrorMessage).ToArray()))
-            .ToArray();
-
-        // TODO return Error result when failures are not empty. And omit calling the handler
-        return await this.serviceProvider
-            .GetRequiredService<ICommandHandler<TCommand, TCommandResult>>()
-            .Handle(command, new CommandHandlerContext(failures), cancellation);
+            .Select(g => new AppResultError(g.Key, g.Select(f => f.ErrorMessage).ToArray()));
     }
 }
