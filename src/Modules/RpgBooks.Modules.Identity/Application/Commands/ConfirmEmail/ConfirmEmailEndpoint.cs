@@ -15,7 +15,7 @@ public sealed class ConfirmEmailEndpoint : ApiEndpoint<ConfirmEmailCommand>
 			"/api/account/confirm-email",
 			nameof(ConfirmEmailEndpoint),
 			"account",
-			EndpointTypes.Post,
+			EndpointTypes.Put,
 			EndpointDelegates.CreateCommandHandlerDelegate<ConfirmEmailCommand>())
 	{
 	}

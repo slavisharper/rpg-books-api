@@ -46,9 +46,15 @@ internal class LoginCommandHandler : BaseCommandHandler<LoginCommand, LoginRespo
             query => query.Include(u => u.Claims).Include(u => u.Roles),
             cancellation);
 
+        // TODO: Extract this to a common method for all handlers that have to check the user and are using public endpoint.
         if (user is null)
         {
             return this.ValidationFailed(Messages.InvalidLogin);
+        }
+
+        if (user.Blocked)
+        {
+            return this.ValidationFailed(Messages.AccountBlocked);
         }
 
         if (user.LockedOut)

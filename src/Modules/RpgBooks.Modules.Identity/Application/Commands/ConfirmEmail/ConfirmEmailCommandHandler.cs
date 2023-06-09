@@ -6,6 +6,7 @@ using Microsoft.Extensions.Options;
 using RpgBooks.Libraries.Module.Application.Commands;
 using RpgBooks.Libraries.Module.Application.Commands.Extensions;
 using RpgBooks.Libraries.Module.Application.Results.Contracts;
+using RpgBooks.Libraries.Module.Application.Services;
 using RpgBooks.Libraries.Module.Application.Settings;
 using RpgBooks.Modules.Identity.Application.Resources;
 using RpgBooks.Modules.Identity.Domain.Repositories;
@@ -19,15 +20,18 @@ internal sealed class ConfirmEmailCommandHandler : BaseCommandHandler<ConfirmEma
 {
     private readonly IUserDomainRepository userReopository;
     private readonly ISecurityTokensService securityTokensService;
+    private readonly IHttpUtilities httpUtilities;
     private readonly ApplicationSecrets secrets;
 
     public ConfirmEmailCommandHandler(
         IUserDomainRepository userReopository,
         ISecurityTokensService securityTokensService,
+        IHttpUtilities httpUtilities,
         IOptions<ApplicationSecrets> secretsOptions)
     {
         this.userReopository = userReopository;
         this.securityTokensService = securityTokensService;
+        this.httpUtilities = httpUtilities;
         this.secrets = secretsOptions.Value;
     }
 
@@ -39,9 +43,15 @@ internal sealed class ConfirmEmailCommandHandler : BaseCommandHandler<ConfirmEma
             return this.NotFound(Messages.UserNotFound);
         }
 
+        if (user.EmailConfirmed)
+        {
+            return this.Success(Messages.EmailAlreadyConfirmed);
+        }
+
+        var confirmationToken = this.httpUtilities.UrlDecode(request.Token);
         var lastConfirmationToken = this.securityTokensService.GetLastEmailConfirmationToken(user);
         if (lastConfirmationToken is null
-            || request.Token != lastConfirmationToken.Value.Decrypt(secrets.TokenProtectionSecret))
+            || confirmationToken != lastConfirmationToken.Value.Decrypt(secrets.TokenProtectionSecret))
         {
             return this.ValidationFailed(Messages.InvalidEmailConfirmationToken);
         }

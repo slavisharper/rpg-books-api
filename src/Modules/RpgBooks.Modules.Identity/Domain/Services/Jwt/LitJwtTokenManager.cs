@@ -72,6 +72,7 @@ internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
             Roles = user.Roles.Select(r => r.Name).ToArray(),
             NotBefore = EpochTime.GetIntDate(DateTimeOffset.UtcNow.DateTime),
             IssuedAt = EpochTime.GetIntDate(DateTimeOffset.UtcNow.DateTime),
+            CustomClaims = new Dictionary<string, string?>(),
         };
 
         foreach (var claim in user.Claims)
@@ -139,14 +140,20 @@ internal sealed class LitJwtTokenManager : IJwtTokenManager, IJwtDecoder
             claims.Add(new SecurityClaim(UserClaimTypes.FullName, ZString.Format("{0}{1}{2}", payload.FirstName, payload.MiddleName ?? " ", payload.LastName)));
         }
 
-        foreach (var role in payload.Roles)
+        if (payload.Roles is not null)
         {
-            claims.Add(new SecurityClaim(UserClaimTypes.Roles, role));
+            foreach (var role in payload.Roles)
+            {
+                claims.Add(new SecurityClaim(UserClaimTypes.Roles, role));
+            }
         }
 
-        foreach (var claim in payload.CustomClaims)
+        if (payload.CustomClaims is not null)
         {
-            claims.Add(new SecurityClaim(claim.Key, claim.Value ?? string.Empty));
+            foreach (var claim in payload.CustomClaims)
+            {
+                claims.Add(new SecurityClaim(claim.Key, claim.Value ?? string.Empty));
+            }
         }
 
         return new ClaimsPrincipal(new ClaimsIdentity(claims));

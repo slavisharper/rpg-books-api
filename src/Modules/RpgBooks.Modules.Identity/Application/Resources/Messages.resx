@@ -126,6 +126,9 @@
   <data name="AuthTokenRefreshed" xml:space="preserve">
     <value>Authentication token is refreshed.</value>
   </data>
+  <data name="EmailAlreadyConfirmed" xml:space="preserve">
+    <value>Your email is already confirmed.</value>
+  </data>
   <data name="EmailTakenError" xml:space="preserve">
     <value>Email address is already in use.</value>
   </data>
@@ -137,6 +140,9 @@
   </data>
   <data name="InvalidLogin" xml:space="preserve">
     <value>Email or password are incorrect!</value>
+  </data>
+  <data name="InvalidPassword" xml:space="preserve">
+    <value>Invalid passowrd!</value>
   </data>
   <data name="InvalidRefreshToken" xml:space="preserve">
     <value>Invalid refresh token value!</value>
@@ -152,6 +158,9 @@
   </data>
   <data name="NoAthorityFailure" xml:space="preserve">
     <value>User does not have the required authority!</value>
+  </data>
+  <data name="PasswordChanged" xml:space="preserve">
+    <value>Your password is changed.</value>
   </data>
   <data name="RegisterSuccess" xml:space="preserve">
     <value>User account is created.</value>

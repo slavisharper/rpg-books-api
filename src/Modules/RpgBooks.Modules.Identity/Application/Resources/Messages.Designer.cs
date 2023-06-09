@@ -88,6 +88,15 @@ namespace RpgBooks.Modules.Identity.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your email is already confirmed..
+        /// </summary>
+        internal static string EmailAlreadyConfirmed {
+            get {
+                return ResourceManager.GetString("EmailAlreadyConfirmed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Email address is already in use..
         /// </summary>
         internal static string EmailTakenError {
@@ -120,6 +129,15 @@ namespace RpgBooks.Modules.Identity.Application.Resources {
         internal static string InvalidLogin {
             get {
                 return ResourceManager.GetString("InvalidLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Invalid passowrd!.
+        /// </summary>
+        internal static string InvalidPassword {
+            get {
+                return ResourceManager.GetString("InvalidPassword", resourceCulture);
             }
         }
         
@@ -165,6 +183,15 @@ namespace RpgBooks.Modules.Identity.Application.Resources {
         internal static string NoAthorityFailure {
             get {
                 return ResourceManager.GetString("NoAthorityFailure", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your password is changed..
+        /// </summary>
+        internal static string PasswordChanged {
+            get {
+                return ResourceManager.GetString("PasswordChanged", resourceCulture);
             }
         }
         

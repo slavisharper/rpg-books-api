@@ -39,4 +39,12 @@ public interface ICurrentUser
     /// <param name="action">Claim matching action.</param>
     /// <returns>Whether current user has any matching claim to the given condition.</returns>
     bool Claims(Func<Claim, bool> action);
+
+    /// <summary>
+    /// Check if current user has a claim of given type with specific value.
+    /// </summary>
+    /// <param name="type">Claim type name.</param>
+    /// <param name="value">Claim value.</param>
+    /// <returns>True if the current user has the given claim with the given value.</returns>
+    bool Claims(string type, string value);
 }

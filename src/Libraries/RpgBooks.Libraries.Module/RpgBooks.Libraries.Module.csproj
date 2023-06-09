@@ -39,10 +39,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Folder Include="Infrastructure\Services\Cloud\" />
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Compile Update="Application\Resources\Messages.Designer.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>

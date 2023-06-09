@@ -57,19 +57,20 @@ internal sealed class RefreshTokenCommandHandler : BaseCommandHandler<RefreshTok
             q => q.Include(u => u.SecurityTokens),
             cancellation);
 
+        // TODO: Extract this to a common method for all handlers that have to check the user and are using public endpoint.
         if (user is null)
         {
             return this.NotFound(Messages.UserNotFound);
         }
 
-        if (jwtPayload.SecurityStamp != user.SecurityStamp)
-        {
-            return this.Unauthorized(Messages.AuthorityModifiedFailure);
-        }
-
         if (user.Blocked)
         {
             return this.Unauthorized(Messages.AccountBlocked);
+        }
+
+        if (jwtPayload.SecurityStamp != user.SecurityStamp)
+        {
+            return this.Unauthorized(Messages.AuthorityModifiedFailure);
         }
 
         var lastRefreshToken = this.securityTokensService.GetLastRefreshToken(user, jwtPayload.SessionId);

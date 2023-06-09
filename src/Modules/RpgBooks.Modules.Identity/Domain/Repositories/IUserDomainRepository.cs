@@ -1,7 +1,5 @@
 ﻿namespace RpgBooks.Modules.Identity.Domain.Repositories;
 
-using Microsoft.EntityFrameworkCore;
-
 using RpgBooks.Libraries.Module.Domain.Repositories;
 using RpgBooks.Modules.Identity.Domain.Entities;
 
@@ -27,7 +25,7 @@ public interface IUserDomainRepository : IDomainRepository<User, int>
     Task<bool> Exists(string email, CancellationToken cancellation = default);
 
     /// <summary>
-    /// Get user by email.
+    /// Get user by identifier.
     /// </summary>
     /// <param name="id">User identifier.</param>
     /// <param name="include">Function where any additional includes of navigation properties are added.</param>

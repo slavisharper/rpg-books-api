@@ -1,23 +1,32 @@
 ﻿namespace RpgBooks.Modules.Identity.Domain.Builders;
 
+using RpgBooks.Libraries.Module.Application.Services;
 using RpgBooks.Modules.Identity.Domain.Builders.Abstractions;
 using RpgBooks.Modules.Identity.Domain.Entities;
 using RpgBooks.Modules.Identity.Domain.Events;
 using RpgBooks.Modules.Identity.Domain.Exceptions;
+using RpgBooks.Modules.Identity.Domain.Services;
 using RpgBooks.Modules.Identity.Domain.Services.Abstractions;
+
+using System.Security.Policy;
 
 internal sealed class UserBuilder : IUserBuilder
 {
     private readonly IPasswordHasher passwordHasher;
     private readonly ISecurityTokensService securityTokensService;
+    private readonly IHttpUtilities httpUtilities;
 
     private string? email;
     private string? paswordHash;
 
-    public UserBuilder(IPasswordHasher passwordHasher, ISecurityTokensService securityTokensService)
+    public UserBuilder(
+        IPasswordHasher passwordHasher,
+        ISecurityTokensService securityTokensService,
+        IHttpUtilities httpUtilities)
     {
         this.passwordHasher = passwordHasher;
         this.securityTokensService = securityTokensService;
+        this.httpUtilities = httpUtilities;
     }
 
     /// <inheritdoc/>
@@ -43,10 +52,10 @@ internal sealed class UserBuilder : IUserBuilder
         }
 
         var user = new User(email, paswordHash);
-        var emailConfirmationToken =
+        TokenModel emailConfirmationToken =
             await this.securityTokensService.GenerateEmailConfirmationToken(user, cancellation);
 
-        user.AddEvent(new UserRegisteredEvent(email, emailConfirmationToken.Value));
+        user.AddEvent(new UserRegisteredEvent(email, this.httpUtilities.UrlEncode(emailConfirmationToken.Value)!));
         return user;
     }
 }

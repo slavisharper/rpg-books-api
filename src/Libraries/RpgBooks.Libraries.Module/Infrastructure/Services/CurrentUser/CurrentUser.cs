@@ -50,7 +50,9 @@ public sealed class CurrentUser : ICurrentUser
 
     /// <inheritdoc />
     public bool Claims(Func<Claim, bool> action)
-    {
-        return this.principal.Claims.Any(action);
-    }
+        => this.principal.Claims.Any(action);
+
+    /// <inheritdoc />
+    public bool Claims(string type, string value)
+        => this.Claims(c => c.Type == type && c.Value == value);
 }

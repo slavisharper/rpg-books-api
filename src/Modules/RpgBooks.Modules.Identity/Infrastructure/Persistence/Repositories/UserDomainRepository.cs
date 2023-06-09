@@ -35,7 +35,7 @@ internal class UserDomainRepository : BaseDomainRepository<IdentityDbContext, Us
         var query = this.context.Users.AsQueryable();
         if (include is not null)
         {
-            query = include.Invoke(query);
+            query = include.Invoke(query).AsSplitQuery();
         }
 
         return await query.FirstOrDefaultAsync(u => u.Email.Value == email, cancellation);
@@ -50,7 +50,7 @@ internal class UserDomainRepository : BaseDomainRepository<IdentityDbContext, Us
         var query = this.context.Users.AsQueryable();
         if (include is not null)
         {
-            query = include.Invoke(query);
+            query = include.Invoke(query).AsSplitQuery();
         }
 
         return await query.FirstOrDefaultAsync(u => u.Id == id, cancellation);

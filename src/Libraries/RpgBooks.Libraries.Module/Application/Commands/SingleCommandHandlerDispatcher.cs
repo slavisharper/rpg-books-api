@@ -37,7 +37,7 @@ public sealed class SingleCommandHandlerDispatcher : ICommandHandlerDispatcher
 
         if (failures.Any())
         {
-            logger.LogError("Command request validation failed: {CommandType}", commandType);
+            logger.LogWarning("{CommandType} request validation failed", commandType.Name);
             return new CommandHandlerResult<TCommandResult>(failures);
         }
 
@@ -47,9 +47,9 @@ public sealed class SingleCommandHandlerDispatcher : ICommandHandlerDispatcher
             .Handle(command, cancellation);
 
         logger.LogInformation(
-            "Command request handled in {ElapsedMilliseconds}ms: {CommandType}",
-            (Stopwatch.GetTimestamp() - timeStamp) / (double)Stopwatch.Frequency * 1000,
-            commandType);
+            "{CommandType} request handled in {ElapsedMilliseconds}ms",
+            commandType.Name,
+            Stopwatch.GetElapsedTime(timeStamp).Milliseconds);
 
         return new CommandHandlerResult<TCommandResult>(handlerResult);
     }
