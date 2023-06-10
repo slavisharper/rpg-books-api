@@ -62,6 +62,11 @@ public sealed class SecurityToken : BaseEntity<int>
     /// </summary>
     public string? SessionId { get; private set; }
 
+    /// <summary>
+    /// Gets a value indicating whether the token is expired.
+    /// </summary>
+    public bool IsExpired => this.ExpirationTime is not null && this.ExpirationTime < DateTimeOffset.UtcNow;
+
     private void Validate()
     {
         SecurityTokenValidation.EnsureThat.HasValidToken(this.Value);

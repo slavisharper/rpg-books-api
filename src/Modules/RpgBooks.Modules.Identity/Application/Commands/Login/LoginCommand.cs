@@ -1,7 +1,5 @@
 ﻿namespace RpgBooks.Modules.Identity.Application.Commands.Login;
 
-using RpgBooks.Libraries.Module.Application.Commands.Contracts;
-
 /// <summary>
 /// Command request fro login with a user email and a password.
 /// </summary>

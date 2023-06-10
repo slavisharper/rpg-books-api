@@ -1,4 +1,4 @@
-﻿namespace RpgBooks.Modules.Identity.Application.Repositories.User;
+﻿namespace RpgBooks.Modules.Identity.Application.Repositories.User.Model;
 
 /// <summary>
 /// User details read model.
@@ -13,7 +13,7 @@ public record UserDetailsReadModel
     /// <summary>
     /// Gets the user email.
     /// </summary>
-    public string Email { get; init; } =  default!;
+    public string Email { get; init; } = default!;
 
     /// <summary>
     /// Gets the user email confirmation status.

@@ -4,8 +4,6 @@ using FluentValidation;
 
 using RpgBooks.Modules.Identity.Domain.Settings;
 
-using Microsoft.Extensions.Options;
-
 /// <summary>
 /// Login user command validator.
 /// </summary>

@@ -1,6 +1,5 @@
 ﻿namespace RpgBooks.Modules.Identity.Application.Commands.Register;
 
-using RpgBooks.Libraries.Module.Application.Commands.Contracts;
 using RpgBooks.Modules.Identity.Application.Commands.Common;
 
 /// <summary>

@@ -1,14 +1,8 @@
 ﻿namespace RpgBooks.Modules.Identity.Application.Queries.Details;
 
-using RpgBooks.Libraries.Module.Application.Queries.Contracts;
-using RpgBooks.Libraries.Module.Application.Queries.Extensions;
-using RpgBooks.Libraries.Module.Application.Results.Contracts;
-using RpgBooks.Libraries.Module.Application.Services.CurrentUser;
 using RpgBooks.Modules.Identity.Application.Repositories.User;
+using RpgBooks.Modules.Identity.Application.Repositories.User.Model;
 using RpgBooks.Modules.Identity.Application.Resources;
-
-using System.Threading;
-using System.Threading.Tasks;
 
 internal sealed class UserDetailsQueryHandler : IResultQueryHandler<UserDetailsQuery, UserDetailsReadModel>
 {

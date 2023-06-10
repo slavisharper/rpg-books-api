@@ -3,6 +3,8 @@
 using Microsoft.Extensions.Options;
 
 using RpgBooks.Libraries.Module.Application.Settings;
+using RpgBooks.Modules.Identity.Application.Repositories.User;
+using RpgBooks.Modules.Identity.Application.Repositories.User.Model;
 using RpgBooks.Modules.Identity.Domain.Entities;
 using RpgBooks.Modules.Identity.Domain.Services.Abstractions;
 using RpgBooks.Modules.Identity.Domain.Settings;
@@ -16,18 +18,22 @@ internal sealed class SecurityTokensService : ISecurityTokensService
 {
     private readonly ApplicationSecrets appSecrets;
     private readonly IdentitySettings identitySettings;
+    private readonly IUserReadOnlyRepository userReadOnlyRepository;
 
     /// <summary>
     /// Creates a new instance of <see cref="SecurityTokensService"/>.
     /// </summary>
+    /// <param name="userReadOnlyRepository">User read only repository.</param>
     /// <param name="appSecrets">Application secrets options.</param>
     /// <param name="identitySettings">Identity module settings</param>
     public SecurityTokensService(
+        IUserReadOnlyRepository userReadOnlyRepository,
         IOptions<ApplicationSecrets> appSecrets,
         IOptions<IdentitySettings> identitySettings)
     {
         this.appSecrets = appSecrets.Value;
         this.identitySettings = identitySettings.Value;
+        this.userReadOnlyRepository = userReadOnlyRepository;
     }
 
     /// <inheritdoc/>
@@ -82,16 +88,16 @@ internal sealed class SecurityTokensService : ISecurityTokensService
     }
 
     /// <inheritdoc/>
-    public SecurityToken? GetLastEmailConfirmationToken(User user)
-        => user.SecurityTokens
-            .OrderByDescending(t => t.Created)
-            .FirstOrDefault(t => t.TokenType == SecurityTokenType.ConfirmEmail);
+    public ValueTask<SecurityTokenReadModel?> GetLastEmailConfirmationToken(int userId, CancellationToken cancellation = default)
+        => this.userReadOnlyRepository.GetActualToken(userId, SecurityTokenType.ConfirmEmail, cancellation);
 
     /// <inheritdoc/>
-    public SecurityToken? GetLastRefreshToken(User user, string sessionId)
-        => user.SecurityTokens
-            .OrderByDescending(t => t.Created)
-            .FirstOrDefault(t => t.TokenType == SecurityTokenType.RefreshAuthentication && t.SessionId == sessionId);
+    public ValueTask<SecurityTokenReadModel?> GetLastPasswordResetToken(int userId, CancellationToken cancellation = default)
+        => this.userReadOnlyRepository.GetActualToken(userId, SecurityTokenType.ResetPassword, cancellation);
+
+    /// <inheritdoc/>
+    public ValueTask<SecurityTokenReadModel?> GetLastRefreshToken(int userId, string? sessionId, CancellationToken cancellation = default)
+        => this.userReadOnlyRepository.GetActualToken(userId, SecurityTokenType.ResetPassword, sessionId, cancellation);
 
     private ValueTask<TokenModel> GenerateToken(User user, SecurityTokenType tokenType, TimeSpan validity, string? sessionId, CancellationToken cancellation)
     {

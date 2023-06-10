@@ -1,10 +1,12 @@
 ﻿namespace RpgBooks.Modules.Identity.Application.Commands.ChangePassword;
 
 using RpgBooks.Libraries.Module.Presentation.Endpoints;
+using RpgBooks.Libraries.Module.Presentation.Endpoints.Attributes;
 
 /// <summary>
 /// Change password endpoint.
 /// </summary>
+[AuthorizeEndpoint]
 public sealed class ChangePasswordEndpoint : ApiEndpoint<ChangePasswordCommand>
 {
     /// <summary>

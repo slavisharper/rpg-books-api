@@ -1,20 +1,9 @@
 ﻿namespace RpgBooks.Modules.Identity.Application.Commands.ConfirmEmail;
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-
-using RpgBooks.Libraries.Module.Application.Commands;
-using RpgBooks.Libraries.Module.Application.Commands.Extensions;
-using RpgBooks.Libraries.Module.Application.Results.Contracts;
-using RpgBooks.Libraries.Module.Application.Services;
-using RpgBooks.Libraries.Module.Application.Settings;
+using RpgBooks.Modules.Identity.Application.Commands.Common;
 using RpgBooks.Modules.Identity.Application.Resources;
 using RpgBooks.Modules.Identity.Domain.Repositories;
 using RpgBooks.Modules.Identity.Domain.Services.Abstractions;
-
-using System.Security;
-using System.Threading;
-using System.Threading.Tasks;
 
 internal sealed class ConfirmEmailCommandHandler : BaseCommandHandler<ConfirmEmailCommand>
 {
@@ -37,20 +26,27 @@ internal sealed class ConfirmEmailCommandHandler : BaseCommandHandler<ConfirmEma
 
     public override async Task<IAppResult> HandleCommand(ConfirmEmailCommand request, CancellationToken cancellation)
     {
-        var user = await this.userReopository.GetByIdAsync(request.UserId, q => q.Include(u => u.SecurityTokens), cancellation);
+        var user = await this.userReopository.GetAsync(request.UserId, cancellation);
         if (user is null)
         {
             return this.NotFound(Messages.UserNotFound);
         }
 
-        if (user.EmailConfirmed)
+        var userValidationResult = this.ValidateUser(user);
+        if (userValidationResult is not null)
+        {
+            return userValidationResult;
+        }
+
+        if (user!.EmailConfirmed)
         {
             return this.Success(Messages.EmailAlreadyConfirmed);
         }
 
         var confirmationToken = this.httpUtilities.UrlDecode(request.Token);
-        var lastConfirmationToken = this.securityTokensService.GetLastEmailConfirmationToken(user);
+        var lastConfirmationToken = await this.securityTokensService.GetLastEmailConfirmationToken(user.Id);
         if (lastConfirmationToken is null
+            || lastConfirmationToken.IsExpired
             || confirmationToken != lastConfirmationToken.Value.Decrypt(secrets.TokenProtectionSecret))
         {
             return this.ValidationFailed(Messages.InvalidEmailConfirmationToken);

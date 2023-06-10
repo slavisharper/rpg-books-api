@@ -1,7 +1,5 @@
 ﻿namespace RpgBooks.Modules.Identity.Application.Commands.RefreshToken;
 
-using RpgBooks.Libraries.Module.Application.Commands.Contracts;
-
 /// <summary>
 /// Refresh authentication token command request.
 /// </summary>

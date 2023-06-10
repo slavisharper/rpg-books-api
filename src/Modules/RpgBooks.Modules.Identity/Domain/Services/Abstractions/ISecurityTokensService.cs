@@ -1,5 +1,6 @@
 ﻿namespace RpgBooks.Modules.Identity.Domain.Services.Abstractions;
 
+using RpgBooks.Modules.Identity.Application.Repositories.User.Model;
 using RpgBooks.Modules.Identity.Domain.Entities;
 
 /// <summary>
@@ -51,15 +52,25 @@ public interface ISecurityTokensService
     /// <summary>
     /// Get the last refresh token for a user session.
     /// </summary>
-    /// <param name="user">User instance.</param>
+    /// <param name="userId">User id.</param>
     /// <param name="sessionId">Session Id.</param>
+    /// <param name="cancellation">Cancellation token.</param>
     /// <returns>The last created refresh token for the given session id.</returns>
-    SecurityToken? GetLastRefreshToken(User user, string sessionId);
+    ValueTask<SecurityTokenReadModel?> GetLastRefreshToken(int userId, string? sessionId, CancellationToken cancellation = default);
 
     /// <summary>
     /// Get the last email confirmation token that is valid and can be used for the given user.
     /// </summary>
-    /// <param name="user">User instance.</param>
+    /// <param name="userId">User id.</param>
+    /// <param name="cancellation">Cancellation token.</param>
     /// <returns>The last created email confirmation token for the given user.</returns>
-    SecurityToken? GetLastEmailConfirmationToken(User user);
+    ValueTask<SecurityTokenReadModel?> GetLastEmailConfirmationToken(int userId, CancellationToken cancellation = default);
+
+    /// <summary>
+    /// Get the last password reset token that is valid and can be used for the given user.
+    /// </summary>
+    /// <param name="userId">User id.</param>
+    /// <param name="cancellation">Cancellation token.</param>
+    /// <returns>The last password reset token for the given user.</returns>
+    ValueTask<SecurityTokenReadModel?> GetLastPasswordResetToken(int userId, CancellationToken cancellation = default);
 }

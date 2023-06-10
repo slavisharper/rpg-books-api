@@ -2,16 +2,8 @@
 
 using FluentValidation;
 
-using Microsoft.Extensions.Options;
-
 using RpgBooks.Modules.Identity.Application.Commands.Common;
 using RpgBooks.Modules.Identity.Domain.Settings;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 /// <summary>
 /// Change password command request validator.

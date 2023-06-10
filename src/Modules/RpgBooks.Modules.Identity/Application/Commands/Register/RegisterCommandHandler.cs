@@ -1,18 +1,9 @@
 ﻿namespace RpgBooks.Modules.Identity.Application.Commands.Register;
 
-using Microsoft.Extensions.Options;
-
-using RpgBooks.Libraries.Module.Application.Commands;
-using RpgBooks.Libraries.Module.Application.Commands.Extensions;
-using RpgBooks.Libraries.Module.Application.Results.Contracts;
-using RpgBooks.Libraries.Module.Application.Settings;
 using RpgBooks.Modules.Identity.Application.Resources;
 using RpgBooks.Modules.Identity.Domain.Builders.Abstractions;
 using RpgBooks.Modules.Identity.Domain.Repositories;
 using RpgBooks.Modules.Identity.Domain.Services.Abstractions;
-
-using System.Threading;
-using System.Threading.Tasks;
 
 internal sealed class RegisterCommandHandler : BaseCommandHandler<RegisterCommand, RegisterResponseModel>
 {

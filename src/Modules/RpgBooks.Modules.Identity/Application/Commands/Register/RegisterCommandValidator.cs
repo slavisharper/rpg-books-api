@@ -6,7 +6,6 @@ using RpgBooks.Modules.Identity.Application.Resources;
 using RpgBooks.Modules.Identity.Domain.Repositories;
 using RpgBooks.Modules.Identity.Domain.Settings;
 
-using Microsoft.Extensions.Options;
 using RpgBooks.Modules.Identity.Application.Commands.Common;
 
 /// <summary>

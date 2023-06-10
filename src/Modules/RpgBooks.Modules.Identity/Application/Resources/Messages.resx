@@ -147,6 +147,9 @@
   <data name="InvalidRefreshToken" xml:space="preserve">
     <value>Invalid refresh token value!</value>
   </data>
+  <data name="InvalidResetPasswordToken" xml:space="preserve">
+    <value>Invalid password reset request!</value>
+  </data>
   <data name="JwtReadFailed" xml:space="preserve">
     <value>JWT was not read properly! Maybe its value is no in a valid format.</value>
   </data>

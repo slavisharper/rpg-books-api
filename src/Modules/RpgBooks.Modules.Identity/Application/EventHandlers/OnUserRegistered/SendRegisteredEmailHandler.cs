@@ -4,9 +4,6 @@ using RpgBooks.Libraries.Module.Application.Services.Email;
 using RpgBooks.Libraries.Module.Domain.Events;
 using RpgBooks.Modules.Identity.Domain.Events;
 
-using System.Threading;
-using System.Threading.Tasks;
-
 internal class SendRegisteredEmailHandler : IDomainEventHandler<UserRegisteredEvent>
 {
     private readonly IEmailSender emailSender;

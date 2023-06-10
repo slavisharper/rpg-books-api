@@ -1,21 +1,11 @@
 ﻿namespace RpgBooks.Modules.Identity.Application.Commands.Login;
 
-using Cysharp.Text;
-
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-
-using RpgBooks.Libraries.Module.Application.Commands;
-using RpgBooks.Libraries.Module.Application.Commands.Extensions;
-using RpgBooks.Libraries.Module.Application.Results.Contracts;
+using RpgBooks.Modules.Identity.Application.Commands.Common;
 using RpgBooks.Modules.Identity.Application.Resources;
 using RpgBooks.Modules.Identity.Domain.Repositories;
 using RpgBooks.Modules.Identity.Domain.Services.Abstractions;
 using RpgBooks.Modules.Identity.Domain.Services.Jwt;
 using RpgBooks.Modules.Identity.Domain.Settings;
-
-using System.Threading;
-using System.Threading.Tasks;
 
 internal class LoginCommandHandler : BaseCommandHandler<LoginCommand, LoginResponseModel>
 {
@@ -46,23 +36,18 @@ internal class LoginCommandHandler : BaseCommandHandler<LoginCommand, LoginRespo
             query => query.Include(u => u.Claims).Include(u => u.Roles),
             cancellation);
 
-        // TODO: Extract this to a common method for all handlers that have to check the user and are using public endpoint.
         if (user is null)
         {
-            return this.ValidationFailed(Messages.InvalidLogin);
+            return this.NotFound(Messages.UserNotFound);
         }
 
-        if (user.Blocked)
+        var userValidationResult = this.ValidateUser(user);
+        if (userValidationResult is not null)
         {
-            return this.ValidationFailed(Messages.AccountBlocked);
+            return userValidationResult;
         }
 
-        if (user.LockedOut)
-        {
-            return this.ValidationFailed(ZString.Format(Messages.LockedOut, user.LockedPeriodInMinutes));
-        }
-
-        bool isValid = this.passwordHasher.VerifyPassword(request.Password, user.PasswordHash);
+        bool isValid = this.passwordHasher.VerifyPassword(request.Password, user!.PasswordHash);
         if (!isValid)
         {
             user.RecordFailedAccess(

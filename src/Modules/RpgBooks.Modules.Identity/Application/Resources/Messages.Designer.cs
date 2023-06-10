@@ -151,6 +151,15 @@ namespace RpgBooks.Modules.Identity.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Invalid password reset request!.
+        /// </summary>
+        internal static string InvalidResetPasswordToken {
+            get {
+                return ResourceManager.GetString("InvalidResetPasswordToken", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to JWT was not read properly! Maybe its value is no in a valid format..
         /// </summary>
         internal static string JwtReadFailed {

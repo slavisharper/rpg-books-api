@@ -1,15 +1,8 @@
 ﻿namespace RpgBooks.Modules.Identity.Application.Commands.ChangePassword;
 
-using RpgBooks.Libraries.Module.Application.Commands;
-using RpgBooks.Libraries.Module.Application.Commands.Extensions;
-using RpgBooks.Libraries.Module.Application.Results.Contracts;
-using RpgBooks.Libraries.Module.Application.Services.CurrentUser;
 using RpgBooks.Modules.Identity.Application.Resources;
 using RpgBooks.Modules.Identity.Domain.Repositories;
 using RpgBooks.Modules.Identity.Domain.Services.Abstractions;
-
-using System.Threading;
-using System.Threading.Tasks;
 
 internal sealed class ChangePasswordCommandHandler : BaseCommandHandler<ChangePasswordCommand>
 {

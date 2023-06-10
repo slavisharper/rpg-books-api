@@ -1,21 +1,11 @@
 ﻿namespace RpgBooks.Modules.Identity.Application.Commands.RefreshToken;
 
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-
-using RpgBooks.Libraries.Module.Application.Commands;
-using RpgBooks.Libraries.Module.Application.Commands.Extensions;
-using RpgBooks.Libraries.Module.Application.Results.Contracts;
-using RpgBooks.Libraries.Module.Application.Settings;
+using RpgBooks.Modules.Identity.Application.Commands.Common;
 using RpgBooks.Modules.Identity.Application.Commands.Login;
 using RpgBooks.Modules.Identity.Application.Resources;
 using RpgBooks.Modules.Identity.Domain.Repositories;
 using RpgBooks.Modules.Identity.Domain.Services.Abstractions;
 using RpgBooks.Modules.Identity.Domain.Services.Jwt;
-
-using System.Security;
-using System.Threading;
-using System.Threading.Tasks;
 
 internal sealed class RefreshTokenCommandHandler : BaseCommandHandler<RefreshTokenCommand, LoginResponseModel>
 {
@@ -54,27 +44,23 @@ internal sealed class RefreshTokenCommandHandler : BaseCommandHandler<RefreshTok
 
         var user = await this.userRepository.GetByIdAsync(
             int.Parse(jwtPayload.Uid),
-            q => q.Include(u => u.SecurityTokens),
+            q => q.Include(u => u.Roles).Include(u => u.Claims),
             cancellation);
 
-        // TODO: Extract this to a common method for all handlers that have to check the user and are using public endpoint.
         if (user is null)
         {
             return this.NotFound(Messages.UserNotFound);
         }
 
-        if (user.Blocked)
+        var userValidationResult = this.ValidateUser(user, jwtPayload.SecurityStamp);
+        if (userValidationResult is not null)
         {
-            return this.Unauthorized(Messages.AccountBlocked);
+            return userValidationResult;
         }
 
-        if (jwtPayload.SecurityStamp != user.SecurityStamp)
-        {
-            return this.Unauthorized(Messages.AuthorityModifiedFailure);
-        }
-
-        var lastRefreshToken = this.securityTokensService.GetLastRefreshToken(user, jwtPayload.SessionId);
+        var lastRefreshToken = await this.securityTokensService.GetLastRefreshToken(user.Id, jwtPayload.SessionId);
         if (lastRefreshToken is null
+            || lastRefreshToken.IsExpired
             || lastRefreshToken.SessionId != jwtPayload.SessionId
             || request.RefreshToken != lastRefreshToken?.Value.Decrypt(this.secrets.TokenProtectionSecret))
         {

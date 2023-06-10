@@ -2,7 +2,7 @@
 
 using RpgBooks.Libraries.Module.Presentation.Endpoints;
 using RpgBooks.Libraries.Module.Presentation.Endpoints.Attributes;
-using RpgBooks.Modules.Identity.Application.Repositories.User;
+using RpgBooks.Modules.Identity.Application.Repositories.User.Model;
 
 /// <summary>
 /// User details endpoint.
