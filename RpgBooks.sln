@@ -43,9 +43,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{2D89B52C-5
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{05542129-8265-4365-B5EE-9949C9047A43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgBooks.Libraries.System.Tests", "test\Libraries\RpgBooks.Libraries.System.Tests\RpgBooks.Libraries.System.Tests.csproj", "{5E448DB7-0264-423A-A508-D17DC08C49D5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RpgBooks.Libraries.System.Tests", "test\Libraries\RpgBooks.Libraries.System.Tests\RpgBooks.Libraries.System.Tests.csproj", "{5E448DB7-0264-423A-A508-D17DC08C49D5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgBooks.Api.Common", "src\Api\RpgBooks.Api.Common\RpgBooks.Api.Common.csproj", "{2D7785A8-D23B-400F-9A57-02F384021EE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RpgBooks.Api.Common", "src\Api\RpgBooks.Api.Common\RpgBooks.Api.Common.csproj", "{2D7785A8-D23B-400F-9A57-02F384021EE4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Modules", "Modules", "{A3B8EDDD-4DDC-440A-B20E-E1C581AE64BE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RpgBooks.Modules.Identity.Tests", "test\Modules\RpgBooks.Modules.Identity.Tests\RpgBooks.Modules.Identity.Tests.csproj", "{6AAF1F5C-99CE-4D40-A7A7-15676DD348EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +109,10 @@ Global
 		{2D7785A8-D23B-400F-9A57-02F384021EE4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2D7785A8-D23B-400F-9A57-02F384021EE4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2D7785A8-D23B-400F-9A57-02F384021EE4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AAF1F5C-99CE-4D40-A7A7-15676DD348EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AAF1F5C-99CE-4D40-A7A7-15676DD348EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AAF1F5C-99CE-4D40-A7A7-15676DD348EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AAF1F5C-99CE-4D40-A7A7-15676DD348EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -127,6 +135,8 @@ Global
 		{05542129-8265-4365-B5EE-9949C9047A43} = {2D89B52C-5550-4CC2-A7A4-92D458C41E35}
 		{5E448DB7-0264-423A-A508-D17DC08C49D5} = {05542129-8265-4365-B5EE-9949C9047A43}
 		{2D7785A8-D23B-400F-9A57-02F384021EE4} = {4FF9CC83-17BA-4A2C-AFA9-A61CE9913550}
+		{A3B8EDDD-4DDC-440A-B20E-E1C581AE64BE} = {2D89B52C-5550-4CC2-A7A4-92D458C41E35}
+		{6AAF1F5C-99CE-4D40-A7A7-15676DD348EE} = {A3B8EDDD-4DDC-440A-B20E-E1C581AE64BE}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B2F15811-EC3B-400C-9FFD-E502A6901005}

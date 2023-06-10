@@ -51,7 +51,6 @@ internal sealed class SecurityTokensService : ISecurityTokensService
         var token = new SecurityToken(
             phoneToken.Encrypt(this.appSecrets.TokenProtectionSecret),
             SecurityTokenType.ConfirmPhoneNumber,
-            user,
             validity);
 
         user.AddToken(token);
@@ -100,7 +99,6 @@ internal sealed class SecurityTokensService : ISecurityTokensService
         var token = new SecurityToken(
             tokenValue.Encrypt(this.appSecrets.TokenProtectionSecret),
             tokenType,
-            user,
             validity,
             sessionId);
 

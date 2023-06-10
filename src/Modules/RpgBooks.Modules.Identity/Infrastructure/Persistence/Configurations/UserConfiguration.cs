@@ -69,6 +69,6 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder
             .HasMany(u => u.SecurityTokens)
-            .WithOne(t => t.User);
+            .WithOne();
     }
 }

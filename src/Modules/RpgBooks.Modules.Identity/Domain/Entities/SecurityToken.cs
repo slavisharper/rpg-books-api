@@ -8,10 +8,9 @@ using RpgBooks.Libraries.Module.Domain.Entities;
 /// </summary>
 public sealed class SecurityToken : BaseEntity<int>
 {
-    internal SecurityToken(string value, SecurityTokenType tokenType, User user, string? sessionId = null)
+    internal SecurityToken(string value, SecurityTokenType tokenType, string? sessionId = null)
     {
         this.Value = value;
-        this.User = user;
         this.TokenType = tokenType;
         this.Created = DateTimeOffset.UtcNow;
         this.SessionId = sessionId;
@@ -19,8 +18,8 @@ public sealed class SecurityToken : BaseEntity<int>
         this.Validate();
     }
 
-    internal SecurityToken(string value, SecurityTokenType tokenType, User user, TimeSpan validity, string? sessionId = null)
-        : this(value, tokenType, user, sessionId)
+    internal SecurityToken(string value, SecurityTokenType tokenType, TimeSpan validity, string? sessionId = null)
+        : this(value, tokenType, sessionId)
     {
         this.ExpirationTime = DateTimeOffset.UtcNow.Add(validity!);
     }
@@ -32,7 +31,6 @@ public sealed class SecurityToken : BaseEntity<int>
         this.ExpirationTime= expirationTime;
         this.SessionId = sessionId;
 
-        this.User = default!;
         this.TokenType= default!;
     }
 
@@ -40,11 +38,6 @@ public sealed class SecurityToken : BaseEntity<int>
     /// Gets the encrypted token value.
     /// </summary>
     public string Value { get; private set; } = default!;
-
-    /// <summary>
-    /// Gets the an user security token.
-    /// </summary>
-    public User User { get; private set; }
 
     /// <summary>
     /// Gets the date of creation of the token.

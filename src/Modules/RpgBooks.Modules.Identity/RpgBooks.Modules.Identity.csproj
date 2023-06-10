@@ -47,4 +47,9 @@
 	  <Folder Include="Infrastructure\Persistence\Migrations\" />
 	</ItemGroup>
 
+	<ItemGroup>
+		<InternalsVisibleTo Include="RpgBooks.Modules.Identity.Tests"/>
+		<InternalsVisibleTo Include="DynamicProxyGenAssembly2"/>
+	</ItemGroup>
+
 </Project>
