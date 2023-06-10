@@ -58,18 +58,9 @@ internal sealed class RefreshTokenCommandHandler : BaseCommandHandler<RefreshTok
             return userValidationResult;
         }
 
-        var lastRefreshToken = await this.securityTokensService.GetLastRefreshToken(user.Id, jwtPayload.SessionId);
-        if (lastRefreshToken is null
-            || lastRefreshToken.IsExpired
-            || lastRefreshToken.SessionId != jwtPayload.SessionId
-            || request.RefreshToken != lastRefreshToken?.Value.Decrypt(this.secrets.TokenProtectionSecret))
+        if (await this.securityTokensService.DisproveRefreshToken(user.Id, request.RefreshToken, jwtPayload.SessionId, cancellation))
         {
             return this.Unauthorized(Messages.InvalidRefreshToken);
-        }
-
-        if (lastRefreshToken.ExpirationTime is not null && lastRefreshToken.ExpirationTime < DateTimeOffset.UtcNow)
-        {
-            return this.Unauthorized(Messages.ExpiredRefreshToken);
         }
 
         var token = this.jwtTokenManager.GenerateToken(user, jwtPayload.SessionId);

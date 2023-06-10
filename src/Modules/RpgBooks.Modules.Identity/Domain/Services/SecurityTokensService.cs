@@ -1,7 +1,5 @@
 ﻿namespace RpgBooks.Modules.Identity.Domain.Services;
 
-using Microsoft.Extensions.Options;
-
 using RpgBooks.Libraries.Module.Application.Settings;
 using RpgBooks.Modules.Identity.Application.Repositories.User;
 using RpgBooks.Modules.Identity.Application.Repositories.User.Model;
@@ -9,14 +7,12 @@ using RpgBooks.Modules.Identity.Domain.Entities;
 using RpgBooks.Modules.Identity.Domain.Services.Abstractions;
 using RpgBooks.Modules.Identity.Domain.Settings;
 
-using System.Security;
-
 /// <summary>
 /// Service responsible for generating and managing user security tokens.
 /// </summary>
 internal sealed class SecurityTokensService : ISecurityTokensService
 {
-    private readonly ApplicationSecrets appSecrets;
+    private readonly ApplicationSecrets secrets;
     private readonly IdentitySettings identitySettings;
     private readonly IUserReadOnlyRepository userReadOnlyRepository;
 
@@ -31,7 +27,7 @@ internal sealed class SecurityTokensService : ISecurityTokensService
         IOptions<ApplicationSecrets> appSecrets,
         IOptions<IdentitySettings> identitySettings)
     {
-        this.appSecrets = appSecrets.Value;
+        this.secrets = appSecrets.Value;
         this.identitySettings = identitySettings.Value;
         this.userReadOnlyRepository = userReadOnlyRepository;
     }
@@ -55,7 +51,7 @@ internal sealed class SecurityTokensService : ISecurityTokensService
             this.identitySettings.SecurityTokenSettings.EmailConfirmationTokenValidityInHours);
 
         var token = new SecurityToken(
-            phoneToken.Encrypt(this.appSecrets.TokenProtectionSecret),
+            phoneToken.Encrypt(this.secrets.TokenProtectionSecret),
             SecurityTokenType.ConfirmPhoneNumber,
             validity);
 
@@ -88,22 +84,47 @@ internal sealed class SecurityTokensService : ISecurityTokensService
     }
 
     /// <inheritdoc/>
-    public ValueTask<SecurityTokenReadModel?> GetLastEmailConfirmationToken(int userId, CancellationToken cancellation = default)
-        => this.userReadOnlyRepository.GetActualToken(userId, SecurityTokenType.ConfirmEmail, cancellation);
+    public async Task<bool> DisproveEmailConfirmationToken(
+        int userId, string confirmationToken, CancellationToken cancellation = default)
+    {
+        var actualToken = await this.userReadOnlyRepository
+            .GetActualToken(userId, SecurityTokenType.ConfirmEmail, cancellation);
+
+        return actualToken is null
+            || actualToken.IsExpired
+            || confirmationToken != actualToken.Value.Decrypt(this.secrets.TokenProtectionSecret);
+    }
 
     /// <inheritdoc/>
-    public ValueTask<SecurityTokenReadModel?> GetLastPasswordResetToken(int userId, CancellationToken cancellation = default)
-        => this.userReadOnlyRepository.GetActualToken(userId, SecurityTokenType.ResetPassword, cancellation);
+    public async Task<bool> DisproveRefreshToken(
+        int userId, string refreshToken, string? sessionId, CancellationToken cancellation = default)
+    {
+        var actualToken = await this.userReadOnlyRepository
+            .GetActualToken(userId, SecurityTokenType.RefreshAuthentication, sessionId, cancellation);
+        string actualRefreshToken = actualToken?.Value.Decrypt(this.secrets.TokenProtectionSecret) ?? string.Empty;
+
+        return actualToken is null
+            || actualToken.IsExpired
+            || refreshToken != actualRefreshToken;
+    }
 
     /// <inheritdoc/>
-    public ValueTask<SecurityTokenReadModel?> GetLastRefreshToken(int userId, string? sessionId, CancellationToken cancellation = default)
-        => this.userReadOnlyRepository.GetActualToken(userId, SecurityTokenType.ResetPassword, sessionId, cancellation);
+    public async Task<bool> DisproveResetPasswordToken(
+        int userId, string resetPasswordToken, CancellationToken cancellation = default)
+    {
+        var actualToken = await this.userReadOnlyRepository
+            .GetActualToken(userId, SecurityTokenType.ResetPassword, cancellation);
+
+        return actualToken is null
+            || actualToken.IsExpired
+            || resetPasswordToken != actualToken.Value.Decrypt(this.secrets.TokenProtectionSecret);
+    }
 
     private ValueTask<TokenModel> GenerateToken(User user, SecurityTokenType tokenType, TimeSpan validity, string? sessionId, CancellationToken cancellation)
     {
         string tokenValue = RandomTokenProvider.GenerateRandomToken();
         var token = new SecurityToken(
-            tokenValue.Encrypt(this.appSecrets.TokenProtectionSecret),
+            tokenValue.Encrypt(this.secrets.TokenProtectionSecret),
             tokenType,
             validity,
             sessionId);

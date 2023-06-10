@@ -50,27 +50,30 @@ public interface ISecurityTokensService
     ValueTask<TokenModel> GenerateRefreshToken(User user, string? sessionId, CancellationToken cancellation = default);
 
     /// <summary>
-    /// Get the last refresh token for a user session.
+    /// Checks if the given email confirmation token is invalid.
     /// </summary>
-    /// <param name="userId">User id.</param>
-    /// <param name="sessionId">Session Id.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="confirmationToken">Email confirmation token.</param>
     /// <param name="cancellation">Cancellation token.</param>
-    /// <returns>The last created refresh token for the given session id.</returns>
-    ValueTask<SecurityTokenReadModel?> GetLastRefreshToken(int userId, string? sessionId, CancellationToken cancellation = default);
+    /// <returns>True if the token is invalid.</returns>
+    Task<bool> DisproveEmailConfirmationToken(int userId, string confirmationToken, CancellationToken cancellation = default);
 
     /// <summary>
-    /// Get the last email confirmation token that is valid and can be used for the given user.
+    /// Checks if the given refresh token is invalid.
     /// </summary>
-    /// <param name="userId">User id.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="refreshToken">Refresh token value.</param>
+    /// <param name="sessionId">Session id to which the refresh token is related.</param>
     /// <param name="cancellation">Cancellation token.</param>
-    /// <returns>The last created email confirmation token for the given user.</returns>
-    ValueTask<SecurityTokenReadModel?> GetLastEmailConfirmationToken(int userId, CancellationToken cancellation = default);
+    /// <returns>True if the token is invalid.</returns>
+    Task<bool> DisproveRefreshToken(int userId, string refreshToken, string? sessionId, CancellationToken cancellation = default);
 
     /// <summary>
-    /// Get the last password reset token that is valid and can be used for the given user.
+    /// Checks if the given reset password token is invalid.
     /// </summary>
-    /// <param name="userId">User id.</param>
+    /// <param name="userId">User identifier.</param>
+    /// <param name="resetPasswordToken">Email confirmation token.</param>
     /// <param name="cancellation">Cancellation token.</param>
-    /// <returns>The last password reset token for the given user.</returns>
-    ValueTask<SecurityTokenReadModel?> GetLastPasswordResetToken(int userId, CancellationToken cancellation = default);
+    /// <returns>True if the token is invalid.</returns>
+    Task<bool> DisproveResetPasswordToken(int userId, string resetPasswordToken, CancellationToken cancellation = default);
 }

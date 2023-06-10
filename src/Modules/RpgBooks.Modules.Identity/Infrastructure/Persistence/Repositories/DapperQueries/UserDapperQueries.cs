@@ -18,10 +18,7 @@ internal static class UserDapperQueries
     internal const string GetActualSecurityToken = @"
         SELECT TOP (1)
 	        [Value],
-	        [Created],
-	        [ExpirationTime],
-	        [TokenType_Value] AS [Type],
-	        [SessionId]
+	        [ExpirationTime]
         FROM [IDT_SecurityTokens]
         WHERE UserId = @UserId AND [TokenType_Value] = @TokenType
         ORDER BY [Created] DESC";
@@ -29,10 +26,7 @@ internal static class UserDapperQueries
     internal const string GetActualSecurityTokenWithSession = @"
         SELECT TOP (1)
 	        [Value],
-	        [Created],
-	        [ExpirationTime],
-	        [TokenType_Value] AS [Type],
-	        [SessionId]
+	        [ExpirationTime]
         FROM [IDT_SecurityTokens]
         WHERE UserId = @UserId AND [TokenType_Value] = @TokenType AND [SessionId] = @SessionId
         ORDER BY [Created] DESC";

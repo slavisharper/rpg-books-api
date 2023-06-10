@@ -42,10 +42,7 @@ internal sealed class ResetPasswordCommandHandler : BaseCommandHandler<ResetPass
         }
 
         string resetToken = this.httpUtilities.UrlDecode(request.ResetToken)!;
-        var lastResetToken = await this.securityTokensService.GetLastPasswordResetToken(user.Id);
-        if (lastResetToken is null
-            || lastResetToken.IsExpired
-            || resetToken != lastResetToken.Value.Decrypt(secrets.TokenProtectionSecret))
+        if (await this.securityTokensService.DisproveResetPasswordToken(user.Id, resetToken,cancellation))
         {
             return this.ValidationFailed(Messages.InvalidResetPasswordToken);
         }

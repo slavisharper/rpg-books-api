@@ -43,11 +43,8 @@ internal sealed class ConfirmEmailCommandHandler : BaseCommandHandler<ConfirmEma
             return this.Success(Messages.EmailAlreadyConfirmed);
         }
 
-        var confirmationToken = this.httpUtilities.UrlDecode(request.Token);
-        var lastConfirmationToken = await this.securityTokensService.GetLastEmailConfirmationToken(user.Id);
-        if (lastConfirmationToken is null
-            || lastConfirmationToken.IsExpired
-            || confirmationToken != lastConfirmationToken.Value.Decrypt(secrets.TokenProtectionSecret))
+        var confirmationToken = this.httpUtilities.UrlDecode(request.Token)!;
+        if (await this.securityTokensService.DisproveEmailConfirmationToken(user.Id, confirmationToken, cancellation))
         {
             return this.ValidationFailed(Messages.InvalidEmailConfirmationToken);
         }
