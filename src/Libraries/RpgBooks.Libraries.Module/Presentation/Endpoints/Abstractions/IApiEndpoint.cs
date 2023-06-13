@@ -34,9 +34,14 @@ public interface IApiEndpoint
     Delegate Handler { get; }
 
     /// <summary>
-    /// Register current endpoint to the application builder.
+    /// Gets the endpoint response type.
     /// </summary>
-    /// <param name="app">Application builder instance.</param>
-    /// <returns>Registered endpoint builder.</returns>
-    RouteHandlerBuilder Register(WebApplication app);
+    Type ResponseType { get; }
+
+    /// <summary>
+    /// Gets the full path of the endpoint combined with the prefix.
+    /// </summary>
+    /// <param name="prefix">Endpoint prefix.</param>
+    /// <returns>Combined endpoint path.</returns>
+    string GetApiPath(string prefix = "");
 }

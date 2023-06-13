@@ -2,11 +2,14 @@
 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 
 using RpgBooks.Libraries.Module.Application.Services;
+using RpgBooks.Libraries.Module.Application.Settings;
 using RpgBooks.Libraries.Module.Infrastructure.Persistence.Abstractions;
 using RpgBooks.Libraries.Module.Presentation.Endpoints.Abstractions;
+using RpgBooks.Libraries.Module.Presentation.Endpoints.Extensions;
 
 /// <summary>
 /// Web Application configuration.
@@ -47,6 +50,7 @@ public static class WebApplicationConfiguration
     {
         var endpoints = serviceProvider.GetServices<IApiEndpoint>();
         var urlProvider = serviceProvider.GetRequiredService<IUrlProvider>();
+        var appSettings = serviceProvider.GetRequiredService<IOptions<ApplicationSettings>>().Value;
 
         foreach (var endpoint in endpoints)
         {
@@ -57,7 +61,7 @@ public static class WebApplicationConfiguration
                 urlProvider.AddEndpointRequestPair(endpoint.Name, requestArgumentType);
             }
 
-            endpoint.Register(app);
+            app.MapEndpoint(endpoint, appSettings.ApiVersion);
         }
 
         return app;

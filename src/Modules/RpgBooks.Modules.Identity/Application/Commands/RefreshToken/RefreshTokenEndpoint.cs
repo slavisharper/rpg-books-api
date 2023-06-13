@@ -2,6 +2,7 @@
 
 using RpgBooks.Libraries.Module.Presentation.Endpoints;
 using RpgBooks.Modules.Identity.Application.Commands.Login;
+using RpgBooks.Modules.Identity.Application.Settings;
 
 /// <summary>
 /// Refresh the authentication token endpoint.
@@ -13,11 +14,11 @@ public sealed class RefreshTokenEndpoint : ApiEndpoint<RefreshTokenCommand, Logi
     /// </summary>
     public RefreshTokenEndpoint()
         : base(
-            "/api/account/refresh-token",
+            ZString.Format("{0}/refresh-token", IdentityApplicationSettings.BaseModulePath),
             nameof(RefreshTokenEndpoint),
-            "account",
+            IdentityApplicationSettings.ModuleTagName,
             EndpointTypes.Post,
-            EndpointDelegates.CreateCommandHandlerDelegate<RefreshTokenCommand, LoginResponseModel>())
+            EndpointDelegates.CommonCommandHandlerDelegate<RefreshTokenCommand, LoginResponseModel>())
     {
     }
 }

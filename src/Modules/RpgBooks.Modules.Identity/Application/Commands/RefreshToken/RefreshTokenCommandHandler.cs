@@ -60,6 +60,8 @@ internal sealed class RefreshTokenCommandHandler : BaseCommandHandler<RefreshTok
 
         if (await this.securityTokensService.DisproveRefreshToken(user.Id, request.RefreshToken, jwtPayload.SessionId, cancellation))
         {
+            // In this case the refresh token might be stolen so the security stamp will be updated.
+            user.GenerateSecurityStamp();
             return this.Unauthorized(Messages.InvalidRefreshToken);
         }
 

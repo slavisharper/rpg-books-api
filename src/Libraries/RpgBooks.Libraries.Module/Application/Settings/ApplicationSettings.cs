@@ -13,12 +13,17 @@ public sealed class ApplicationSettings
     /// <summary>
     /// Gets API URL.
     /// </summary>
-    public string ApplicationUrl { get; private set; } = default!;
+    public string ApplicationUrl { get; init; } = default!;
+
+    /// <summary>
+    /// Gets the API version.
+    /// </summary>
+    public int ApiVersion { get; init; } = 1;
 
     /// <summary>
     /// Gets API URL.
     /// </summary>
-    public string ClientUrl { get; private set; } = default!;
+    public string ClientUrl { get; init; } = default!;
 
     /// <summary>
     /// Gets admin role name.

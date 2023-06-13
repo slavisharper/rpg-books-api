@@ -1,6 +1,8 @@
 ﻿namespace RpgBooks.Modules.Identity.Application.Commands.ConfirmEmail;
 
 using RpgBooks.Libraries.Module.Presentation.Endpoints;
+using RpgBooks.Modules.Identity.Application.Commands.ChangePassword;
+using RpgBooks.Modules.Identity.Application.Settings;
 
 /// <summary>
 /// Confirm a user's email address endpoint.
@@ -12,11 +14,11 @@ public sealed class ConfirmEmailEndpoint : ApiEndpoint<ConfirmEmailCommand>
     /// </summary>
     public ConfirmEmailEndpoint()
 		: base(
-			"/api/account/confirm-email",
+            ZString.Format("{0}/confirm-email", IdentityApplicationSettings.BaseModulePath),
 			nameof(ConfirmEmailEndpoint),
-			"account",
+            IdentityApplicationSettings.ModuleTagName,
 			EndpointTypes.Put,
-			EndpointDelegates.CreateCommandHandlerDelegate<ConfirmEmailCommand>())
+			EndpointDelegates.CommonCommandHandlerDelegate<ConfirmEmailCommand>())
 	{
 	}
 }

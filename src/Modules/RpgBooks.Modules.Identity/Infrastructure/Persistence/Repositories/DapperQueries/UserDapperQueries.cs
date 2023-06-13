@@ -3,7 +3,7 @@ internal static class UserDapperQueries
 {
     internal const string GetDetailsQuery = @"
         SELECT 
-            [Id,
+            [Id],
             [Email_Value] AS [Email],
             [EmailConfirmed],
             [HonorificTitle],

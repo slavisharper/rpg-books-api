@@ -223,6 +223,15 @@ namespace RpgBooks.Modules.Identity.Application.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Your details are updated..
+        /// </summary>
+        internal static string UserDetailsUpdated {
+            get {
+                return ResourceManager.GetString("UserDetailsUpdated", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your email is confirmed..
         /// </summary>
         internal static string UserEmailConfirmed {

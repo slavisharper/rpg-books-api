@@ -1,6 +1,7 @@
 ﻿namespace RpgBooks.Modules.Identity.Application.Commands.Register;
 
 using RpgBooks.Libraries.Module.Presentation.Endpoints;
+using RpgBooks.Modules.Identity.Application.Settings;
 
 /// <summary>
 /// Register user API endpoint.
@@ -12,11 +13,11 @@ public sealed class RegisterEndpoint : ApiEndpoint<RegisterCommand, RegisterResp
     /// </summary>
     public RegisterEndpoint()
         : base(
-            "/api/account",
+            IdentityApplicationSettings.BaseModulePath,
             nameof(RegisterEndpoint),
-            "account",
+            IdentityApplicationSettings.ModuleTagName,
             EndpointTypes.Post,
-            EndpointDelegates.CreateCommandHandlerDelegate<RegisterCommand, RegisterResponseModel>())
+            EndpointDelegates.CommonCommandHandlerDelegate<RegisterCommand, RegisterResponseModel>())
     {
     }
 }

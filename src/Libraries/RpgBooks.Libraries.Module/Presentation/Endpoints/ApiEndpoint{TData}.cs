@@ -35,48 +35,5 @@ public abstract class ApiEndpoint<TRequest, TResponseData> : ApiEndpoint<TReques
     }
 
     /// <inheritdoc />
-    public override RouteHandlerBuilder Register(WebApplication app)
-    {
-        var endpointType = this.GetType();
-
-        RouteHandlerBuilder builder = this.GetRouteBuilder(app)
-            .ApplyCaching(endpointType)
-            .ApplyAuthorization(endpointType)
-            .ApplyCacheRevoking(app, endpointType)
-            .WithName(this.Name)
-            .WithTags(this.Tag);
-
-        if (this.Type == EndpointTypes.Get)
-        {
-            builder
-                .Accepts<TRequest>(MimeTypeNames.Request.Json)
-                .Produces(StatusCodes.Status200OK, typeof(SuccessResultModel<TResponseData>))
-                .Produces(StatusCodes.Status404NotFound, typeof(ErrorResultModel));
-        }
-        else if (this.Type == EndpointTypes.Post)
-        {
-            builder
-                .Accepts<TRequest>(MimeTypeNames.Request.Json)
-                .Produces(StatusCodes.Status200OK, typeof(SuccessResultModel<TResponseData>))
-                .Produces(StatusCodes.Status400BadRequest, typeof(ErrorResultModel));
-        }
-        else if (this.Type == EndpointTypes.Put)
-        {
-            builder
-                .Accepts<TRequest>(MimeTypeNames.Request.Json)
-                .Produces(StatusCodes.Status200OK, typeof(SuccessResultModel<TResponseData>))
-                .Produces(StatusCodes.Status404NotFound, typeof(ErrorResultModel))
-                .Produces(StatusCodes.Status400BadRequest, typeof(ErrorResultModel));
-        }
-        else if (this.Type == EndpointTypes.Delete)
-        {
-            builder
-                .Accepts<TRequest>(MimeTypeNames.Request.Json)
-                .Produces(StatusCodes.Status200OK, typeof(SuccessResultModel<TResponseData>))
-                .Produces(StatusCodes.Status404NotFound, typeof(ErrorResultModel))
-                .Produces(StatusCodes.Status400BadRequest, typeof(ErrorResultModel));
-        }
-
-        return builder;
-    }
+    public override Type ResponseType => typeof(SuccessResultModel<TResponseData>);
 }

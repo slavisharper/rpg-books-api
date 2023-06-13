@@ -2,6 +2,7 @@
 
 using RpgBooks.Libraries.Module.Presentation.Endpoints;
 using RpgBooks.Libraries.Module.Presentation.Endpoints.Attributes;
+using RpgBooks.Modules.Identity.Application.Settings;
 
 /// <summary>
 /// Change password endpoint.
@@ -14,11 +15,11 @@ public sealed class ChangePasswordEndpoint : ApiEndpoint<ChangePasswordCommand>
     /// </summary>
     public ChangePasswordEndpoint()
         : base(
-            "/api/account/change-password",
+            ZString.Format("{0}/change-password", IdentityApplicationSettings.BaseModulePath),
             nameof(ChangePasswordEndpoint),
-            "account",
+            IdentityApplicationSettings.ModuleTagName,
             EndpointTypes.Put,
-            EndpointDelegates.CreateCommandHandlerDelegate<ChangePasswordCommand>())
+            EndpointDelegates.CommonCommandHandlerDelegate<ChangePasswordCommand>())
     {
     }
 }

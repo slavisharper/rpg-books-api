@@ -45,7 +45,7 @@ public static class EndpointDelegates
     /// </summary>
     /// <typeparam name="TRequest">Type of the command request.</typeparam>
     /// <returns>Endpoint handler delegate.</returns>
-    public static Delegate CreateCommandHandlerDelegate<TRequest>()
+    public static Delegate CommonCommandHandlerDelegate<TRequest>()
         where TRequest : ICommand
         => async ([FromServices] ICommandHandlerDispatcher dispatcher, [FromBody] TRequest request, CancellationToken cancellationToken)
             => await dispatcher.Dispatch<TRequest, IAppResult>(request!, cancellationToken).ToIResult();
@@ -56,7 +56,7 @@ public static class EndpointDelegates
     /// <typeparam name="TRequest">Type of the command request.</typeparam>
     /// <typeparam name="TResponseData">Type of the response data contained in the HandlerResult.</typeparam>
     /// <returns>Endpoint handler delegate.</returns>
-    public static Delegate CreateCommandHandlerDelegate<TRequest, TResponseData>()
+    public static Delegate CommonCommandHandlerDelegate<TRequest, TResponseData>()
         where TRequest : ICommand
         => async ([FromServices] ICommandHandlerDispatcher dispatcher, [FromBody] TRequest request, CancellationToken cancellationToken)
             => await dispatcher.Dispatch<TRequest, IAppResult<TResponseData>>(request!, cancellationToken).ToIResult();

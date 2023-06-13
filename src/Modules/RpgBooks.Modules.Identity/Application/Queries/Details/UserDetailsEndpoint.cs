@@ -3,6 +3,7 @@
 using RpgBooks.Libraries.Module.Presentation.Endpoints;
 using RpgBooks.Libraries.Module.Presentation.Endpoints.Attributes;
 using RpgBooks.Modules.Identity.Application.Repositories.User.Model;
+using RpgBooks.Modules.Identity.Application.Settings;
 
 /// <summary>
 /// User details endpoint.
@@ -15,9 +16,9 @@ public sealed class UserDetailsEndpoint : ApiEndpoint<UserDetailsQuery, UserDeta
     /// </summary>
     public UserDetailsEndpoint()
         : base(
-            "/api/account",
+            IdentityApplicationSettings.BaseModulePath,
             nameof(UserDetailsEndpoint),
-            "account",
+            IdentityApplicationSettings.ModuleTagName,
             EndpointTypes.Get,
             EndpointDelegates.QueryHandlerDelegate<UserDetailsQuery, UserDetailsReadModel>())
     {

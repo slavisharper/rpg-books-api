@@ -1,5 +1,7 @@
 ﻿namespace RpgBooks.Libraries.Module.Presentation.Endpoints;
 
+using Cysharp.Text;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -61,63 +63,10 @@ public abstract class ApiEndpoint<TRequest> : IApiEndpoint
     /// </summary>
     public Delegate Handler { get; protected set; }
 
-    /// <inheritdoc />
-    public virtual RouteHandlerBuilder Register(WebApplication app)
-    {
-        var endpointType = this.GetType();
+    /// <inheritdoc/>
+    public virtual Type ResponseType => typeof(SuccessResultModel);
 
-        RouteHandlerBuilder builder = this.GetRouteBuilder(app)
-            .ApplyCaching(endpointType)
-            .ApplyAuthorization(endpointType)
-            .ApplyCacheRevoking(app, endpointType)
-            .WithName(this.Name)
-            .WithTags(this.Tag);
-
-        if (this.Type == EndpointTypes.Get)
-        {
-            builder
-                .Produces(StatusCodes.Status200OK, typeof(SuccessResultModel))
-                .Produces(StatusCodes.Status404NotFound, typeof(ErrorResultModel));
-        }
-        else if (this.Type == EndpointTypes.Post)
-        {
-            builder
-                .Produces(StatusCodes.Status200OK, typeof(SuccessResultModel))
-                .Produces(StatusCodes.Status400BadRequest, typeof(ErrorResultModel));
-        }
-        else if (this.Type == EndpointTypes.Put)
-        {
-            builder
-                .Produces(StatusCodes.Status200OK, typeof(SuccessResultModel))
-                .Produces(StatusCodes.Status404NotFound, typeof(ErrorResultModel))
-                .Produces(StatusCodes.Status400BadRequest, typeof(ErrorResultModel));
-        }
-        else if (this.Type == EndpointTypes.Delete)
-        {
-            builder
-                .Produces(StatusCodes.Status200OK, typeof(SuccessResultModel))
-                .Produces(StatusCodes.Status404NotFound, typeof(ErrorResultModel))
-                .Produces(StatusCodes.Status400BadRequest, typeof(ErrorResultModel));
-        }
-
-        return builder;
-    }
-
-    /// <summary>
-    /// Gets the route builder for the endpoint.
-    /// </summary>
-    /// <param name="app">Web application to which the endpoint will be mapped.</param>
-    /// <returns></returns>
-    /// <exception cref="ArgumentException">Thrown when the endpoint type is not supported.</exception>
-    protected internal RouteHandlerBuilder GetRouteBuilder(WebApplication app)
-    {
-        return this.Type switch
-        {
-            EndpointTypes.Get => app.MapGet(this.Path, this.Handler),
-            EndpointTypes.Post => app.MapPost(this.Path, this.Handler),
-            EndpointTypes.Put => app.MapPut(this.Path, this.Handler),
-            EndpointTypes.Delete => app.MapDelete(this.Path, this.Handler),
-            _ => throw new ArgumentException("Invalid endpoint access type!"),
-        };
-    }
+    /// <inheritdoc/>
+    public string GetApiPath(string prefix = "")
+        => string.IsNullOrEmpty(prefix) ? this.Path : ZString.Format("{0}{1}", prefix, this.Path);
 }

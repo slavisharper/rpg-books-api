@@ -2,18 +2,11 @@
 
 using Dapper;
 
-using Microsoft.Data.SqlClient;
-
 using RpgBooks.Libraries.Module.Infrastructure.Persistence;
-using RpgBooks.Libraries.Module.Infrastructure.Persistence.Repositories;
 using RpgBooks.Modules.Identity.Application.Repositories.User;
 using RpgBooks.Modules.Identity.Application.Repositories.User.Model;
 using RpgBooks.Modules.Identity.Domain.Entities;
 using RpgBooks.Modules.Identity.Infrastructure.Persistence.Repositories.DapperQueries;
-
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 internal sealed class UserReadOnlyRepository : IUserReadOnlyRepository
 {

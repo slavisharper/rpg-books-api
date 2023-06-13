@@ -1,6 +1,7 @@
 ﻿namespace RpgBooks.Modules.Identity.Application.Commands.Login;
 
 using RpgBooks.Libraries.Module.Presentation.Endpoints;
+using RpgBooks.Modules.Identity.Application.Settings;
 
 /// <summary>
 /// Login user API endpoint.
@@ -12,11 +13,11 @@ public sealed class LoginEndpoint : ApiEndpoint<LoginCommand, LoginResponseModel
     /// </summary>
     public LoginEndpoint()
         : base(
-            "/api/account/login",
+            ZString.Format("{0}/login", IdentityApplicationSettings.BaseModulePath),
             nameof(LoginEndpoint),
-            "account",
+            IdentityApplicationSettings.ModuleTagName,
             EndpointTypes.Post,
-            EndpointDelegates.CreateCommandHandlerDelegate<LoginCommand, LoginResponseModel>())
+            EndpointDelegates.CommonCommandHandlerDelegate<LoginCommand, LoginResponseModel>())
     {
     }
 }

@@ -212,8 +212,14 @@ public class User : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
     /// </summary>
     /// <param name="honorificTitle">Honorific title value.</param>
     /// <returns>The same user instance so that multiple calls can be chained.</returns>
-    public User SetUserTitle(string honorificTitle)
+    public User SetUserTitle(string? honorificTitle)
     {
+        if (honorificTitle is null)
+        {
+            this.HonorificTitle = null;
+            return this;
+        }
+
         UserValidation.EnsureThat.HasValidTitle(honorificTitle);
         this.HonorificTitle = honorificTitle;
         return this;
@@ -224,8 +230,14 @@ public class User : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
     /// </summary>
     /// <param name="firstName">First name value.</param>
     /// <returns>The same user instance so that multiple calls can be chained.</returns>
-    public User SetFirstName(string firstName)
+    public User SetFirstName(string? firstName)
     {
+        if (firstName is null)
+        {
+            this.FirstName = null;
+            return this;
+        }
+
         UserValidation.EnsureThat.HasValidName(firstName);
         this.FirstName = firstName;
         return this;
@@ -236,8 +248,14 @@ public class User : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
     /// </summary>
     /// <param name="lastName">Last name value.</param>
     /// <returns>The same user instance so that multiple calls can be chained.</returns>
-    public User SetLastName(string lastName)
+    public User SetLastName(string? lastName)
     {
+        if (lastName is null)
+        {
+            this.LastName = null;
+            return this;
+        }
+
         UserValidation.EnsureThat.HasValidName(lastName);
         this.LastName = lastName;
         return this;
@@ -248,8 +266,14 @@ public class User : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
     /// </summary>
     /// <param name="middleName">User middle name value.</param>
     /// <returns>The same user instance so that multiple calls can be chained.</returns>
-    public User SetMiddleName(string middleName)
+    public User SetMiddleName(string? middleName)
     {
+        if (middleName is null)
+        {
+            this.MiddleName = null;
+            return this;
+        }
+
         UserValidation.EnsureThat.HasValidName(middleName);
         this.MiddleName = middleName;
         return this;
@@ -263,6 +287,11 @@ public class User : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
     /// <returns>The same user instance so that multiple calls can be chained.</returns>
     public User SetPhoneNumber(string phoneNumber)
     {
+        if (this.PhoneNumber is not null && phoneNumber == this.PhoneNumber.Value)
+        {
+            return this;
+        }
+
         this.PhoneNumber = phoneNumber;
         this.PhoneNumberConfirmed = false;
         return this;

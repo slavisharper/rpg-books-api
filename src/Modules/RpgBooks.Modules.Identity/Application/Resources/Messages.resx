@@ -171,6 +171,9 @@
   <data name="UserDetailsFetched" xml:space="preserve">
     <value>User details fetched.</value>
   </data>
+  <data name="UserDetailsUpdated" xml:space="preserve">
+    <value>Your details are updated.</value>
+  </data>
   <data name="UserEmailConfirmed" xml:space="preserve">
     <value>Your email is confirmed.</value>
   </data>
