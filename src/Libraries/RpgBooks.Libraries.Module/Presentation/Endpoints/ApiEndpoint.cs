@@ -58,13 +58,16 @@ public abstract class ApiEndpoint<TRequest> : IApiEndpoint
     /// </summary>
     public EndpointTypes Type { get; protected set; }
 
+    /// <inheritdoc/>
+    public virtual Type AcceptType => typeof(TRequest);
+
+    /// <inheritdoc/>
+    public virtual Type ResponseType => typeof(SuccessResultModel);
+
     /// <summary>
     /// Gets or sets the delegate that will be executed when endpoint is accessed.
     /// </summary>
     public Delegate Handler { get; protected set; }
-
-    /// <inheritdoc/>
-    public virtual Type ResponseType => typeof(SuccessResultModel);
 
     /// <inheritdoc/>
     public string GetApiPath(string prefix = "")

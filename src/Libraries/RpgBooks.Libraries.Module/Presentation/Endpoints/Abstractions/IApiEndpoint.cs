@@ -34,6 +34,11 @@ public interface IApiEndpoint
     Delegate Handler { get; }
 
     /// <summary>
+    /// Gets the input model type.
+    /// </summary>
+    Type AcceptType { get; }
+
+    /// <summary>
     /// Gets the endpoint response type.
     /// </summary>
     Type ResponseType { get; }

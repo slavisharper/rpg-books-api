@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Http;
 using RpgBooks.Libraries.Module.Presentation.Endpoints.Abstractions;
 using RpgBooks.Libraries.Module.Presentation.Endpoints.Models;
 
+using System.File;
+
 /// <summary>
 /// Web app extension methods.
 /// </summary>
