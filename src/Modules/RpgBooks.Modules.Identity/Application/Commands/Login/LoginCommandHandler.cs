@@ -1,5 +1,7 @@
 ﻿namespace RpgBooks.Modules.Identity.Application.Commands.Login;
 
+using Microsoft.AspNetCore.Http;
+
 using RpgBooks.Modules.Identity.Application.Commands.Common;
 using RpgBooks.Modules.Identity.Application.Resources;
 using RpgBooks.Modules.Identity.Domain.Repositories;
@@ -12,6 +14,7 @@ internal class LoginCommandHandler : BaseCommandHandler<LoginCommand, LoginRespo
     private readonly IJwtTokenManager jwtTokenManager;
     private readonly IUserDomainRepository userRepository;
     private readonly ISecurityTokensService securityTokensService;
+    private readonly IHttpContextAccessor httpContextAccessor;
     private readonly IPasswordHasher passwordHasher;
     private readonly LoginSettings settings;
 
@@ -20,12 +23,14 @@ internal class LoginCommandHandler : BaseCommandHandler<LoginCommand, LoginRespo
         IJwtTokenManager jwtTokenManager,
         IUserDomainRepository userRepository,
         ISecurityTokensService securityTokensService,
+        IHttpContextAccessor httpContextAccessor,
         IOptions<LoginSettings> loginOptions)
     {
         this.passwordHasher = passwordHasher;
         this.jwtTokenManager = jwtTokenManager;
         this.userRepository = userRepository;
         this.securityTokensService = securityTokensService;
+        this.httpContextAccessor = httpContextAccessor;
         this.settings = loginOptions.Value;
     }
 
@@ -66,8 +71,12 @@ internal class LoginCommandHandler : BaseCommandHandler<LoginCommand, LoginRespo
         var token = this.jwtTokenManager.GenerateToken(user, session);
         var refreshToken = this.securityTokensService.GenerateRefreshToken(user, session);
 
-        await this.userRepository.SaveAsync(cancellation);
+        user.RecordSuccessfulAccess(
+            session,
+            this.httpContextAccessor.HttpContext!.Connection.RemoteIpAddress!.ToString(),
+            this.httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString());
 
+        await this.userRepository.SaveAsync(cancellation);
         return this.Success(Messages.LoggedIn, new LoginResponseModel(token, refreshToken!));
     }
 }

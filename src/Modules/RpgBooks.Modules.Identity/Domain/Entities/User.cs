@@ -16,6 +16,7 @@ public class User : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
     private readonly ICollection<Claim> claims;
     private readonly ICollection<Role> roles;
     private readonly ICollection<SecurityToken> securityTokens;
+    private readonly ICollection<LoginRecord> loginRecords;
 
     internal User(string email, string passowrdHash)
     {
@@ -28,6 +29,7 @@ public class User : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
         this.claims = new HashSet<Claim>();
         this.roles = new HashSet<Role>();
         this.securityTokens = new HashSet<SecurityToken>();
+        this.loginRecords = new HashSet<LoginRecord>();
     }
 
     private User(
@@ -67,6 +69,7 @@ public class User : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
         this.claims = new HashSet<Claim>();
         this.roles = new HashSet<Role>();
         this.securityTokens = new HashSet<SecurityToken>();
+        this.loginRecords = new HashSet<LoginRecord>();
     }
 
     /// <summary>
@@ -186,6 +189,11 @@ public class User : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
     /// Gets the user security tokens.
     /// </summary>
     public IReadOnlyCollection<SecurityToken> SecurityTokens => this.securityTokens.ToArray();
+
+    /// <summary>
+    /// Gets the user login history records.
+    /// </summary>
+    public IReadOnlyCollection<LoginRecord> LoginRecords => this.loginRecords.ToArray();
 
     /// <summary>
     /// Checks whether the user has the given role.

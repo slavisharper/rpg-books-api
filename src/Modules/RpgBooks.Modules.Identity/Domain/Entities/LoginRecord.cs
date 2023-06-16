@@ -7,14 +7,13 @@ using RpgBooks.Libraries.Module.Domain.Entities;
 /// Login record entity.
 /// <para>Holds information about user login.</para>
 /// </summary>
-internal sealed class LoginRecord : BaseEntity<int>
+public sealed class LoginRecord : BaseEntity<int>
 {
-    internal LoginRecord(User user, string sessionId, string? IpAddress, string? userAgent)
+    internal LoginRecord(string sessionId, string? IpAddress, string? userAgent)
     {
         this.LoginTime = DateTimeOffset.UtcNow;
         this.IpAddress = IpAddress;
         this.UserAgent = userAgent;
-        this.User = user;
         this.SessionId = sessionId;
 
         this.Validate();
@@ -26,8 +25,6 @@ internal sealed class LoginRecord : BaseEntity<int>
         this.IpAddress = ipAddress;
         this.UserAgent = userAgent;
         this.SessionId = sessionId;
-
-        this.User = default!;
     }
 
     /// <summary>
@@ -50,11 +47,6 @@ internal sealed class LoginRecord : BaseEntity<int>
     /// <para>This Id is persisted throw the refresh token process for the given session.</para>
     /// </summary>
     public string SessionId { get; private set; }
-
-    /// <summary>
-    /// Gets the user that has logged in.
-    /// </summary>
-    public User User { get; private set; }
 
     private void Validate()
     {
