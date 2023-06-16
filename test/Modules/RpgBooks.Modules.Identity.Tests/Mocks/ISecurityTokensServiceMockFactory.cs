@@ -13,12 +13,12 @@ internal static class ISecurityTokensServiceMockFactory
         var token = new SecurityToken(Ulid.NewUlid().ToString(), SecurityTokenType.ConfirmEmail);
         var returnModel = new TokenModel(token.Value, token.ExpirationTime);
         var mock = new Mock<ISecurityTokensService>();
-        mock.Setup(m => m.GenerateEmailConfirmationToken(It.IsAny<User>(), It.IsAny<CancellationToken>()))
+        mock.Setup(m => m.GenerateEmailConfirmationToken(It.IsAny<User>()))
             .Callback((User user, CancellationToken _) =>
             { 
                 user.AddToken(token);
             })
-            .Returns(ValueTask.FromResult(returnModel));
+            .Returns(returnModel);
             
         return mock;
     }

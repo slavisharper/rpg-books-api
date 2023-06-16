@@ -7,7 +7,7 @@ using RpgBooks.Libraries.Module.Domain.Entities;
 /// Login record entity.
 /// <para>Holds information about user login.</para>
 /// </summary>
-public sealed class LoginRecord : BaseEntity<int>
+internal sealed class LoginRecord : BaseEntity<int>
 {
     internal LoginRecord(User user, string sessionId, string? IpAddress, string? userAgent)
     {

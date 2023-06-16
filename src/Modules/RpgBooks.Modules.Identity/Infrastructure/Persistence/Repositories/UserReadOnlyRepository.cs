@@ -17,20 +17,20 @@ internal sealed class UserReadOnlyRepository : IUserReadOnlyRepository
         this.dapperContext = dapperContext;
     }
 
-    public async ValueTask<SecurityTokenReadModel?> GetActualToken(int userId, SecurityTokenType type, CancellationToken cancellation = default)
+    public async Task<SecurityTokenReadModel?> GetActualToken(int userId, SecurityTokenType type, CancellationToken cancellation = default)
         => await this.dapperContext.Connection
             .QueryFirstOrDefaultAsync<SecurityTokenReadModel>(
                 UserDapperQueries.GetActualSecurityToken,
                 new { UserId = userId, TokenType = type.Value });
 
-    public async ValueTask<SecurityTokenReadModel?> GetActualToken(int userId, SecurityTokenType type, string? sessionId, CancellationToken cancellation = default)
+    public async Task<SecurityTokenReadModel?> GetActualToken(int userId, SecurityTokenType type, string? sessionId, CancellationToken cancellation = default)
         => await this.dapperContext.Connection
             .QueryFirstOrDefaultAsync<SecurityTokenReadModel>(
                 UserDapperQueries.GetActualSecurityTokenWithSession,
                 new { UserId = userId, TokenType = type.Value, SessionId = sessionId });
 
     /// <inheritdoc/>
-    public async ValueTask<UserDetailsReadModel?> GetDetails(int id, CancellationToken cancellationToken = default)
+    public async Task<UserDetailsReadModel?> GetDetails(int id, CancellationToken cancellationToken = default)
         => await this.dapperContext.Connection
             .QueryFirstOrDefaultAsync<UserDetailsReadModel>(UserDapperQueries.GetDetailsQuery, new { Id = id });
 }

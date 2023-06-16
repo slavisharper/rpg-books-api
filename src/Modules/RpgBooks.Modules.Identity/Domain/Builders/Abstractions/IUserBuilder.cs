@@ -6,7 +6,7 @@ using RpgBooks.Libraries.Module.Domain.Abstractions;
 /// <summary>
 /// Builder interface for <see cref="User"/>.
 /// </summary>
-internal interface IUserBuilder : IAsyncBuilder<User>
+internal interface IUserBuilder : IBuilder<User>
 {
     /// <summary>
     /// Adds the user email to the builder.

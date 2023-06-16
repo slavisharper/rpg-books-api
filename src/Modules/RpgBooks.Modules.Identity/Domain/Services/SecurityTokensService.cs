@@ -33,17 +33,17 @@ internal sealed class SecurityTokensService : ISecurityTokensService
     }
 
     /// <inheritdoc/>
-    public ValueTask<TokenModel> GenerateEmailConfirmationToken(User user, CancellationToken cancellation = default)
+    public TokenModel GenerateEmailConfirmationToken(User user)
     {
         var type = SecurityTokenType.ConfirmEmail;
         TimeSpan validity = TimeSpan.FromHours(
             this.identitySettings.SecurityTokenSettings.EmailConfirmationTokenValidityInHours);
 
-        return GenerateToken(user, type, validity, null, cancellation);
+        return GenerateToken(user, type, validity, null);
     }
 
     /// <inheritdoc/>
-    public ValueTask<TokenModel> GeneratePhoneConfirmationToken(User user, CancellationToken cancellation = default)
+    public TokenModel GeneratePhoneConfirmationToken(User user)
     {
         string phoneToken = RandomTokenProvider.GenerateRandomDigitsToken(
             this.identitySettings.SecurityTokenSettings.PhoneConfirmationTokenLength);
@@ -56,36 +56,35 @@ internal sealed class SecurityTokensService : ISecurityTokensService
             validity);
 
         user.AddToken(token);
-        return ValueTask.FromResult(new TokenModel(phoneToken, DateTimeOffset.UtcNow + validity));
+        return new TokenModel(phoneToken, DateTimeOffset.UtcNow + validity);
     }
 
     /// <inheritdoc/>
-    public ValueTask<TokenModel> GenerateRefreshToken(User user, string? sessionId, CancellationToken cancellation = default)
+    public TokenModel GenerateRefreshToken(User user, string? sessionId)
     {
         var type = SecurityTokenType.RefreshAuthentication;
         TimeSpan validity = TimeSpan.FromDays(
             this.identitySettings.LoginSettings.RefreshTokenTimeSpanInDays);
 
-        return GenerateToken(user, type, validity, sessionId, cancellation);
+        return GenerateToken(user, type, validity, sessionId);
     }
 
     /// <inheritdoc/>
-    public ValueTask<TokenModel> GenerateRefreshToken(User user, CancellationToken cancellation = default)
-        => GenerateRefreshToken(user, null, cancellation);
+    public TokenModel GenerateRefreshToken(User user)
+        => GenerateRefreshToken(user, null);
 
     /// <inheritdoc/>
-    public ValueTask<TokenModel> GenerateResetPasswordToken(User user, CancellationToken cancellation = default)
+    public TokenModel GenerateResetPasswordToken(User user)
     {
         var type = SecurityTokenType.ResetPassword;
         TimeSpan validity = TimeSpan.FromMinutes(
             this.identitySettings.LoginSettings.AuthTokenTimeSpanInMinutes);
 
-        return GenerateToken(user, type, validity, null, cancellation);
+        return GenerateToken(user, type, validity, null);
     }
 
     /// <inheritdoc/>
-    public async Task<bool> DisproveEmailConfirmationToken(
-        int userId, string confirmationToken, CancellationToken cancellation = default)
+    public async Task<bool> DisproveEmailConfirmationToken(int userId, string confirmationToken, CancellationToken cancellation)
     {
         var actualToken = await this.userReadOnlyRepository
             .GetActualToken(userId, SecurityTokenType.ConfirmEmail, cancellation);
@@ -120,7 +119,7 @@ internal sealed class SecurityTokensService : ISecurityTokensService
             || resetPasswordToken != actualToken.Value.Decrypt(this.secrets.TokenProtectionSecret);
     }
 
-    private ValueTask<TokenModel> GenerateToken(User user, SecurityTokenType tokenType, TimeSpan validity, string? sessionId, CancellationToken cancellation)
+    private TokenModel GenerateToken(User user, SecurityTokenType tokenType, TimeSpan validity, string? sessionId)
     {
         string tokenValue = RandomTokenProvider.GenerateRandomToken();
         var token = new SecurityToken(
@@ -130,6 +129,6 @@ internal sealed class SecurityTokensService : ISecurityTokensService
             sessionId);
 
         user.AddToken(token);
-        return ValueTask.FromResult(new TokenModel(tokenValue, DateTimeOffset.UtcNow + validity));
+        return new TokenModel(tokenValue, DateTimeOffset.UtcNow + validity);
     }
 }

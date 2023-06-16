@@ -10,7 +10,7 @@ using RpgBooks.Modules.Identity.Domain.Services.Abstractions;
 public sealed class UserBuilderTests
 {
     [Fact]
-    public async Task Build_WithValidData_ShouldCreateUser()
+    public void Build_WithValidData_ShouldCreateUser()
     {
         // Arrange
         var passwordHasher = IPasswordHasherMockFactory.CreateValidMock().Object;
@@ -20,7 +20,7 @@ public sealed class UserBuilderTests
         var builder = new UserBuilder(passwordHasher, securityTokenService, httpUtilities);
 
         // Act
-        var user = await builder
+        var user = builder
             .WithEmail("test@email.com")
             .WithPassword("Test_password#1")
             .Build();
@@ -57,9 +57,9 @@ public sealed class UserBuilderTests
             .WithPassword(password);
 
         // Act
-        var action = async () => await builder.Build();
+        var action = () => builder.Build();
 
         // Assert
-        action.Should().ThrowAsync<InvalidUserException>();
+        action.Should().Throw<InvalidUserException>();
     }
 }

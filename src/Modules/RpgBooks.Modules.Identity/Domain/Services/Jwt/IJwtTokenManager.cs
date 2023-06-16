@@ -6,7 +6,7 @@ using System.Security.Claims;
 /// <summary>
 /// JWT token manager service interface.
 /// </summary>
-public interface IJwtTokenManager
+internal interface IJwtTokenManager
 {
     /// <summary>
     /// Generate JWT token for the given user.

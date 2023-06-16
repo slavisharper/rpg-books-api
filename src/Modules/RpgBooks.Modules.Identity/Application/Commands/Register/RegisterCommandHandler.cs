@@ -29,7 +29,7 @@ internal sealed class RegisterCommandHandler : BaseCommandHandler<RegisterComman
 
     public override async Task<IAppResult<RegisterResponseModel>> HandleCommand(RegisterCommand request, CancellationToken cancellation)
     {
-        var user = await this.userBuilder
+        var user = this.userBuilder
             .WithEmail(request.Email)
             .WithPassword(request.Password)
             .Build();

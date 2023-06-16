@@ -66,7 +66,7 @@ internal sealed class RefreshTokenCommandHandler : BaseCommandHandler<RefreshTok
         }
 
         var token = this.jwtTokenManager.GenerateToken(user, jwtPayload.SessionId);
-        var refreshToken = await this.securityTokensService.GenerateRefreshToken(user, jwtPayload.SessionId, cancellation);
+        var refreshToken = this.securityTokensService.GenerateRefreshToken(user, jwtPayload.SessionId);
         await this.userRepository.SaveAsync(cancellation);
 
         return this.Success(Messages.AuthTokenRefreshed, new LoginResponseModel(token, refreshToken));

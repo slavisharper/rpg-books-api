@@ -22,7 +22,7 @@ public interface ITemplateRenderer
     /// <param name="model">Template model data.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>Rendered template</returns>
-    Task<string> RenderAsync<T>(T model, CancellationToken cancellationToken = default!);
+    ValueTask<string> RenderAsync<T>(T model, CancellationToken cancellationToken = default!);
 
     /// <summary>
     /// Renders the template with the given model data and custom layout data.
@@ -32,7 +32,7 @@ public interface ITemplateRenderer
     /// <param name="layout"></param>
     /// <param name="cancellationToken"></param>
     /// <returns></returns>
-    Task<string> RenderAsync<T>(T model, ILayoutModel layout, CancellationToken cancellationToken = default!);
+    ValueTask<string> RenderAsync<T>(T model, ILayoutModel layout, CancellationToken cancellationToken = default!);
 
     /// <summary>
     /// Sets the default layout model.

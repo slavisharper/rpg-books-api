@@ -44,7 +44,7 @@ internal sealed class UserBuilder : IUserBuilder
     }
 
     /// <inheritdoc/>
-    public async Task<User> Build(CancellationToken cancellation = default)
+    public User Build()
     {
         if (email is null || paswordHash is null)
         {
@@ -52,8 +52,7 @@ internal sealed class UserBuilder : IUserBuilder
         }
 
         var user = new User(email, paswordHash);
-        TokenModel emailConfirmationToken =
-            await this.securityTokensService.GenerateEmailConfirmationToken(user, cancellation);
+        var emailConfirmationToken = this.securityTokensService.GenerateEmailConfirmationToken(user);
 
         user.AddEvent(new UserRegisteredEvent(email, this.httpUtilities.UrlEncode(emailConfirmationToken.Value)!));
         return user;

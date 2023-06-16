@@ -64,7 +64,7 @@ internal class LoginCommandHandler : BaseCommandHandler<LoginCommand, LoginRespo
 
         string session = Ulid.NewUlid().ToString();
         var token = this.jwtTokenManager.GenerateToken(user, session);
-        var refreshToken = await this.securityTokensService.GenerateRefreshToken(user, session, cancellation);
+        var refreshToken = this.securityTokensService.GenerateRefreshToken(user, session);
 
         await this.userRepository.SaveAsync(cancellation);
 

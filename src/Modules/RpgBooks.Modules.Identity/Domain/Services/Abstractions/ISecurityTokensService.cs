@@ -6,48 +6,43 @@ using RpgBooks.Modules.Identity.Domain.Entities;
 /// <summary>
 /// Security tokens service.
 /// </summary>
-public interface ISecurityTokensService
+internal interface ISecurityTokensService
 {
     /// <summary>
     /// Generates and sets new email confirmation token.
     /// </summary>
     /// <param name="user">User instance.</param>
-    /// <param name="cancellation">Cancellation token.</param>
     /// <returns>Generated token data model.</returns>
-    ValueTask<TokenModel> GenerateEmailConfirmationToken(User user, CancellationToken cancellation = default);
+    TokenModel GenerateEmailConfirmationToken(User user);
 
     /// <summary>
     /// Generates and sets new phone confirmation token.
     /// </summary>
     /// <param name="user">User instance.</param>
-    /// <param name="cancellation">Cancellation token.</param>
     /// <returns>Generated token data model.</returns>
-    ValueTask<TokenModel> GeneratePhoneConfirmationToken(User user, CancellationToken cancellation = default);
+    TokenModel GeneratePhoneConfirmationToken(User user);
 
     /// <summary>
     /// Generates and sets new password reset token.
     /// </summary>
     /// <param name="user">User instance.</param>
-    /// <param name="cancellation">Cancellation token.</param>
     /// <returns>Generated token data model.</returns>
-    ValueTask<TokenModel> GenerateResetPasswordToken(User user, CancellationToken cancellation = default);
+    TokenModel GenerateResetPasswordToken(User user);
 
     /// <summary>
     /// Generates and sets new authentication refresh token.
     /// </summary>
     /// <param name="user">User instance.</param>
-    /// <param name="cancellation">Cancellation token.</param>
     /// <returns>Generated token data model.</returns>
-    ValueTask<TokenModel> GenerateRefreshToken(User user, CancellationToken cancellation = default);
+    TokenModel GenerateRefreshToken(User user);
 
     /// <summary>
     /// Generates and sets new authentication refresh token. This refresh token is bound to a session.
     /// </summary>
     /// <param name="user">User instance.</param>
     /// <param name="sessionId">Session Id.</param>
-    /// <param name="cancellation">Cancellation token.</param>
     /// <returns>Generated token data model.</returns>
-    ValueTask<TokenModel> GenerateRefreshToken(User user, string? sessionId, CancellationToken cancellation = default);
+    TokenModel GenerateRefreshToken(User user, string? sessionId);
 
     /// <summary>
     /// Checks if the given email confirmation token is invalid.

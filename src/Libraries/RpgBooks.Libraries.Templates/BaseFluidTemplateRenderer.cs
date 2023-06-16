@@ -51,11 +51,11 @@ public abstract class BaseFluidTemplateRenderer : ITemplateRenderer
     public TemplateSettings TemplateSettings { get; private set; }
 
     /// <inheritdoc/>
-    public virtual Task<string> RenderAsync<T>(T model, CancellationToken cancellationToken)
+    public virtual ValueTask<string> RenderAsync<T>(T model, CancellationToken cancellationToken)
         => RenderAsync(model, this.DefaultLayout, cancellationToken);
 
     /// <inheritdoc/>
-    public async Task<string> RenderAsync<T>(T model, ILayoutModel layoutModel, CancellationToken cancellationToken = default)
+    public async ValueTask<string> RenderAsync<T>(T model, ILayoutModel layoutModel, CancellationToken cancellationToken = default)
     {
         string modelName = typeof(T).FullName!;
         string templateName = this.GetTemplateName(modelName);
@@ -163,10 +163,10 @@ public abstract class BaseFluidTemplateRenderer : ITemplateRenderer
         return layoutResourceName.ToString();
     }
 
-    private async Task<string> RenderTemplate<T>(string templateName, T data)
+    private ValueTask<string> RenderTemplate<T>(string templateName, T data)
     {
         IFluidTemplate fluidTemplate = this.GetParsedTemplate(templateName);
         TemplateContext templateContext = new(data, this.templateOptions);
-        return await fluidTemplate.RenderAsync(templateContext);
+        return fluidTemplate.RenderAsync(templateContext);
     }
 }

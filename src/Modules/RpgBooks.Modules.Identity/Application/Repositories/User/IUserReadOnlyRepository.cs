@@ -15,7 +15,7 @@ internal interface IUserReadOnlyRepository : IReadOnlyRepository
     /// <param name="id">User identifier.</param>
     /// <param name="cancellationToken">Cancellation token.</param>
     /// <returns>User details read-only model.</returns>
-    ValueTask<UserDetailsReadModel?> GetDetails(int id, CancellationToken cancellationToken = default!);
+    Task<UserDetailsReadModel?> GetDetails(int id, CancellationToken cancellationToken = default!);
 
     /// <summary>
     /// Get actual security token for the given user.
@@ -24,7 +24,7 @@ internal interface IUserReadOnlyRepository : IReadOnlyRepository
     /// <param name="type">Security token type.</param>
     /// <param name="cancellation">Cancellation token.</param>
     /// <returns></returns>
-    ValueTask<SecurityTokenReadModel?> GetActualToken(int userId, SecurityTokenType type, CancellationToken cancellation = default!);
+    Task<SecurityTokenReadModel?> GetActualToken(int userId, SecurityTokenType type, CancellationToken cancellation = default!);
 
     /// <summary>
     /// Get actual security token for the given user.
@@ -34,5 +34,5 @@ internal interface IUserReadOnlyRepository : IReadOnlyRepository
     /// <param name="sessionId">Session id to which the token is assigned.</param>
     /// <param name="cancellation">Cancellation token.</param>
     /// <returns></returns>
-    ValueTask<SecurityTokenReadModel?> GetActualToken(int userId, SecurityTokenType type, string? sessionId, CancellationToken cancellation = default!);
+    Task<SecurityTokenReadModel?> GetActualToken(int userId, SecurityTokenType type, string? sessionId, CancellationToken cancellation = default!);
 }
