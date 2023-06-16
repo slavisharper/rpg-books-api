@@ -63,6 +63,10 @@ internal sealed class UserConfiguration : IEntityTypeConfiguration<User>
             .WithOne();
 
         builder
+            .HasMany(u => u.LoginRecords)
+            .WithOne();
+
+        builder
             .HasMany(u => u.Roles)
             .WithMany()
             .UsingEntity(e => e.ConfigureTableName(ZString.Format("{0}s{1}", nameof(User), nameof(Role))));

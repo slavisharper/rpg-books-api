@@ -17,8 +17,5 @@ internal sealed class LoginRecordConfiguration : IEntityTypeConfiguration<LoginR
 
         builder.Property(l => l.IpAddress)
             .HasMaxLength(LoginRecordValidation.Values.MaxIpAddressLenght);
-
-        builder.HasOne(l => l.User)
-            .WithMany();
     }
 }

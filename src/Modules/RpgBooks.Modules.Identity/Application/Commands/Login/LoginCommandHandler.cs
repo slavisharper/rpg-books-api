@@ -73,8 +73,8 @@ internal class LoginCommandHandler : BaseCommandHandler<LoginCommand, LoginRespo
 
         user.RecordSuccessfulAccess(
             session,
-            this.httpContextAccessor.HttpContext!.Connection.RemoteIpAddress!.ToString(),
-            this.httpContextAccessor.HttpContext.Request.Headers["User-Agent"].ToString());
+            this.httpContextAccessor.HttpContext?.Connection.RemoteIpAddress?.ToString(),
+            this.httpContextAccessor.HttpContext?.Request.Headers["User-Agent"].ToString());
 
         await this.userRepository.SaveAsync(cancellation);
         return this.Success(Messages.LoggedIn, new LoginResponseModel(token, refreshToken!));
