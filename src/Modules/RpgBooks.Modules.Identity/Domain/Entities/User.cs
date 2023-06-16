@@ -343,7 +343,7 @@ public class User : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
         return this;
     }
 
-    internal User RecordSuccessfulAccess()
+    internal User RecordSuccessfulAccess(string sessionId, string? ipAddress, string? userAgent)
     {
         this.AccessFailedCount = 0;
         this.LastSuccessAccess = DateTimeOffset.UtcNow;
@@ -352,6 +352,7 @@ public class User : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
             this.LockoutEnd = null;
         }
 
+        this.loginRecords.Add(new LoginRecord(sessionId, ipAddress, userAgent));
         return this;
     }
 
