@@ -19,10 +19,10 @@ public sealed class LocalFileStorageService : ILocalFileStorageService
         => throw new NotImplementedException();
     
     /// <inheritdoc/>
-    public Task<IAppResult<StoredFile>> StoreFileAsync(IFormFile fileUpload, CancellationToken cancellation = default)
+    public Task<IAppResult<CloudFile>> StoreFileAsync(IFormFile fileUpload, CancellationToken cancellation = default)
         => throw new NotImplementedException();
     
     /// <inheritdoc/>
-    public Task<IAppResult<StoredFile>> StoreFileAsync(string fileName, byte[] data, CancellationToken cancellation = default)
+    public Task<IAppResult<CloudFile>> StoreFileAsync(string fileName, byte[] data, CancellationToken cancellation = default)
         => throw new NotImplementedException();
 }

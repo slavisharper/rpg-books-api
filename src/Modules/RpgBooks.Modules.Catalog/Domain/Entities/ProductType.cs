@@ -1,10 +1,25 @@
 ﻿namespace RpgBooks.Modules.Catalog.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-internal class ProductType
+using RpgBooks.Libraries.Module.Domain.Entities;
+
+/// <summary>
+/// Product type that indicates the various types of products.
+/// </summary>
+public sealed class ProductType : BaseEntity<int>
 {
+    internal ProductType(string name, string? description)
+    {
+        this.Name = name;
+        this.Description = description;
+    }
+
+    /// <summary>
+    /// Gets the product type name.
+    /// </summary>
+    public string Name { get; private set; }
+
+    /// <summary>
+    /// Gets the product type description.
+    /// </summary>
+    public string? Description { get; private set; }
 }

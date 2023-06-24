@@ -16,7 +16,7 @@ public interface IFileStorageService
     /// <param name="fileUpload">Uploaded file.</param>
     /// <param name="cancellation">Cancellation token</param>
     /// <returns></returns>
-    Task<IAppResult<StoredFile>> StoreFileAsync(IFormFile fileUpload, CancellationToken cancellation = default);
+    Task<IAppResult<CloudFile>> StoreFileAsync(IFormFile fileUpload, CancellationToken cancellation = default);
 
     /// <summary>
     /// Store given file to a cloud service with personal only access.
@@ -26,7 +26,7 @@ public interface IFileStorageService
     /// <param name="data">File content as byte array.</param>
     /// <param name="cancellation">Cancellation token.</param>
     /// <returns>Cloud file meta data.</returns>
-    Task<IAppResult<StoredFile>> StoreFileAsync(string fileName, byte[] data, CancellationToken cancellation = default);
+    Task<IAppResult<CloudFile>> StoreFileAsync(string fileName, byte[] data, CancellationToken cancellation = default);
 
     /// <summary>
     /// Retrieve file content from a cloud service.

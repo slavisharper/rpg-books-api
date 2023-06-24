@@ -55,7 +55,7 @@ public sealed class AzureCloudFileStorageService : ICloudFileStorageService
     }
 
     /// <inheritdoc/>
-    public async Task<IAppResult<StoredFile>> StoreFileAsync(IFormFile fileUpload, CancellationToken cancellation = default)
+    public async Task<IAppResult<CloudFile>> StoreFileAsync(IFormFile fileUpload, CancellationToken cancellation = default)
     {
         string containerName = GetContainerName();
         string blobName = GetNewBlobName(fileUpload.FileName);
@@ -72,11 +72,11 @@ public sealed class AzureCloudFileStorageService : ICloudFileStorageService
             return AppResult.Success(Messages.FileStored, GetStoredFileModel(fileUpload.FileName, blobName, containerName));
         }
 
-        return AppResult.Failure<StoredFile>(Messages.FileStoringFailed);
+        return AppResult.Failure<CloudFile>(Messages.FileStoringFailed);
     }
 
     /// <inheritdoc/>
-    public async Task<IAppResult<StoredFile>> StoreFileAsync(string fileName, byte[] data, CancellationToken cancellation = default)
+    public async Task<IAppResult<CloudFile>> StoreFileAsync(string fileName, byte[] data, CancellationToken cancellation = default)
     {
         string containerName = GetContainerName();
         string blobName = GetNewBlobName(Path.GetExtension(fileName));
@@ -92,7 +92,7 @@ public sealed class AzureCloudFileStorageService : ICloudFileStorageService
             return AppResult.Success(Messages.FileStored, GetStoredFileModel(fileName, blobName, containerName));
         }
 
-        return AppResult.Failure<StoredFile>(Messages.FileStoringFailed);
+        return AppResult.Failure<CloudFile>(Messages.FileStoringFailed);
     }
 
     private static string GetNewBlobName(string extension)
@@ -104,9 +104,9 @@ public sealed class AzureCloudFileStorageService : ICloudFileStorageService
             this.settings.ApplicationName.ToLower(),
             EnvironmentVariables.EnvironmentName.ToLower());
 
-    private StoredFile GetStoredFileModel(string fileName, string blobName, string containerName)
+    private CloudFile GetStoredFileModel(string fileName, string blobName, string containerName)
     {
         string token = new AzureCloudFileDownloadToken(containerName, fileName, blobName);
-        return new StoredFile(fileName, token.Encrypt(this.secrets.CloudFileStorageSecret));
+        return new CloudFile(fileName, token.Encrypt(this.secrets.CloudFileStorageSecret));
     }
 }
