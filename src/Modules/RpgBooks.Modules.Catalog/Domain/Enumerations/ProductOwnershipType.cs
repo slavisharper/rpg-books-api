@@ -1,6 +1,4 @@
-﻿namespace RpgBooks.Modules.Catalog.Domain.Entities;
-
-using RpgBooks.Libraries.Module.Domain.Entities;
+﻿namespace RpgBooks.Modules.Catalog.Domain.Enumerations;
 
 /// <summary>
 /// Product ownership type that indicates the various ownership options for the product

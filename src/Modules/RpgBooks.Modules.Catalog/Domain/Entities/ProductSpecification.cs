@@ -1,6 +1,6 @@
 ﻿namespace RpgBooks.Modules.Catalog.Domain.Entities;
 
-using RpgBooks.Libraries.Module.Domain.Entities;
+using RpgBooks.Modules.Catalog.Domain.Enumerations;
 
 public sealed class ProductSpecification : BaseEntity<int>
 {

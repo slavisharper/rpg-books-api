@@ -1,6 +1,7 @@
 ﻿global using Microsoft.EntityFrameworkCore;
 global using Microsoft.Extensions.Options;
 
+global using RpgBooks.Libraries.Module.Domain.Entities;
 global using RpgBooks.Libraries.Module.Application.Commands;
 global using RpgBooks.Libraries.Module.Application.Commands.Contracts;
 global using RpgBooks.Libraries.Module.Application.Commands.Extensions;

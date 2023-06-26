@@ -1,7 +1,5 @@
 ﻿namespace RpgBooks.Modules.Catalog.Domain.Entities;
 
-using RpgBooks.Libraries.Module.Domain.Entities;
-
 /// <summary>
 /// Keeps tags information that can be associated with a product.
 /// This is alternative to categories that can be used to group products in a different way.

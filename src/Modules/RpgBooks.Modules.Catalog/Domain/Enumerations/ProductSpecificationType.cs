@@ -1,4 +1,4 @@
-﻿namespace RpgBooks.Modules.Catalog.Domain.Entities;
+﻿namespace RpgBooks.Modules.Catalog.Domain.Enumerations;
 
 using RpgBooks.Libraries.Module.Domain.Entities;
 

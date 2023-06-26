@@ -1,9 +1,5 @@
 ﻿namespace RpgBooks.Modules.Identity.Domain.Entities;
 
-using RpgBooks.Libraries.Module.Domain.Entities;
-
-using System.Reflection;
-
 /// <summary>
 /// Security token types enumeration.
 /// </summary>

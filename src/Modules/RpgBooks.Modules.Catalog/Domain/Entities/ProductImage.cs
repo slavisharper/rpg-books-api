@@ -1,11 +1,12 @@
 ﻿namespace RpgBooks.Modules.Catalog.Domain.Entities;
 
 using RpgBooks.Libraries.Module.Domain.Common.ValueObjects;
+using RpgBooks.Libraries.Module.Domain.Entities;
 
 /// <summary>
 /// Represents a product image domain entity
 /// </summary>
-public sealed class ProductImage
+public sealed class ProductImage : BaseEntity<int>
 {
     internal ProductImage(LocalFile location)
     {

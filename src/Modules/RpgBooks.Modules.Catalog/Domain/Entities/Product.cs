@@ -3,6 +3,7 @@
 using RpgBooks.Libraries.Module.Domain.Common.ValueObjects;
 using RpgBooks.Libraries.Module.Domain.Entities;
 using RpgBooks.Libraries.Module.Domain.Entities.Abstractions;
+using RpgBooks.Modules.Catalog.Domain.Enumerations;
 
 /// <summary>
 /// Represents a product domain entity
@@ -20,8 +21,6 @@ public sealed class Product : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
         string code,
         string? shortDescription,
         string description,
-        string? publisher,
-        string? author,
         int? validityPeriodInDays,
         byte[] concurrencyStamp)
     {
@@ -29,8 +28,6 @@ public sealed class Product : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
         this.Code = code;
         this.ShortDescription = shortDescription;
         this.Description = description;
-        this.Publisher = publisher;
-        this.Author = author;
         this.ValidityPeriodInDays = validityPeriodInDays;
         this.ConcurrencyStamp = concurrencyStamp;
 
@@ -59,13 +56,6 @@ public sealed class Product : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
         this.innerProducts = new HashSet<Product>();
     }
 
-    internal Product(string name, string code, LocalFile mainImage, string author, string publisher, ProductOwnershipType ownershipType)
-        : this(name, code, mainImage, ownershipType)
-    {
-        this.Author = author;
-        this.Publisher = publisher;
-    }
-    
     /// <summary>
     /// Gets the product name.
     /// </summary>
@@ -90,16 +80,6 @@ public sealed class Product : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
     /// Gets the product main image. Used in the product list.
     /// </summary>
     public LocalFile MainImage { get; private set; }
-
-    /// <summary>
-    /// Gets the publisher of the product.
-    /// </summary>
-    public string? Publisher { get; private set; }
-
-    /// <summary>
-    /// Gets the author of the product.
-    /// </summary>
-    public string? Author { get; private set; }
 
     /// <summary>
     /// Gets the product validity period in days.
