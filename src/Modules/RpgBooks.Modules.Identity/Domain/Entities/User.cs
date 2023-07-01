@@ -13,10 +13,10 @@ using System;
 /// </summary>
 public class User : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
 {
-    private readonly ICollection<Claim> claims;
-    private readonly ICollection<Role> roles;
-    private readonly ICollection<SecurityToken> securityTokens;
-    private readonly ICollection<LoginRecord> loginRecords;
+    private readonly HashSet<Claim> claims;
+    private readonly HashSet<Role> roles;
+    private readonly HashSet<SecurityToken> securityTokens;
+    private readonly HashSet<LoginRecord> loginRecords;
 
     internal User(string email, string passowrdHash)
     {
@@ -177,23 +177,23 @@ public class User : BaseEntity<int>, IAggregateRoot, IConcurrentEntity
     /// <summary>
     /// Gets the user roles.
     /// </summary>
-    public IReadOnlyCollection<Role> Roles => this.roles.ToArray();
+    public IReadOnlyCollection<Role> Roles => this.roles;
 
     /// <summary>
     /// Gets the user claims.
     /// <para>Note that this wont contain the claims that are connected to the user roles.</para>
     /// </summary>
-    public IReadOnlyCollection<Claim> Claims => this.claims.ToArray();
+    public IReadOnlyCollection<Claim> Claims => this.claims;
 
     /// <summary>
     /// Gets the user security tokens.
     /// </summary>
-    public IReadOnlyCollection<SecurityToken> SecurityTokens => this.securityTokens.ToArray();
+    public IReadOnlyCollection<SecurityToken> SecurityTokens => this.securityTokens;
 
     /// <summary>
     /// Gets the user login history records.
     /// </summary>
-    public IReadOnlyCollection<LoginRecord> LoginRecords => this.loginRecords.ToArray();
+    public IReadOnlyCollection<LoginRecord> LoginRecords => this.loginRecords;
 
     /// <summary>
     /// Checks whether the user has the given role.

@@ -3,7 +3,7 @@
 using RpgBooks.Libraries.Module.Domain.Exceptions;
 
 /// <summary>
-/// Represents invalid <see cref="Money"/> value.
+/// Represents invalid Money value.
 /// </summary>
 public class InvalidMoneyException : DomainValidationException
 {

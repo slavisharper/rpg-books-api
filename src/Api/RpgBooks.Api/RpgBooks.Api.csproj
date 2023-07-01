@@ -18,7 +18,7 @@
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
-		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.435">
+		<PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.507">
 		  <PrivateAssets>all</PrivateAssets>
 		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
@@ -31,6 +31,10 @@
 	  <ProjectReference Include="..\..\Modules\RpgBooks.Modules.Reading\RpgBooks.Modules.Reading.csproj" />
 	  <ProjectReference Include="..\..\Modules\RpgBooks.Modules.Statistics\RpgBooks.Modules.Statistics.csproj" />
 	  <ProjectReference Include="..\RpgBooks.Api.Common\RpgBooks.Api.Common.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="logs\" />
 	</ItemGroup>
 
 </Project>

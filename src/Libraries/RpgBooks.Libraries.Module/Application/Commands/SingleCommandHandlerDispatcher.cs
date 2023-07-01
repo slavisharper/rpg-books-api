@@ -31,13 +31,13 @@ public sealed class SingleCommandHandlerDispatcher : ICommandHandlerDispatcher
     public async Task<CommandHandlerResult<TCommandResult>> Dispatch<TCommand, TCommandResult>(TCommand command, CancellationToken cancellation)
         where TCommand : ICommand
     {
-        var logger = this.serviceProvider.GetRequiredService<ILogger<SingleCommandHandlerDispatcher>>();
+        var logger = this.serviceProvider.GetRequiredService<ILogger>();
         var failures = await ValidateRequest(command, cancellation);
         var commandType = typeof(TCommand);
 
         if (failures.Any())
         {
-            logger.LogWarning("{CommandType} request validation failed", commandType.Name);
+            logger.LogRequestValidationFailed(commandType.Name);
             return new CommandHandlerResult<TCommandResult>(failures);
         }
 
@@ -46,11 +46,7 @@ public sealed class SingleCommandHandlerDispatcher : ICommandHandlerDispatcher
             .GetRequiredService<ICommandHandler<TCommand, TCommandResult>>()
             .Handle(command, cancellation);
 
-        logger.LogInformation(
-            "{CommandType} request handled in {ElapsedMilliseconds}ms",
-            commandType.Name,
-            Stopwatch.GetElapsedTime(timeStamp).Milliseconds);
-
+        logger.LogRequestHandlingTime(commandType.Name, Stopwatch.GetElapsedTime(timeStamp).Milliseconds);
         return new CommandHandlerResult<TCommandResult>(handlerResult);
     }
 

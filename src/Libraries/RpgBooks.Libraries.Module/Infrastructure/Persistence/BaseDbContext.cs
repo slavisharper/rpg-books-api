@@ -17,7 +17,7 @@ public abstract class BaseDbContext<TContext> : DbContext, IDbContext
     where TContext : DbContext, IDbContext
 {
     private readonly IDomainEventDispatcher eventDispatcher;
-    private readonly ILogger<TContext> logger;
+    private readonly ILogger logger;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="BaseDbContext{TContext}"/> class.
@@ -30,7 +30,7 @@ public abstract class BaseDbContext<TContext> : DbContext, IDbContext
         DbContextOptions<TContext> options,
         ICurrentUserService currentUserService,
         IDomainEventDispatcher eventDispatcher,
-        ILogger<TContext> logger)
+        ILogger logger)
         : base(options)
     {
         this.CurrentUserService = currentUserService;

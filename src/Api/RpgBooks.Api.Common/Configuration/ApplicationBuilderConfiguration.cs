@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
 using RpgBooks.Libraries.Module.Application;
+using RpgBooks.Libraries.Module.Application.Logging;
 using RpgBooks.Libraries.Module.Infrastructure;
 using RpgBooks.Modules.Identity;
 
@@ -48,7 +49,7 @@ public static class ApplicationBuilderConfiguration
             .AddOutputCache()
             .AddEndpointsApiExplorer()
             .AddSwaggerGen()
-            .AddZLogging()
+            .AddZLogging(builder.Configuration)
             .AddCommonRequiredServices(builder.Configuration, emailAssemblies)
             .TryAddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 

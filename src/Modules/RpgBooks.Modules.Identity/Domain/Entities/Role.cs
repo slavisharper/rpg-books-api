@@ -8,7 +8,7 @@ using RpgBooks.Libraries.Module.Domain.Entities;
 /// </summary>
 public sealed class Role : BaseEntity<int>
 {
-    private readonly ICollection<Claim> claims;
+    private readonly HashSet<Claim> claims;
 
     internal Role(string name)
     {
@@ -26,7 +26,7 @@ public sealed class Role : BaseEntity<int>
     /// <summary>
     /// Gets the claims associated with the role.
     /// </summary>
-    public IReadOnlyCollection<Claim> Claims => this.claims.ToArray();
+    public IReadOnlyCollection<Claim> Claims => this.claims;
 
     internal Role AddClaim(string type, string value, string valueType)
     {

@@ -8,17 +8,20 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Logging;
+using Microsoft.Identity.Client;
 
 using RpgBooks.Libraries.Module.Application.Commands;
 using RpgBooks.Libraries.Module.Application.Commands.Contracts;
+using RpgBooks.Libraries.Module.Application.Logging;
 using RpgBooks.Libraries.Module.Application.Queries;
 using RpgBooks.Libraries.Module.Application.Queries.Contracts;
 using RpgBooks.Libraries.Module.Application.Settings;
 
+using Serilog;
+using Serilog.Events;
+
 using System.Linq;
 using System.Reflection;
-
-using ZLogger;
 
 /// <summary>
 /// Application layer configurations.
@@ -35,80 +38,6 @@ public static class ApplicationConfiguration
             .BuildServiceProvider()
             .GetRequiredService<IServiceScopeFactory>()
             .CreateScope();
-
-    /// <summary>
-    /// Add Zero allocations logging.
-    /// </summary>
-    /// <param name="services">Services collection instance.</param>
-    /// <returns>Configured services collection.</returns>
-    public static IServiceCollection AddZLogging(this IServiceCollection services)
-        => services.AddLogging(config =>
-        {
-            config.ClearProviders();
-            config.SetMinimumLevel(LogLevel.Information);
-
-            config.AddZLoggerRollingFile(
-                fileNameSelector: (dt, x) => ZString.Format("logs/{0:yyyy-MM-dd}_{1:000}.log", dt, x),
-                timestampPattern: x => x.ToLocalTime().Date,
-                rollSizeKB: 1024,
-                options => 
-                {
-                    options.EnableStructuredLogging = true;
-                });
-
-            config.AddZLoggerConsole(options =>
-            {
-#if DEBUG
-                // \u001b[31m => Red(ANSI Escape Code)
-                // \u001b[0m => Reset
-                // \u001b[38;5;***m => 256 Colors(08 is Gray)
-                options.PrefixFormatter = (writer, info) =>
-                {
-                    string logLebel = GetLogLevelForConsole(info.LogLevel);
-                    string logTime = info.Timestamp.ToString("dd/MM/yyyy HH:mm:ss.fff");
-                    if (info.LogLevel == LogLevel.Error)
-                    {
-                        ZString.Utf8Format(writer, "\u001b[31m[{0} {1}] ", logLebel, logTime);
-                    }
-                    else if (info.LogLevel == LogLevel.Critical)
-                    {
-                        ZString.Utf8Format(writer, "\u001b[38;5;200m[{0} {1}] ", logLebel, logTime);
-                    }
-                    else
-                    {
-                        if (!info.CategoryName.StartsWith("Rpg")) // your application namespace.
-                        {
-                            if (info.LogLevel == LogLevel.Warning)
-                            {
-                                ZString.Utf8Format(writer, "\u001b[38;5;214m[{0} {1}] ", logLebel, logTime);
-                            }
-                            else
-                            {
-                                ZString.Utf8Format(writer, "\u001b[38;5;08m[{0} {1}] ", logLebel, logTime);
-                            }
-                        }
-                        else
-                        {
-                            ZString.Utf8Format(writer, "[{0} {1}] ", logLebel, logTime);
-                        }
-                    }
-                };
-                options.SuffixFormatter = (writer, info) =>
-                {
-                    if (info.LogLevel == LogLevel.Error || !info.CategoryName.StartsWith("Rpg"))
-                    {
-                        ZString.Utf8Format(writer, "\u001b[0m", "");
-                    }
-                };
-#endif
-#if RELEASE
-                // Tips: use PrepareUtf8 to achieve better performance.
-                var prefixFormat = ZString.PrepareUtf8<LogLevel, DateTime>("[{0}] [{1}] ");
-                options.PrefixFormatter = (writer, info) =>
-                    prefixFormat.FormatTo(ref writer, info.LogLevel, info.Timestamp.DateTime.ToLocalTime());
-#endif
-            }, configureEnableAnsiEscapeCode: true);
-        });
     
     /// <summary>
     /// Adds CQRS support.
@@ -187,16 +116,4 @@ public static class ApplicationConfiguration
 
         return services;
     }
-
-    private static string GetLogLevelForConsole(LogLevel logLevel)
-        => logLevel switch
-        {
-            LogLevel.Trace => "TRCE",
-            LogLevel.Debug => "DEBG",
-            LogLevel.Information => "INFO",
-            LogLevel.Warning => "WARN",
-            LogLevel.Error => "EROR",
-            LogLevel.Critical => "FATL",
-            _ => "INFO"
-        };
 }

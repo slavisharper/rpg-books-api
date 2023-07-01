@@ -25,7 +25,7 @@ public static class DbContextEventExtensions
     public static async Task DispatchEvents(
         this IDbContext context,
         IDomainEventDispatcher eventDispatcher,
-        ILogger<IDbContext> logger)
+        ILogger logger)
     {
         var entities = context.ChangeTracker
             .Entries<IBaseEntity>()
@@ -45,7 +45,7 @@ public static class DbContextEventExtensions
                 domainEvent.MarkAsPublished();
                 if (domainEvent.Poisoned)
                 {
-                    logger.LogError("Event is poisoned and needs a review! {Event}", JsonSerializer.Serialize(domainEvent));
+                    logger.LogPoisonedEvent(JsonSerializer.Serialize(domainEvent));
                     continue;
                 }
 

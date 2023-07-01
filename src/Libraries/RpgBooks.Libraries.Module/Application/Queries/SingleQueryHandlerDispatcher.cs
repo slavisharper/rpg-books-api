@@ -29,18 +29,14 @@ public sealed class SingleQueryHandlerDispatcher : IQueryHandlerDispatcher
     public async Task<TQueryResult> Dispatch<TQuery, TQueryResult>(TQuery query, CancellationToken cancellation)
         where TQuery : IQuery
     {
-        var logger = this.serviceProvider.GetRequiredService<ILogger<SingleQueryHandlerDispatcher>>();
+        var logger = this.serviceProvider.GetRequiredService<ILogger>();
 
         var timeStamp = Stopwatch.GetTimestamp();
         var result = await this.serviceProvider
             .GetRequiredService<IQueryHandler<TQuery, TQueryResult>>()
             .Handle(query, cancellation);
 
-        logger.LogInformation(
-            "{QueryType} request handled in {ElapsedMilliseconds}ms",
-            typeof(TQuery).Name,
-            Stopwatch.GetElapsedTime(timeStamp).Milliseconds);
-
+        logger.LogRequestHandlingTime(typeof(TQuery).Name, Stopwatch.GetElapsedTime(timeStamp).Milliseconds);
         return result;
     }
 }

@@ -14,7 +14,7 @@ internal sealed class IdentityDbContext : BaseDbContext<IdentityDbContext>
         DbContextOptions<IdentityDbContext> options,
         ICurrentUserService currentUserService,
         IDomainEventDispatcher eventDispatcher,
-        ILogger<IdentityDbContext> logger)
+        ILogger logger)
         : base(options, currentUserService, eventDispatcher, logger)
     {
     }

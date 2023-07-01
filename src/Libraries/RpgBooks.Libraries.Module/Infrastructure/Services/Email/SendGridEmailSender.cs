@@ -20,7 +20,7 @@ public sealed class SendGridEmailSender : IEmailSender
 {
     private readonly ISendGridClient client;
     private readonly IEmailTemplateRenderer renderer;
-    private readonly ILogger<SendGridEmailSender> logger;
+    private readonly ILogger logger;
     private readonly EmailAddress from;
 
 
@@ -34,7 +34,7 @@ public sealed class SendGridEmailSender : IEmailSender
     public SendGridEmailSender(
         ISendGridClient client,
         IEmailTemplateRenderer renderer,
-        ILogger<SendGridEmailSender> logger,
+        ILogger logger,
         IOptions<EmailSettings> emailSettingsOptions)
     {
         this.client = client;
@@ -160,9 +160,10 @@ public sealed class SendGridEmailSender : IEmailSender
         CancellationToken cancellationToken = default)
     {
         var msg = new SendGridMessage();
+        var tos = to.Select(to => new EmailAddress(to)).ToList();
 
         msg.From = this.from;
-        msg.AddTos(to.Select(to => new EmailAddress(to)).ToList());
+        msg.AddTos(tos);
         msg.Subject = subject;
         msg.SetFrom(this.from);
         msg.HtmlContent = bodyHtml;
@@ -183,9 +184,9 @@ public sealed class SendGridEmailSender : IEmailSender
 
         if (!result.IsSuccessStatusCode)
         {
-            string resultBody = await result.Body.ReadAsStringAsync(cancellationToken);
-            this.logger.LogError("Error sending emails to {to}", string.Join(",", to));
-            this.logger.LogError("Response body from SendGrid is {body}", resultBody);
+            string responseBody = await result.Body.ReadAsStringAsync(cancellationToken);
+            this.logger.LogEmailSendingFailure(tos.Count > 1 ? string.Join(",", to) : tos[0].Email);
+            this.logger.LogEmailSendingFailureResponse(responseBody);
         }
 
         return result.IsSuccessStatusCode;
