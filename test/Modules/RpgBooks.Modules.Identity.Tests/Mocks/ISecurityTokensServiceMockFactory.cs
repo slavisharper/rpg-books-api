@@ -14,7 +14,7 @@ internal static class ISecurityTokensServiceMockFactory
         var returnModel = new TokenModel(token.Value, token.ExpirationTime);
         var mock = new Mock<ISecurityTokensService>();
         mock.Setup(m => m.GenerateEmailConfirmationToken(It.IsAny<User>()))
-            .Callback((User user, CancellationToken _) =>
+            .Callback((User user) =>
             { 
                 user.AddToken(token);
             })

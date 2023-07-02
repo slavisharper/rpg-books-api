@@ -39,6 +39,11 @@ internal sealed class UserBuilder : IUserBuilder
     /// <inheritdoc/>
     public IUserBuilder WithPassword(string password)
     {
+        if (password is null)
+        {
+            return this;
+        }
+
         this.paswordHash = this.passwordHasher.HashPassword(password);
         return this;
     }
