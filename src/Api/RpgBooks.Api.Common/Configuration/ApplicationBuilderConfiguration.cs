@@ -10,6 +10,8 @@ using RpgBooks.Libraries.Module.Application.Logging;
 using RpgBooks.Libraries.Module.Infrastructure;
 using RpgBooks.Modules.Identity;
 
+using Serilog;
+
 using System.Reflection;
 
 /// <summary>
@@ -40,6 +42,8 @@ public static class ApplicationBuilderConfiguration
             typeof(IdentityModuleConfiguration).Assembly,
             typeof(ApplicationConfiguration).Assembly,
         };
+
+        builder.Host.UseSerilog();
 
         builder.Services
             .AddCors()

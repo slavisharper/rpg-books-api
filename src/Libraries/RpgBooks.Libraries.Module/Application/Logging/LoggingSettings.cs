@@ -39,7 +39,7 @@ internal class LoggingSettings
     public const string CriticalLevelShort = "FATL";
 
     public static string GetFilePath(IConfiguration configuration)
-        => configuration["Logging:Settings:FilePath"] ?? "logs/log-.txt";
+        => configuration["Logging:Settings:FilePath"] ?? "logs/log-.json";
 
     public static LogEventLevel GetGlobalLogLevel(IConfiguration configuration)
     {

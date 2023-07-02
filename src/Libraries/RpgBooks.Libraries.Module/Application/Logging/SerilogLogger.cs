@@ -13,15 +13,23 @@ using System;
 public class SerilogLogger : Microsoft.Extensions.Logging.ILogger
 {
     private readonly Serilog.ILogger logger;
+    private static readonly Dictionary<LogLevel, LogEventLevel> LogEventLevelMapping = new()
+    {
+        { LogLevel.Trace, LogEventLevel.Verbose },
+        { LogLevel.Debug, LogEventLevel.Debug },
+        { LogLevel.Information, LogEventLevel.Information },
+        { LogLevel.Warning, LogEventLevel.Warning },
+        { LogLevel.Error, LogEventLevel.Error },
+        { LogLevel.Critical, LogEventLevel.Fatal },
+        { LogLevel.None, LogEventLevel.Fatal },
+    };
 
     /// <summary>
     /// Initializes a new instance of the <see cref="SerilogLogger"/> class.
     /// </summary>
     /// <param name="logger">Serilog instance.</param>
     public SerilogLogger(Serilog.ILogger logger)
-    { 
-        this.logger = logger;
-    }
+        => this.logger = logger;
 
     /// <inheritdoc/>
     public IDisposable? BeginScope<TState>(TState state)
@@ -30,35 +38,32 @@ public class SerilogLogger : Microsoft.Extensions.Logging.ILogger
 
      /// <inheritdoc/>
     public bool IsEnabled(LogLevel logLevel)
-    { 
-        return this.logger.IsEnabled(LogLevelToLogEventLevel(logLevel));
-    }
+        => this.logger.IsEnabled(LogEventLevelMapping[logLevel]);
 
     /// <inheritdoc/>
     public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
     {
-        this.logger.Write(LogLevelToLogEventLevel(logLevel), exception, state?.ToString() ?? string.Empty);
-    }
-
-    private LogEventLevel LogLevelToLogEventLevel(LogLevel loglevel)
-    {
-        switch (loglevel)
+        var logValues = state as IReadOnlyList<KeyValuePair<string, object>>;
+        if (logValues is null || logValues.Count == 1)
         {
-            case Microsoft.Extensions.Logging.LogLevel.Debug:
-                return LogEventLevel.Debug;
-            case Microsoft.Extensions.Logging.LogLevel.Information:
-                return LogEventLevel.Information;
-            case Microsoft.Extensions.Logging.LogLevel.Warning:
-                return LogEventLevel.Warning;
-            case Microsoft.Extensions.Logging.LogLevel.Error:
-                return LogEventLevel.Error;
-            case Microsoft.Extensions.Logging.LogLevel.Critical:
-                return LogEventLevel.Fatal;
-            case Microsoft.Extensions.Logging.LogLevel.None:
-                return LogEventLevel.Verbose;
-            case Microsoft.Extensions.Logging.LogLevel.Trace:
-                return LogEventLevel.Verbose;
+            this.logger.Write(LogEventLevelMapping[logLevel], exception, formatter(state, exception));
+            return;
         }
-        return LogEventLevel.Verbose;
+
+        string messageTemplate = string.Empty;
+        var values = new object[logValues.Count - 1];
+
+        for (int i = 0, j = 0; i < logValues.Count; i++)
+        {
+            if (logValues[i].Key == "{OriginalFormat}")
+            {
+                messageTemplate = logValues[i].Value.ToString()!;
+                continue;
+            }
+
+            values[j++] = logValues[i].Value;
+        }
+
+        this.logger.Write(LogEventLevelMapping[logLevel], exception, messageTemplate!, values);
     }
 }

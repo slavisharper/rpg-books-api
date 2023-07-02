@@ -2,8 +2,12 @@
 
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog.Events;
+
 using Serilog;
+using Serilog.Events;
+using Serilog.Formatting.Json;
+
+using System.Configuration;
 
 /// <summary>
 /// Logging configuration.
@@ -19,21 +23,22 @@ public static class LoggingConfiguration
     public static IServiceCollection AddZLogging(this IServiceCollection services, IConfiguration configuration)
     {
         LogEventLevel logLevel = LoggingSettings.GetGlobalLogLevel(configuration);
+        LogEventLevel microsofrLogLevel = LoggingSettings.GetMicrosoftLogLevel(configuration);
 
         var logger = new LoggerConfiguration()
+            .MinimumLevel.Is(logLevel)
+            .MinimumLevel.Override("Microsoft", microsofrLogLevel)
+            .MinimumLevel.Override("Microsoft.Hosting.Lifetime", logLevel)
             .Enrich.FromLogContext()
             .Enrich.WithThreadId()
-            .Enrich.WithThreadName()
             .Enrich.WithEnvironmentName()
-            .WriteTo.Console(
-                restrictedToMinimumLevel: logLevel,
-                outputTemplate: LoggingSettings.LogTemplate)
+            .Enrich.WithEnvironmentUserName()
+            .WriteTo.Console(outputTemplate: LoggingSettings.LogTemplate)
             .WriteTo.File(
                 path: LoggingSettings.GetFilePath(configuration),
-                restrictedToMinimumLevel: logLevel,
                 flushToDiskInterval: LoggingSettings.GetFlushToDiskInterval(configuration),
                 rollingInterval: RollingInterval.Day,
-                outputTemplate: LoggingSettings.LogTemplate)
+                formatter: new JsonFormatter())
             .CreateLogger();
 
         Log.Logger = logger;
@@ -41,6 +46,10 @@ public static class LoggingConfiguration
         return services;
     }
 
+    /// <summary>
+    /// Create bootstrap logger.
+    /// </summary>
+    /// <returns></returns>
     public static ILogger CreateBootstrapLogger()
     {
           var logger = new LoggerConfiguration()
